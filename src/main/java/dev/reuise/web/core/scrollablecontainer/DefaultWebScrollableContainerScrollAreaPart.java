@@ -1,0 +1,683 @@
+package dev.reuise.web.core.scrollablecontainer;
+import dev.reuise.core.ComponentPart;
+import dev.reuise.core.ComponentType;
+import dev.reuise.core.CoreComponent;
+import dev.reuise.core.CoreComponentOptions;
+import dev.reuise.core.Interaction;
+import dev.reuise.core.RootComponent;
+import dev.reuise.core.ScreenSizeValues;
+import dev.reuise.core.State;
+import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.scrollablecontainer.DefaultCoreScrollableContainerScrollAreaPart;
+import dev.reuise.core.scrollablecontainer.ScrollDirection;
+import dev.reuise.core.scrollablecontainer.ScrollableContainerFadeOptions;
+import dev.reuise.core.theme.Theme;
+import dev.reuise.web.core.WebComponentFactory;
+import dev.reuise.web.core.WebComponentPart;
+import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.layout.WebContainer;
+import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.webstyles.Style;
+import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleSheetFactory;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+// Option: Children - CORE
+// Option: Id - WEB
+// Option: TagName - WEB
+// Option: XmlNamespace - WEB
+// Option: Tooltip - WEB
+// Option: BaseStyleClass - WEB
+// Option: Attributes - WEB
+// Option: StyleClasses - WEB
+// Option: Data - WEB
+// Option: Style - WEB
+// Option: InlineStyle - WEB
+// Option: Rehydration - WEB
+// Option: ContentEditable - WEB
+// Option: StoreInElementOptions - WEB
+// Option: Mounted - CORE
+// Option: Margin - CORE
+// Option: MarginTop - CORE
+// Option: MarginRight - CORE
+// Option: MarginBottom - CORE
+// Option: MarginLeft - CORE
+// Option: Width - CORE
+// Option: MinWidth - CORE
+// Option: MaxWidth - CORE
+// Option: Height - CORE
+// Option: MinHeight - CORE
+// Option: MaxHeight - CORE
+// Option: RequiredLayoutComponent - CORE
+// Option: Parent - CORE
+// Option: Wrapper - CORE
+// Option: Theme - CORE
+// Option: Visible - CORE
+// Option: Enabled - CORE
+// Option: Focused - CORE
+// Option: Debug - CORE
+// Option: DebugId - CORE
+// base comp: parentComponent
+// base comp: baseComponent
+// add composition for baseComponent: isRehydrated
+// add composition for baseComponent: getComputedStyle
+// add composition for baseComponent: addOrRemoveStyleClass
+// add composition for baseComponent: hasStyleClass
+// add composition for baseComponent: removeStyleClass
+// add composition for baseComponent: setAttribute
+// add composition for baseComponent: removeAttribute
+// add composition for baseComponent: getAttribute
+// add composition for baseComponent: hasAttribute
+// add composition for baseComponent: setData
+// add composition for baseComponent: getData
+// add composition for baseComponent: hasData
+// add composition for baseComponent: setAria
+// add composition for baseComponent: getAria
+// add composition for baseComponent: hasAria
+// add composition for baseComponent: getUniqueId
+// add composition for baseComponent: getUniqueStyleClass
+// add composition for baseComponent: getStyleSheetId
+// add composition for baseComponent: getStyleStates
+// add composition for baseComponent: setStyleSheetFactory
+// add composition for baseComponent: getStyle
+// add composition for baseComponent: hasWrapper
+// add composition for baseComponent: isInitialized
+// add composition for baseComponent: log
+// add composition for baseComponent: removeFromParent
+public abstract class DefaultWebScrollableContainerScrollAreaPart<S extends DefaultWebScrollableContainerScrollAreaPart<S, O>, O extends WebScrollableContainerScrollAreaPartOptions> extends DefaultCoreScrollableContainerScrollAreaPart<S, O> implements WebScrollableContainerScrollArea , WebComponentPart {
+    private boolean fadeMask = false;
+
+    private void initHorizontalEdge() {
+        initFade(((WebContainer) (this.scrollAreaLeftFade)));
+        initFade(((WebContainer) (this.scrollAreaRightFade)));
+    }
+
+    private void initVerticalEdge() {
+        initFade(((WebContainer) (this.scrollAreaTopFade)));
+        initFade(((WebContainer) (this.scrollAreaBottomFade)));
+    }
+
+    private void initFade(WebContainer fade) {
+        if (!isRehydrated()) {
+            fade.setStyleClass("reuise-scrollablecontainer_scrollarea_fade").addStyleClass("reuise-scrollablecontainer_scrollarea_fade--hidden");
+            if (fadeMask)
+                fade.addStyleClass("reuise-scrollablecontainer_scrollarea_fade--masked");
+
+        }
+    }
+
+    private String createScrollDirectionClassName(ScrollDirection scrollDirection) {
+        return (((WebContainer) (this.scrollAreaContent)).getBaseStyleClass() + "--scroll-") + scrollDirection.name().toLowerCase();
+    }
+
+    @Override
+    public ScrollDirection getScrollDirection() {
+        for (ScrollDirection d : ScrollDirection.values())
+            if (((WebContainer) (this.scrollAreaContent)).hasStyleClass(createScrollDirectionClassName(d)))
+                return d;
+
+
+        return null;
+    }
+
+    @Override
+    public S setScrollDirection(ScrollDirection scrollDirection) {
+        for (ScrollDirection d : ScrollDirection.values())
+            ((WebContainer) (this.scrollAreaContent)).addOrRemoveStyleClass(createScrollDirectionClassName(d), scrollDirection == d);
+
+        return self();
+    }
+
+    @Override
+    public S setBorderRadius(Integer radius) {
+        getStyle().setClipPath(("inset(0 0 0 0 round " + radius) + "px)");
+        this.borderRadius = radius;
+        return self();
+    }
+
+    @Override
+    public Integer getBorderRadius() {
+        return this.borderRadius;
+    }
+
+    @Override
+    public S setFillColor(String fillColor) {
+        getStyle().setBackgroundColor(fillColor);
+        return self();
+    }
+
+    @Override
+    public String getFillColor() {
+        return getStyle().getBackgroundColor();
+    }
+
+    private WebParentComponentPart parentComponentPart;
+
+    private WebBaseComponentPart baseComponentPart;
+
+    protected DefaultWebScrollableContainerScrollAreaPart(O options) {
+        super(options);
+    }
+
+    protected void setupReferences() {
+        // Parts
+        parentComponentPart = getParentComponentPart();
+        baseComponentPart = getBaseComponentPart();
+        super.setupReferences();
+    }
+
+    @Override
+    public RootComponent getRootComponent() {
+        return parentComponentPart.getRootComponent();
+    }
+
+    @Override
+    public void setRootComponent(RootComponent rootComponent) {
+        super.setRootComponent(rootComponent);
+        this.parentComponentPart.setRootComponent(rootComponent);
+        if (scrollAreaTopFade != null)
+            scrollAreaTopFade.setRootComponent(rootComponent);
+
+        if (scrollAreaLeftFade != null)
+            scrollAreaLeftFade.setRootComponent(rootComponent);
+
+        if (scrollAreaContent != null)
+            scrollAreaContent.setRootComponent(rootComponent);
+
+        if (scrollAreaBottomFade != null)
+            scrollAreaBottomFade.setRootComponent(rootComponent);
+
+        if (scrollAreaRightFade != null)
+            scrollAreaRightFade.setRootComponent(rootComponent);
+
+    }
+
+    @Override
+    public Theme getTheme() {
+        return parentComponentPart.getTheme();
+    }
+
+    @Override
+    public S setTheme(Theme theme) {
+        super.setTheme(theme);
+        if (scrollAreaTopFade != null)
+            scrollAreaTopFade.setTheme(theme);
+
+        if (scrollAreaLeftFade != null)
+            scrollAreaLeftFade.setTheme(theme);
+
+        if (scrollAreaContent != null)
+            scrollAreaContent.setTheme(theme);
+
+        if (scrollAreaBottomFade != null)
+            scrollAreaBottomFade.setTheme(theme);
+
+        if (scrollAreaRightFade != null)
+            scrollAreaRightFade.setTheme(theme);
+
+        this.parentComponentPart.setTheme(theme);
+        return self();
+    }
+
+    @Override
+    public String getId() {
+        return baseComponentPart.getId();
+    }
+
+    @Override
+    public S setId(String id) {
+        this.baseComponentPart.setId(id);
+        return self();
+    }
+
+    @Override
+    public String getTagName() {
+        return baseComponentPart.getTagName();
+    }
+
+    @Override
+    public S setTagName(String tagName) {
+        this.baseComponentPart.setTagName(tagName);
+        return self();
+    }
+
+    @Override
+    public String getXmlNamespace() {
+        return baseComponentPart.getXmlNamespace();
+    }
+
+    @Override
+    public S setXmlNamespace(String xmlNamespace) {
+        this.baseComponentPart.setXmlNamespace(xmlNamespace);
+        return self();
+    }
+
+    @Override
+    public String getTooltip() {
+        return baseComponentPart.getTooltip();
+    }
+
+    @Override
+    public S setTooltip(String tooltip) {
+        this.baseComponentPart.setTooltip(tooltip);
+        return self();
+    }
+
+    @Override
+    public String getBaseStyleClass() {
+        return baseComponentPart.getBaseStyleClass();
+    }
+
+    @Override
+    public S setBaseStyleClass(String baseStyleClass) {
+        this.baseComponentPart.setBaseStyleClass(baseStyleClass);
+        return self();
+    }
+
+    @Override
+    public Map<String, String> getAttributes() {
+        return baseComponentPart.getAttributes();
+    }
+
+    @Override
+    public S setAttributes(Map<String, String> attributes) {
+        this.baseComponentPart.setAttributes(attributes);
+        return self();
+    }
+
+    @Override
+    public List<String> getStyleClasses() {
+        return baseComponentPart.getStyleClasses();
+    }
+
+    @Override
+    public S setStyleClasses(List<String> styleClasses) {
+        this.baseComponentPart.setStyleClasses(styleClasses);
+        return self();
+    }
+
+    @Override
+    public S addStyleClass(String styleClass) {
+        this.baseComponentPart.addStyleClass(styleClass);
+        return self();
+    }
+
+    @Override
+    public S setStyleClass(String styleClass) {
+        baseComponentPart.setStyleClass(styleClass);
+        return self();
+    }
+
+    @Override
+    public S setStyleClasses(String... styleClasses) {
+        baseComponentPart.setStyleClasses(styleClasses);
+        return self();
+    }
+
+    @Override
+    public Map<String, String> getData() {
+        return baseComponentPart.getData();
+    }
+
+    @Override
+    public S setData(Map<String, String> data) {
+        this.baseComponentPart.setData(data);
+        return self();
+    }
+
+    @Override
+    public Style getStyle() {
+        return baseComponentPart.getStyle();
+    }
+
+    @Override
+    public S setStyle(Style style) {
+        this.baseComponentPart.setStyle(style);
+        return self();
+    }
+
+    @Override
+    public S setStyle(Style style, State state) {
+        this.baseComponentPart.setStyle(style, state);
+        return self();
+    }
+
+    @Override
+    public S setStyleAllStates(Style style) {
+        setStyle(ScreenSizeValues.of(style, style));
+        setStyle(style);
+        return self();
+    }
+
+    @Override
+    public S setStyle(ScreenSizeValues<Style> style) {
+        this.baseComponentPart.setStyle(style);
+        return self();
+    }
+
+    @Override
+    public Style getStyle(State state) {
+        return baseComponentPart.getStyle(state);
+    }
+
+    @Override
+    public Style getInlineStyle() {
+        return baseComponentPart.getInlineStyle();
+    }
+
+    @Override
+    public S setInlineStyle(Style inlineStyle) {
+        this.baseComponentPart.setInlineStyle(inlineStyle);
+        return self();
+    }
+
+    @Override
+    public String getRehydration() {
+        return baseComponentPart.getRehydration();
+    }
+
+    @Override
+    public S setRehydration(String rehydration) {
+        this.baseComponentPart.setRehydration(rehydration);
+        return self();
+    }
+
+    @Override
+    public boolean isContentEditable() {
+        return baseComponentPart.isContentEditable();
+    }
+
+    @Override
+    public S setContentEditable(Boolean contentEditable) {
+        this.baseComponentPart.setContentEditable(contentEditable);
+        return self();
+    }
+
+    @Override
+    public List<String> getStoreInElementOptions() {
+        return baseComponentPart.getStoreInElementOptions();
+    }
+
+    @Override
+    public S setStoreInElementOptions(List<String> storeInElementOptions) {
+        this.baseComponentPart.setStoreInElementOptions(storeInElementOptions);
+        return self();
+    }
+
+    @Override
+    public S addStoreInElementOptions(String storeInElementOptions) {
+        this.baseComponentPart.addStoreInElementOptions(storeInElementOptions);
+        return self();
+    }
+
+    @Override
+    public S setStoreInElementOptions(String storeInElementOptions) {
+        baseComponentPart.setStoreInElementOptions(storeInElementOptions);
+        return self();
+    }
+
+    @Override
+    public S removeStoreInElementOptions(String storeInElementOptions) {
+        baseComponentPart.removeStoreInElementOptions(storeInElementOptions);
+        return self();
+    }
+
+    @Override
+    public boolean hasStoreInElementOptions(String storeInElementOptions) {
+        return baseComponentPart.hasStoreInElementOptions(storeInElementOptions);
+    }
+
+    @Override
+    public S setRehydration(String rehydration, Boolean canFail) {
+        this.baseComponentPart.setRehydration(rehydration, canFail);
+        return self();
+    }
+
+    @Override
+    public S setRehydration(String selector, CoreComponent parent) {
+        this.baseComponentPart.setRehydration(selector, parent);
+        return self();
+    }
+
+    @Override
+    public S setRehydration(String selector, CoreComponent parent, Boolean canFail) {
+        this.baseComponentPart.setRehydration(selector, parent, canFail);
+        return self();
+    }
+
+    public boolean isRehydrated() {
+        if (parentComponentPart == null)
+            return false;
+
+        return parentComponentPart.isRehydrated();
+    }
+
+    public Style getComputedStyle() {
+        return parentComponentPart.getComputedStyle();
+    }
+
+    public S addOrRemoveStyleClass(String styleClass, boolean add) {
+        parentComponentPart.addOrRemoveStyleClass(styleClass, add);
+        return self();
+    }
+
+    public boolean hasStyleClass(String styleClass) {
+        return parentComponentPart.hasStyleClass(styleClass);
+    }
+
+    public S removeStyleClass(String styleClass) {
+        parentComponentPart.removeStyleClass(styleClass);
+        return self();
+    }
+
+    public S setAttribute(String attribute, String value) {
+        parentComponentPart.setAttribute(attribute, value);
+        return self();
+    }
+
+    public S setAttribute(String attribute) {
+        parentComponentPart.setAttribute(attribute);
+        return self();
+    }
+
+    public S removeAttribute(String attribute) {
+        parentComponentPart.removeAttribute(attribute);
+        return self();
+    }
+
+    public String getAttribute(String attribute) {
+        return parentComponentPart.getAttribute(attribute);
+    }
+
+    public boolean hasAttribute(String attribute) {
+        return parentComponentPart.hasAttribute(attribute);
+    }
+
+    public S setData(String data, String value) {
+        parentComponentPart.setData(data, value);
+        return self();
+    }
+
+    public String getData(String data) {
+        return parentComponentPart.getData(data);
+    }
+
+    public boolean hasData(String data) {
+        return parentComponentPart.hasData(data);
+    }
+
+    public S setAria(String attribute, String value) {
+        parentComponentPart.setAria(attribute, value);
+        return self();
+    }
+
+    public String getAria(String attribute) {
+        return parentComponentPart.getAria(attribute);
+    }
+
+    public boolean hasAria(String attribute) {
+        return parentComponentPart.hasAria(attribute);
+    }
+
+    public String getUniqueId() {
+        return parentComponentPart.getUniqueId();
+    }
+
+    public String getUniqueStyleClass() {
+        return parentComponentPart.getUniqueStyleClass();
+    }
+
+    public String getStyleSheetId() {
+        return parentComponentPart.getStyleSheetId();
+    }
+
+    public String getStyleSheetId(State state) {
+        return parentComponentPart.getStyleSheetId(state);
+    }
+
+    public Set<State> getStyleStates() {
+        return parentComponentPart.getStyleStates();
+    }
+
+    public void setStyleSheetFactory(StyleSheetFactory styleSheetFactory) {
+        parentComponentPart.setStyleSheetFactory(styleSheetFactory);
+    }
+
+    public Style getStyle(State state, Interaction interaction) {
+        return parentComponentPart.getStyle(state, interaction);
+    }
+
+    public Style getStyle(Interaction interaction) {
+        return parentComponentPart.getStyle(interaction);
+    }
+
+    public boolean hasWrapper() {
+        return parentComponentPart.hasWrapper();
+    }
+
+    public boolean isInitialized() {
+        return parentComponentPart.isInitialized();
+    }
+
+    public void log(Object obj) {
+        parentComponentPart.log(obj);
+    }
+
+    public void removeFromParent() {
+        parentComponentPart.removeFromParent();
+    }
+
+    @Override
+    public WebComponentFactory getComponentFactory() {
+        return ((WebComponentFactory) (baseComponentPart.getComponentFactory()));
+    }
+
+    @Override
+    public void addPart(ComponentPart.Type type, ComponentPart part) {
+        baseComponentPart.addPart(type, part);
+    }
+
+    @Override
+    public <C extends ComponentType<?, T>, T extends CoreComponentOptions> void initialize(C component, T options) {
+        setupReferences();
+        baseComponentPart.initialize(component, options);
+    }
+
+    @Override
+    public WebScrollableContainerScrollArea getComponent() {
+        return ((WebScrollableContainerScrollArea) (baseComponentPart.getComponent()));
+    }
+
+    public boolean onPreInitialize(O options) {
+        if (!super.onPreInitialize(options))
+            return false;
+
+        setupReferences();
+        return true;
+    }
+
+    // Implementation
+    // Implementation
+    // Implementation
+    public void onInitialize(O options) {
+        super.onInitialize(options);
+        ScrollDirection scrollDir = options.getScrollDirection();
+        if (scrollDir != null) {
+            if (scrollDir != ScrollDirection.NONE)
+                addStyleClass("reuise-scrollablecontainer_scrollarea--scroll-" + scrollDir.name().toLowerCase());
+
+            ScrollableContainerFadeOptions fadeOpt = options.getFadeOptions();
+            fadeMask = fadeOpt.isMask();
+            if (scrollDir == ScrollDirection.HORIZONTAL) {
+                initHorizontalEdge();
+            } else if (scrollDir == ScrollDirection.VERTICAL) {
+                initVerticalEdge();
+            } else if (scrollDir == ScrollDirection.BOTH) {
+                initVerticalEdge();
+                initHorizontalEdge();
+            }
+        }
+    }
+
+    public void onCreate(O options) {
+        super.onCreate(options);
+    }
+
+    public void applyOptions(O options, OptionApplicator applicator, Collection<State> states) {
+        super.applyOptions(options, applicator, states);
+    }
+
+    public void onInitializeComponentType(RootComponent rootComponent) {
+        super.onInitializeComponentType(rootComponent);
+        parentComponentPart.onInitializeComponentType(rootComponent);
+    }
+
+    @Override
+    public WebContainer getScrollAreaTopFade() {
+        return ((WebContainer) (super.getScrollAreaTopFade()));
+    }
+
+    @Override
+    public WebContainer getScrollAreaLeftFade() {
+        return ((WebContainer) (super.getScrollAreaLeftFade()));
+    }
+
+    @Override
+    public WebContainer getScrollAreaContent() {
+        return ((WebContainer) (super.getScrollAreaContent()));
+    }
+
+    @Override
+    public WebContainer getScrollAreaBottomFade() {
+        return ((WebContainer) (super.getScrollAreaBottomFade()));
+    }
+
+    @Override
+    public WebContainer getScrollAreaRightFade() {
+        return ((WebContainer) (super.getScrollAreaRightFade()));
+    }
+
+    // Implementation
+    // Implementation
+    public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea").setPosition("relative");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea--scroll-horizontal").setWidth("100%");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea--scroll-vertical").setHeight("100%");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_fade--masked").setDisplay("none");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea--scroll-horizontal .reuise-scrollablecontainer_scrollarea_content").setOverflow("scroll hidden").setWidth("100%");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea--scroll-vertical .reuise-scrollablecontainer_scrollarea_content").setOverflow("hidden scroll").setHeight("100%");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea--scroll-both .reuise-scrollablecontainer_scrollarea_content").setOverflow("scroll");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea--scroll-none .reuise-scrollablecontainer_scrollarea_content").setOverflow("hidden");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_content::-webkit-scrollbar").setWidth(0).setHeight(0);
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_fade--hidden").setOpacity(0);
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_fade").setPosition("absolute").setZIndex(1).setTransition("opacity 100ms ease-in-out").setPointerEvents("none");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_leftfade,.reuise-scrollablecontainer_scrollarea_rightfade").setTop("0").setBottom("0").setWidth("20px");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_topfade,.reuise-scrollablecontainer_scrollarea_bottomfade").setLeft("0").setRight("0").setHeight("20px");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_topfade").setTop("0").setBackground("linear-gradient(0deg, rgb(0 0 0 / 8%), transparent)");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_rightfade").setRight("0").setBackground("linear-gradient(270deg, rgb(0 0 0 / 8%), transparent)");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_bottomfade").setBottom("0").setBackground("linear-gradient(180deg, rgb(0 0 0 / 8%), transparent)");
+        commonStyles.addRule(".reuise-scrollablecontainer_scrollarea_leftfade").setLeft("0").setBackground("linear-gradient(90deg, rgb(0 0 0 / 8%), transparent)");
+    }
+}
