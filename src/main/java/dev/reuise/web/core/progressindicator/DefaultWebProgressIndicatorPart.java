@@ -266,6 +266,12 @@ public abstract class DefaultWebProgressIndicatorPart<S extends DefaultWebProgre
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

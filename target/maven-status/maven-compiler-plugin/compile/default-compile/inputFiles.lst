@@ -112,6 +112,7 @@ C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\jav
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\view\WebRouteLayoutOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\table\DefaultWebCheckboxTableColumnPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\media\AbstractWebAudioPlayerOptions.java
+C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\WebSegmentedTextFieldPartOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\list\DefaultWebListItemPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\bottomappbar\WebBottomAppBarPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\list\WebListViewOptions.java
@@ -176,6 +177,7 @@ C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\jav
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\view\WebSheetRouteLayoutFeatures.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\list\DefaultWebBasicListPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\chip\WebChipGroup.java
+C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\WebSegmentedTextFieldPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\layout\WebFlexContainerPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\layout\AbstractWebRowLayoutOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\document\AbstractWebDocumentOptions.java
@@ -316,6 +318,7 @@ C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\jav
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\splitcontainer\WebSplitContainerDivider.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\chip\AbstractWebFilterChipOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\media\WebVideoPlayerPart.java
+C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\WebSegmentedTextFieldOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\layout\WebSurfaceOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\parentcomponent\WebParentComponentPartOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\WebMultiEmailAddressFieldPart.java
@@ -455,6 +458,7 @@ C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\jav
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\skeleton\WebSkeletonFeatures.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\graphics\svg\WebSvgGroupPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\text\DefaultWebTextBlockPart.java
+C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\WebSegmentedTextField.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\dialog\WebMessageDialogPartOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\chip\WebChipGroupFeatures.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\filepicker\WebFilePicker.java
@@ -610,6 +614,7 @@ C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\jav
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\layout\WebRowLayoutPartOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\menu\WebMenuPartOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\checkbox\WebBasicCheckbox.java
+C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\AbstractWebSegmentedTextFieldOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\style\StyleOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\tabs\WebTabBarPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\avatar\AbstractWebAvatarOptions.java
@@ -665,6 +670,7 @@ C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\jav
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\document\StructuredDataType.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\media\WebMediaPlayerFeatures.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\skeleton\WebSkeleton.java
+C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\DefaultWebSegmentedTextFieldPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\progressindicator\WebProgressIndicatorOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\table\WebTableHeaderRowPartOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\slidecontainer\DefaultWebSlideContainerPart.java
@@ -705,4 +711,5 @@ C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\jav
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\bottomappbar\WebBottomAppBarPartOptions.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\WebBasicInputFieldPart.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\dropzone\WebDropZonePartOptions.java
+C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\input\WebSegmentedTextFieldFeatures.java
 C:\aeromac\reuise\repos\public\0.7.4-beta\core\reuise-java-web-core\src\main\java\dev\reuise\web\core\view\WebRouteLayoutFeatures.java

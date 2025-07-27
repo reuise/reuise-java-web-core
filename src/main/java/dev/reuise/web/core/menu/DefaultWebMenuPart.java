@@ -238,6 +238,12 @@ public abstract class DefaultWebMenuPart<S extends DefaultWebMenuPart<S, O>, O e
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }
@@ -544,13 +550,14 @@ public abstract class DefaultWebMenuPart<S extends DefaultWebMenuPart<S, O>, O e
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-menu").setPosition("fixed").setMinWidth(50).setMinHeight(50).setTop("0px").setLeft("0px").setBoxShadow("0 4px 8px 3px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.3)").setBorderRadius("8px").setOverflow("hidden").setZIndex(999999).setBackgroundColor("#fff").setTransition("opacity 100ms ease-in-out");
+        commonStyles.addRule(".reuise-menu").setPosition("fixed").setMinWidth(46).setMinHeight(46).setTop("0px").setLeft("0px").setBoxShadow("0 4px 8px 3px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.3)").setBorderRadius("8px").setOverflow("hidden").setZIndex(999999).setBackgroundColor("#fff").setTransition("opacity 100ms ease-in-out");
         commonStyles.addRule(".reuise-menu:not(.reuise-menu--opened)").setOpacity(0).setPointerEvents("none");
         commonStyles.addRule(".reuise-menu--opened").setOpacity(1).setPointerEvents("all");
         commonStyles.addRule(".reuise-menu ul").setMargin(0).setPadding(0).setListStyle("none");
         commonStyles.addRule(".reuise-menu .reuise-menuitem").setPadding("12px 28px").setCursor("pointer").setTransition("background-color 100ms ease-in-out");
         commonStyles.addRule(".reuise-menuitem>a").setTextDecoration("none");
         commonStyles.addRule(".reuise-menu .reuise-menuitem:has(.reuise-basiclistitem_link)").setPadding("0").setCursor("pointer");
+        commonStyles.addRule(".reuise-menuitem .reuise-basiclistitem_link").setColor("black", true);
         commonStyles.addRule(".reuise-menu .reuise-menuitem>.reuise-basiclistitem_link").setPadding("12px 28px").setDisplay("block").setTextDecoration("none").setBoxSizing("border-box");
         commonStyles.addRule(".reuise-menu .reuise-menuitem:hover").setBackgroundColor("rgb(0 0 0 / 10%)");
         commonStyles.addRule(".reuise-menu .reuise-menuitem:active").setBackgroundColor("rgb(0 0 0 / 15%)");

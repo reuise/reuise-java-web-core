@@ -189,6 +189,12 @@ public abstract class DefaultWebBadgePart<S extends DefaultWebBadgePart<S, O>, O
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

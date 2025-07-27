@@ -20,6 +20,8 @@ public interface WebRouteLayoutPartOptions {
 
     WebRouteLayoutPartOptions removeRoute(RouteOptions route);
 
+    WebRouteLayoutPartOptions clearRoutes();
+
     boolean hasRoute(RouteOptions route);
 
     RouteViewRevealer getRouteViewRevealer();
@@ -40,6 +42,8 @@ public interface WebRouteLayoutPartOptions {
 
     WebRouteLayoutPartOptions removeRevealHandler(RouteViewRevealHandler revealHandler);
 
+    WebRouteLayoutPartOptions clearRevealHandlers();
+
     List<RouteViewBeforeRevealHandler> getBeforeRevealHandlers();
 
     ComponentOption<List<RouteViewBeforeRevealHandler>> getBeforeRevealHandlersOption();
@@ -51,6 +55,8 @@ public interface WebRouteLayoutPartOptions {
     WebRouteLayoutPartOptions setBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler);
 
     WebRouteLayoutPartOptions removeBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler);
+
+    WebRouteLayoutPartOptions clearBeforeRevealHandlers();
 
     WebView getCurrentView();
 

@@ -43,6 +43,8 @@ public interface WebBaseComponentFeatures extends CoreBaseComponentFeatures {
 
     WebBaseComponentFeatures removeStyleClass(String styleClass);
 
+    WebBaseComponentFeatures clearStyleClasses();
+
     boolean hasStyleClass(String styleClass);
 
     Map<String, String> getData();

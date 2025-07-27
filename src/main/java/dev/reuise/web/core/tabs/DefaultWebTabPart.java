@@ -265,6 +265,12 @@ public abstract class DefaultWebTabPart<S extends DefaultWebTabPart<S, O>, O ext
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

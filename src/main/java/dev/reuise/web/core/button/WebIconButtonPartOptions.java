@@ -3,12 +3,17 @@ import dev.reuise.core.State;
 import dev.reuise.core.button.CoreIconButtonPartOptions;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.WebComponentFactory;
+// Size here??
 public interface WebIconButtonPartOptions extends CoreIconButtonPartOptions {
     boolean isUseHistoryApi();
 
     ComponentOption<Boolean> getUseHistoryApiOption();
 
     WebIconButtonPartOptions setUseHistoryApi(Boolean useHistoryApi);
+
+    Object getSize();
+
+    WebIconButtonPartOptions setSize(Object size);
 
     <T> void setDefaultOption(String option, T value);
 

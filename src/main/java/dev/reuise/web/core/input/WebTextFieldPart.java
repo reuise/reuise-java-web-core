@@ -62,6 +62,8 @@ public interface WebTextFieldPart extends WebParentComponentPart , CoreTextField
 
     WebTextFieldPart removeValidator(InputValidator validator);
 
+    WebTextFieldPart clearValidators();
+
     boolean isRequired();
 
     WebTextFieldPart setRequired(Boolean required);

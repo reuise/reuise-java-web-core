@@ -25,6 +25,8 @@ public interface WebIconPartOptions extends CoreIconPartOptions {
 
     WebSvgOptions getSvgOptions();
 
+    WebSvgOptions getOrCreateSvgOptions();
+
     WebIconPartOptions setSvgOptions(WebSvgOptions svgOptions);
 
     boolean hasSvgOptions();

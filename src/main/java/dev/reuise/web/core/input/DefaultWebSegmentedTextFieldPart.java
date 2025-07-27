@@ -1,4 +1,4 @@
-package dev.reuise.web.core.layout;
+package dev.reuise.web.core.input;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -8,13 +8,16 @@ import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
+import dev.reuise.core.input.DefaultCoreSegmentedTextFieldPart;
 import dev.reuise.core.layout.BackdropFilter;
-import dev.reuise.core.layout.DefaultCoreRowLayoutPart;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.layout.WebContainerPart;
+import dev.reuise.web.core.layout.WebFlexContainerPart;
+import dev.reuise.web.core.layout.WebRowLayoutPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
@@ -73,6 +76,7 @@ import java.util.Set;
 // Option: Focused - CORE
 // Option: Debug - CORE
 // Option: DebugId - CORE
+// base comp: rowLayout
 // base comp: flexContainer
 // base comp: container
 // add composition for container: addHeading
@@ -105,7 +109,9 @@ import java.util.Set;
 // add composition for baseComponent: isInitialized
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
-public abstract class DefaultWebRowLayoutPart<S extends DefaultWebRowLayoutPart<S, O>, O extends WebRowLayoutPartOptions> extends DefaultCoreRowLayoutPart<S, O> implements WebRowLayout , WebComponentPart {
+public abstract class DefaultWebSegmentedTextFieldPart<S extends DefaultWebSegmentedTextFieldPart<S, O>, O extends WebSegmentedTextFieldPartOptions> extends DefaultCoreSegmentedTextFieldPart<S, O> implements WebComponentPart , WebSegmentedTextField {
+    private WebRowLayoutPart rowLayoutPart;
+
     private WebFlexContainerPart flexContainerPart;
 
     private WebContainerPart containerPart;
@@ -114,12 +120,13 @@ public abstract class DefaultWebRowLayoutPart<S extends DefaultWebRowLayoutPart<
 
     private WebBaseComponentPart baseComponentPart;
 
-    protected DefaultWebRowLayoutPart(O options) {
+    protected DefaultWebSegmentedTextFieldPart(O options) {
         super(options);
     }
 
     protected void setupReferences() {
         // Parts
+        rowLayoutPart = getRowLayoutPart();
         flexContainerPart = getFlexContainerPart();
         containerPart = getContainerPart();
         parentComponentPart = getParentComponentPart();
@@ -129,22 +136,22 @@ public abstract class DefaultWebRowLayoutPart<S extends DefaultWebRowLayoutPart<
 
     @Override
     public RootComponent getRootComponent() {
-        return flexContainerPart.getRootComponent();
+        return rowLayoutPart.getRootComponent();
     }
 
     @Override
     public void setRootComponent(RootComponent rootComponent) {
-        this.flexContainerPart.setRootComponent(rootComponent);
+        this.rowLayoutPart.setRootComponent(rootComponent);
     }
 
     @Override
     public Theme getTheme() {
-        return flexContainerPart.getTheme();
+        return rowLayoutPart.getTheme();
     }
 
     @Override
     public S setTheme(Theme theme) {
-        this.flexContainerPart.setTheme(theme);
+        this.rowLayoutPart.setTheme(theme);
         return self();
     }
 
@@ -155,42 +162,42 @@ public abstract class DefaultWebRowLayoutPart<S extends DefaultWebRowLayoutPart<
     }
 
     public S addHeading(int level, String text) {
-        flexContainerPart.addHeading(level, text);
+        rowLayoutPart.addHeading(level, text);
         return self();
     }
 
     public S addHeading(String text) {
-        flexContainerPart.addHeading(text);
+        rowLayoutPart.addHeading(text);
         return self();
     }
 
     public S addHeading(int level, Html html) {
-        flexContainerPart.addHeading(level, html);
+        rowLayoutPart.addHeading(level, html);
         return self();
     }
 
     public S addHeading(Html html) {
-        flexContainerPart.addHeading(html);
+        rowLayoutPart.addHeading(html);
         return self();
     }
 
     public S addDivider() {
-        flexContainerPart.addDivider();
+        rowLayoutPart.addDivider();
         return self();
     }
 
     public S addDivider(String label) {
-        flexContainerPart.addDivider(label);
+        rowLayoutPart.addDivider(label);
         return self();
     }
 
     public S addParagraph(String text) {
-        flexContainerPart.addParagraph(text);
+        rowLayoutPart.addParagraph(text);
         return self();
     }
 
     public S addParagraph(Html html) {
-        flexContainerPart.addParagraph(html);
+        rowLayoutPart.addParagraph(html);
         return self();
     }
 
@@ -427,125 +434,125 @@ public abstract class DefaultWebRowLayoutPart<S extends DefaultWebRowLayoutPart<
     }
 
     public boolean isRehydrated() {
-        if (flexContainerPart == null)
+        if (rowLayoutPart == null)
             return false;
 
-        return flexContainerPart.isRehydrated();
+        return rowLayoutPart.isRehydrated();
     }
 
     public Style getComputedStyle() {
-        return flexContainerPart.getComputedStyle();
+        return rowLayoutPart.getComputedStyle();
     }
 
     public S addOrRemoveStyleClass(String styleClass, boolean add) {
-        flexContainerPart.addOrRemoveStyleClass(styleClass, add);
+        rowLayoutPart.addOrRemoveStyleClass(styleClass, add);
         return self();
     }
 
     public boolean hasStyleClass(String styleClass) {
-        return flexContainerPart.hasStyleClass(styleClass);
+        return rowLayoutPart.hasStyleClass(styleClass);
     }
 
     public S removeStyleClass(String styleClass) {
-        flexContainerPart.removeStyleClass(styleClass);
+        rowLayoutPart.removeStyleClass(styleClass);
         return self();
     }
 
     public S setAttribute(String attribute, String value) {
-        flexContainerPart.setAttribute(attribute, value);
+        rowLayoutPart.setAttribute(attribute, value);
         return self();
     }
 
     public S setAttribute(String attribute) {
-        flexContainerPart.setAttribute(attribute);
+        rowLayoutPart.setAttribute(attribute);
         return self();
     }
 
     public S removeAttribute(String attribute) {
-        flexContainerPart.removeAttribute(attribute);
+        rowLayoutPart.removeAttribute(attribute);
         return self();
     }
 
     public String getAttribute(String attribute) {
-        return flexContainerPart.getAttribute(attribute);
+        return rowLayoutPart.getAttribute(attribute);
     }
 
     public boolean hasAttribute(String attribute) {
-        return flexContainerPart.hasAttribute(attribute);
+        return rowLayoutPart.hasAttribute(attribute);
     }
 
     public S setData(String data, String value) {
-        flexContainerPart.setData(data, value);
+        rowLayoutPart.setData(data, value);
         return self();
     }
 
     public String getData(String data) {
-        return flexContainerPart.getData(data);
+        return rowLayoutPart.getData(data);
     }
 
     public boolean hasData(String data) {
-        return flexContainerPart.hasData(data);
+        return rowLayoutPart.hasData(data);
     }
 
     public S setAria(String attribute, String value) {
-        flexContainerPart.setAria(attribute, value);
+        rowLayoutPart.setAria(attribute, value);
         return self();
     }
 
     public String getAria(String attribute) {
-        return flexContainerPart.getAria(attribute);
+        return rowLayoutPart.getAria(attribute);
     }
 
     public boolean hasAria(String attribute) {
-        return flexContainerPart.hasAria(attribute);
+        return rowLayoutPart.hasAria(attribute);
     }
 
     public String getUniqueId() {
-        return flexContainerPart.getUniqueId();
+        return rowLayoutPart.getUniqueId();
     }
 
     public String getUniqueStyleClass() {
-        return flexContainerPart.getUniqueStyleClass();
+        return rowLayoutPart.getUniqueStyleClass();
     }
 
     public String getStyleSheetId() {
-        return flexContainerPart.getStyleSheetId();
+        return rowLayoutPart.getStyleSheetId();
     }
 
     public String getStyleSheetId(State state) {
-        return flexContainerPart.getStyleSheetId(state);
+        return rowLayoutPart.getStyleSheetId(state);
     }
 
     public Set<State> getStyleStates() {
-        return flexContainerPart.getStyleStates();
+        return rowLayoutPart.getStyleStates();
     }
 
     public void setStyleSheetFactory(StyleSheetFactory styleSheetFactory) {
-        flexContainerPart.setStyleSheetFactory(styleSheetFactory);
+        rowLayoutPart.setStyleSheetFactory(styleSheetFactory);
     }
 
     public Style getStyle(State state, Interaction interaction) {
-        return flexContainerPart.getStyle(state, interaction);
+        return rowLayoutPart.getStyle(state, interaction);
     }
 
     public Style getStyle(Interaction interaction) {
-        return flexContainerPart.getStyle(interaction);
+        return rowLayoutPart.getStyle(interaction);
     }
 
     public boolean hasWrapper() {
-        return flexContainerPart.hasWrapper();
+        return rowLayoutPart.hasWrapper();
     }
 
     public boolean isInitialized() {
-        return flexContainerPart.isInitialized();
+        return rowLayoutPart.isInitialized();
     }
 
     public void log(Object obj) {
-        flexContainerPart.log(obj);
+        rowLayoutPart.log(obj);
     }
 
     public void removeFromParent() {
-        flexContainerPart.removeFromParent();
+        rowLayoutPart.removeFromParent();
     }
 
     @Override
@@ -565,8 +572,8 @@ public abstract class DefaultWebRowLayoutPart<S extends DefaultWebRowLayoutPart<
     }
 
     @Override
-    public WebRowLayout getComponent() {
-        return ((WebRowLayout) (baseComponentPart.getComponent()));
+    public WebSegmentedTextField getComponent() {
+        return ((WebSegmentedTextField) (baseComponentPart.getComponent()));
     }
 
     public boolean onPreInitialize(O options) {
@@ -591,9 +598,12 @@ public abstract class DefaultWebRowLayoutPart<S extends DefaultWebRowLayoutPart<
 
     public void onInitializeComponentType(RootComponent rootComponent) {
         super.onInitializeComponentType(rootComponent);
-        flexContainerPart.onInitializeComponentType(rootComponent);
+        rowLayoutPart.onInitializeComponentType(rootComponent);
     }
 
+    // Implementation
+    // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        commonStyles.addRule(".reuise-segmentedtextfield").setWidth("100%").setJustifyContent("space-evenly");
     }
 }

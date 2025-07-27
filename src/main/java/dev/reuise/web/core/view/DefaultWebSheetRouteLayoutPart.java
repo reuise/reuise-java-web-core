@@ -203,6 +203,12 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     }
 
     @Override
+    public S addAll(List<? extends CoreComponent> children) {
+        sheetLayoutPart.addAll(children);
+        return self();
+    }
+
+    @Override
     public void insertBefore(CoreComponent child, CoreComponent beforeChild) {
         sheetLayoutPart.insertBefore(child, beforeChild);
     }
@@ -759,6 +765,12 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     }
 
     @Override
+    public S clearChildren() {
+        parentComponentPart.clearChildren();
+        return self();
+    }
+
+    @Override
     public String getId() {
         return baseComponentPart.getId();
     }
@@ -850,6 +862,12 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     @Override
     public S setStyleClasses(String... styleClasses) {
         baseComponentPart.setStyleClasses(styleClasses);
+        return self();
+    }
+
+    @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
         return self();
     }
 
@@ -1658,7 +1676,7 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
 
     private boolean needsRouteLayout(O options) {
         if (routeLayout != null)
-            return true;
+            return false;
 
         if (options == null)
             return false;
@@ -1744,6 +1762,12 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     }
 
     @Override
+    public S clearRoutes() {
+        routeLayout.clearRoutes();
+        return self();
+    }
+
+    @Override
     public boolean hasRoute(RouteOptions route) {
         return routeLayout.hasRoute(route);
     }
@@ -1801,6 +1825,12 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     }
 
     @Override
+    public S clearRevealHandlers() {
+        routeLayout.clearRevealHandlers();
+        return self();
+    }
+
+    @Override
     public List<RouteViewBeforeRevealHandler> getBeforeRevealHandlers() {
         return routeLayout.getBeforeRevealHandlers();
     }
@@ -1826,6 +1856,12 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     @Override
     public S removeBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler) {
         routeLayout.removeBeforeRevealHandler(beforeRevealHandler);
+        return self();
+    }
+
+    @Override
+    public S clearBeforeRevealHandlers() {
+        routeLayout.clearBeforeRevealHandlers();
         return self();
     }
 

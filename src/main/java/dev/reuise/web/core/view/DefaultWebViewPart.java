@@ -295,6 +295,12 @@ public abstract class DefaultWebViewPart<S extends DefaultWebViewPart<S, O>, O e
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

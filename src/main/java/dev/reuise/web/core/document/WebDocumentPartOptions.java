@@ -35,6 +35,8 @@ public interface WebDocumentPartOptions {
 
     WebDocumentPartOptions removeKeyword(String keyword);
 
+    WebDocumentPartOptions clearKeywords();
+
     boolean hasKeyword(String keyword);
 
     String getThemeColor();

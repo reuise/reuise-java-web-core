@@ -58,6 +58,8 @@ public interface WebTextFieldPartOptions extends CoreTextFieldPartOptions {
 
     WebTextFieldPartOptions removeValidator(InputValidator validator);
 
+    WebTextFieldPartOptions clearValidators();
+
     boolean isRequired();
 
     WebTextFieldPartOptions setRequired(Boolean required);

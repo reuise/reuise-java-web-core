@@ -60,6 +60,8 @@ public interface WebBaseComponentPartOptions extends CoreBaseComponentPartOption
 
     WebBaseComponentPartOptions removeStyleClass(String styleClass);
 
+    WebBaseComponentPartOptions clearStyleClasses();
+
     boolean hasStyleClass(String styleClass);
 
     Map<String, String> getData();

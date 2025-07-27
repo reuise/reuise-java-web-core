@@ -298,6 +298,12 @@ public abstract class DefaultWebAvatarPart<S extends DefaultWebAvatarPart<S, O>,
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }
@@ -609,7 +615,7 @@ public abstract class DefaultWebAvatarPart<S extends DefaultWebAvatarPart<S, O>,
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-avatar").setDisplay("block").setBackgroundColor("rgb(0 0 0 / 15%)");
+        commonStyles.addRule(".reuise-avatar").setDisplay("block").setCursor("pointer").setBackgroundColor("rgb(0 0 0 / 15%)");
         for (AvatarSize s : AvatarSize.values()) {
             commonStyles.addRule("." + createSizeStyleClassName(s)).setWidth(s.getSize()).setHeight(s.getSize());
             commonStyles.addRule((("." + createSizeStyleClassName(s)) + ".") + createShapeStyleClassName(AvatarShape.CIRCLE)).setBorderRadius(s.getSize() / 2);

@@ -266,6 +266,12 @@ public abstract class DefaultWebIconButtonPart<S extends DefaultWebIconButtonPar
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }
@@ -579,6 +585,5 @@ public abstract class DefaultWebIconButtonPart<S extends DefaultWebIconButtonPar
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         commonStyles.addRule(".reuise-iconbutton").setDisplay("inline-flex").setAlignItems("center").setFlexShrink(0).setBoxSizing("border-box").setBackgroundColor("transparent").setBorder("none").setCursor("pointer").setPadding(0);
-        commonStyles.addRule(".reuise-iconbutton .reuise-iconbutton_icon").setWidth("100%").setHeight("100%");
     }
 }

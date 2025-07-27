@@ -243,6 +243,12 @@ public abstract class DefaultWebMessageDialogPart<S extends DefaultWebMessageDia
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

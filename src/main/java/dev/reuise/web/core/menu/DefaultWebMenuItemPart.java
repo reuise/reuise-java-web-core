@@ -252,6 +252,12 @@ public abstract class DefaultWebMenuItemPart<S extends DefaultWebMenuItemPart<S,
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

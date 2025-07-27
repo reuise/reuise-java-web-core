@@ -142,6 +142,16 @@ public abstract class AbstractWebDocumentOptions<S extends AbstractWebDocumentOp
     }
 
     @Override
+    public S clearKeywords() {
+        List<String> list = getKeywords();
+        if (list == null) {
+            return self();
+        }
+        list.clear();
+        return self();
+    }
+
+    @Override
     public boolean hasKeyword(String keyword) {
         List<String> list = getKeywords();
         if (list == null) {

@@ -28,6 +28,7 @@ import dev.reuise.core.input.CoreChipFieldOptions;
 import dev.reuise.core.input.CoreMultiEmailAddressFieldOptions;
 import dev.reuise.core.input.CorePasswordFieldOptions;
 import dev.reuise.core.input.CoreSearchFieldOptions;
+import dev.reuise.core.input.CoreSegmentedTextFieldOptions;
 import dev.reuise.core.input.CoreTextFieldOptions;
 import dev.reuise.core.layout.CoreColumnLayoutOptions;
 import dev.reuise.core.layout.CoreContainerOptions;
@@ -159,6 +160,8 @@ import dev.reuise.web.core.input.WebPasswordField;
 import dev.reuise.web.core.input.WebPasswordFieldOptions;
 import dev.reuise.web.core.input.WebSearchField;
 import dev.reuise.web.core.input.WebSearchFieldOptions;
+import dev.reuise.web.core.input.WebSegmentedTextField;
+import dev.reuise.web.core.input.WebSegmentedTextFieldOptions;
 import dev.reuise.web.core.input.WebTextField;
 import dev.reuise.web.core.input.WebTextFieldOptions;
 import dev.reuise.web.core.layout.WebColumnLayout;
@@ -281,25 +284,133 @@ import dev.reuise.web.core.view.WebView;
 import dev.reuise.web.core.view.WebViewOptions;
 import dev.reuise.webstyles.StyleSheet;
 public interface WebComponentFactory extends CoreComponentFactory {
-    WebSvgShape createSvgShape(WebSvgShapeOptions options);
+    WebTab createTab(CoreTabOptions options);
 
-    WebSvgShapeOptions createSvgShapeOptions();
+    WebTabOptions createTabOptions();
 
-    WebSvgImage createSvgImage(WebSvgImageOptions options);
+    WebAudioPlayer createAudioPlayer(CoreAudioPlayerOptions options);
 
-    WebSvgImageOptions createSvgImageOptions();
+    WebAudioPlayerOptions createAudioPlayerOptions();
+
+    WebParagraph createParagraph(CoreParagraphOptions options);
+
+    WebParagraphOptions createParagraphOptions();
 
     WebButton createButton(CoreButtonOptions options);
 
     WebButtonOptions createButtonOptions();
 
-    WebRouteLayout createRouteLayout(WebRouteLayoutOptions options);
+    WebSurface createSurface(CoreSurfaceOptions options);
 
-    WebRouteLayoutOptions createRouteLayoutOptions();
+    WebSurfaceOptions createSurfaceOptions();
 
-    WebMenuItem createMenuItem(CoreMenuItemOptions options);
+    WebSvg createSvg(WebSvgOptions options);
 
-    WebMenuItemOptions createMenuItemOptions();
+    WebSvgOptions createSvgOptions();
+
+    WebSheetRouteLayout createSheetRouteLayout(WebSheetRouteLayoutOptions options);
+
+    WebSheetRouteLayoutOptions createSheetRouteLayoutOptions();
+
+    WebSvgGroup createSvgGroup(WebSvgGroupOptions options);
+
+    WebSvgGroupOptions createSvgGroupOptions();
+
+    WebSkeleton createSkeleton(CoreSkeletonOptions options);
+
+    WebSkeletonOptions createSkeletonOptions();
+
+    WebSelectMenu createSelectMenu(CoreSelectMenuOptions options);
+
+    WebSelectMenuOptions createSelectMenuOptions();
+
+    WebSlideContainer createSlideContainer(CoreSlideContainerOptions options);
+
+    WebSlideContainerOptions createSlideContainerOptions();
+
+    WebCard createCard(CoreCardOptions options);
+
+    WebCardOptions createCardOptions();
+
+    WebSheetView createSheetView(CoreSheetViewOptions options);
+
+    WebSheetViewOptions createSheetViewOptions();
+
+    WebChip createChip(CoreChipOptions options);
+
+    WebChipOptions createChipOptions();
+
+    WebSvgRect createSvgRect(WebSvgRectOptions options);
+
+    WebSvgRectOptions createSvgRectOptions();
+
+    WebDocument createDocument(WebDocumentOptions options);
+
+    WebDocumentOptions createDocumentOptions();
+
+    WebIconLabel createIconLabel(CoreIconLabelOptions options);
+
+    WebIconLabelOptions createIconLabelOptions();
+
+    WebTopAppBar createTopAppBar(CoreTopAppBarOptions options);
+
+    WebTopAppBarOptions createTopAppBarOptions();
+
+    WebSheetLayout createSheetLayout(CoreSheetLayoutOptions options);
+
+    WebSheetLayoutOptions createSheetLayoutOptions();
+
+    WebChipGroup createChipGroup(CoreChipGroupOptions options);
+
+    WebChipGroupOptions createChipGroupOptions();
+
+    WebCardGrid createCardGrid(CoreCardGridOptions options);
+
+    WebCardGridOptions createCardGridOptions();
+
+    WebMultiEmailAddressField createMultiEmailAddressField(CoreMultiEmailAddressFieldOptions options);
+
+    WebMultiEmailAddressFieldOptions createMultiEmailAddressFieldOptions();
+
+    WebTableRow createTableRow(CoreTableRowOptions options);
+
+    WebTableRowOptions createTableRowOptions();
+
+    WebVideoPlayer createVideoPlayer(CoreVideoPlayerOptions options);
+
+    WebVideoPlayerOptions createVideoPlayerOptions();
+
+    WebColumnLayout createColumnLayout(CoreColumnLayoutOptions options);
+
+    WebColumnLayoutOptions createColumnLayoutOptions();
+
+    WebFilePicker createFilePicker(WebFilePickerOptions options);
+
+    WebFilePickerOptions createFilePickerOptions();
+
+    WebMenuDivider createMenuDivider(CoreMenuDividerOptions options);
+
+    WebMenuDividerOptions createMenuDividerOptions();
+
+    WebLink createLink(CoreLinkOptions options);
+
+    WebLinkOptions createLinkOptions();
+
+    WebFilterChip createFilterChip(CoreFilterChipOptions options);
+
+    WebFilterChipOptions createFilterChipOptions();
+
+    WebSvgText createSvgText(WebSvgTextOptions options);
+
+    WebSvgTextOptions createSvgTextOptions();
+
+    WebParentComponent createParentComponent(CoreParentComponentPartOptions options);
+
+    WebParentComponentOptions createParentComponentOptions();
+
+    WebTableHeaderCell createTableHeaderCell(CoreTableHeaderCellOptions options);
+
+    WebTableHeaderCellOptions createTableHeaderCellOptions();
 
     WebTextBlock createTextBlock(CoreTextBlockOptions options);
 
@@ -309,365 +420,261 @@ public interface WebComponentFactory extends CoreComponentFactory {
 
     WebRowLayoutOptions createRowLayoutOptions();
 
-    WebBasicListItem createBasicListItem(CoreBasicListItemOptions options);
-
-    WebBasicListItemOptions createBasicListItemOptions();
-
-    WebSvgText createSvgText(WebSvgTextOptions options);
-
-    WebSvgTextOptions createSvgTextOptions();
-
-    WebSplitContainerDivider createSplitContainerDivider(CoreSplitContainerDividerOptions options);
-
-    WebSplitContainerDividerOptions createSplitContainerDividerOptions();
-
-    WebTableBody createTableBody(CoreTableBodyOptions options);
-
-    WebTableBodyOptions createTableBodyOptions();
-
-    WebParagraph createParagraph(CoreParagraphOptions options);
-
-    WebParagraphOptions createParagraphOptions();
-
-    WebSheetView createSheetView(CoreSheetViewOptions options);
-
-    WebSheetViewOptions createSheetViewOptions();
-
-    WebPasswordField createPasswordField(CorePasswordFieldOptions options);
-
-    WebPasswordFieldOptions createPasswordFieldOptions();
-
-    WebIconLabel createIconLabel(CoreIconLabelOptions options);
-
-    WebIconLabelOptions createIconLabelOptions();
-
-    WebBasicList createBasicList(CoreBasicListOptions options);
-
-    WebBasicListOptions createBasicListOptions();
-
-    WebAppLayout createAppLayout(CoreAppLayoutOptions options);
-
-    WebAppLayoutOptions createAppLayoutOptions();
-
-    WebHeading createHeading(CoreHeadingOptions options);
-
-    WebHeadingOptions createHeadingOptions();
-
-    WebScriptComponent createScriptComponent(WebScriptComponentOptions options);
-
-    WebScriptComponentOptions createScriptComponentOptions();
-
-    WebListView createListView(CoreListViewOptions options);
-
-    WebListViewOptions createListViewOptions();
-
-    WebBadge createBadge(CoreBadgeOptions options);
-
-    WebBadgeOptions createBadgeOptions();
-
-    WebBottomAppBar createBottomAppBar(CoreBottomAppBarOptions options);
-
-    WebBottomAppBarOptions createBottomAppBarOptions();
-
-    WebScrollableContainer createScrollableContainer(CoreScrollableContainerOptions options);
-
-    WebScrollableContainerOptions createScrollableContainerOptions();
-
-    WebColumnLayout createColumnLayout(CoreColumnLayoutOptions options);
-
-    WebColumnLayoutOptions createColumnLayoutOptions();
-
-    WebMenuDivider createMenuDivider(CoreMenuDividerOptions options);
-
-    WebMenuDividerOptions createMenuDividerOptions();
-
-    WebParentComponent createParentComponent(CoreParentComponentPartOptions options);
-
-    WebParentComponentOptions createParentComponentOptions();
-
-    WebInlineText createInlineText(CoreInlineTextOptions options);
-
-    WebInlineTextOptions createInlineTextOptions();
-
-    WebSheetRouteLayout createSheetRouteLayout(WebSheetRouteLayoutOptions options);
-
-    WebSheetRouteLayoutOptions createSheetRouteLayoutOptions();
-
-    WebTableHeader createTableHeader(CoreTableHeaderOptions options);
-
-    WebTableHeaderOptions createTableHeaderOptions();
-
-    WebTextField createTextField(CoreTextFieldOptions options);
-
-    WebTextFieldOptions createTextFieldOptions();
-
-    WebTable createTable(CoreTableOptions options);
-
-    WebTableOptions createTableOptions();
-
-    WebImage createImage(CoreImageOptions options);
-
-    WebImageOptions createImageOptions();
-
-    WebContainer createContainer(CoreContainerOptions options);
-
-    WebContainerOptions createContainerOptions();
-
-    WebSheetLayout createSheetLayout(CoreSheetLayoutOptions options);
-
-    WebSheetLayoutOptions createSheetLayoutOptions();
-
-    WebListItem createListItem(CoreListItemOptions options);
-
-    WebListItemOptions createListItemOptions();
-
-    WebMessageDialog createMessageDialog(CoreMessageDialogOptions options);
-
-    WebMessageDialogOptions createMessageDialogOptions();
-
-    WebSearchField createSearchField(CoreSearchFieldOptions options);
-
-    WebSearchFieldOptions createSearchFieldOptions();
-
-    WebSvgPath createSvgPath(WebSvgPathOptions options);
-
-    WebSvgPathOptions createSvgPathOptions();
-
-    WebDocumentBody createDocumentBody(WebDocumentBodyOptions options);
-
-    WebDocumentBodyOptions createDocumentBodyOptions();
-
-    WebFilterChip createFilterChip(CoreFilterChipOptions options);
-
-    WebFilterChipOptions createFilterChipOptions();
-
-    WebSvg createSvg(WebSvgOptions options);
-
-    WebSvgOptions createSvgOptions();
-
-    WebTableFooter createTableFooter(CoreTableFooterOptions options);
-
-    WebTableFooterOptions createTableFooterOptions();
-
-    WebCardGrid createCardGrid(CoreCardGridOptions options);
-
-    WebCardGridOptions createCardGridOptions();
-
     WebMediaPlayer createMediaPlayer(CoreMediaPlayerOptions options);
 
     WebMediaPlayerOptions createMediaPlayerOptions();
-
-    WebView createView(CoreViewOptions options);
-
-    WebViewOptions createViewOptions();
-
-    WebIconButton createIconButton(CoreIconButtonOptions options);
-
-    WebIconButtonOptions createIconButtonOptions();
-
-    WebSlideContainer createSlideContainer(CoreSlideContainerOptions options);
-
-    WebSlideContainerOptions createSlideContainerOptions();
-
-    WebChipGroup createChipGroup(CoreChipGroupOptions options);
-
-    WebChipGroupOptions createChipGroupOptions();
-
-    WebScrollableContainerScrollArea createScrollableContainerScrollArea(CoreScrollableContainerScrollAreaOptions options);
-
-    WebScrollableContainerScrollAreaOptions createScrollableContainerScrollAreaOptions();
-
-    WebSlideContainerEdge createSlideContainerEdge(CoreSlideContainerEdgeOptions options);
-
-    WebSlideContainerEdgeOptions createSlideContainerEdgeOptions();
-
-    WebChipField createChipField(CoreChipFieldOptions options);
-
-    WebChipFieldOptions createChipFieldOptions();
-
-    WebNavigationLink createNavigationLink(CoreNavigationLinkOptions options);
-
-    WebNavigationLinkOptions createNavigationLinkOptions();
-
-    WebSelectMenu createSelectMenu(CoreSelectMenuOptions options);
-
-    WebSelectMenuOptions createSelectMenuOptions();
-
-    WebCheckboxTableColumn createCheckboxTableColumn(CoreCheckboxTableColumnOptions options);
-
-    WebCheckboxTableColumnOptions createCheckboxTableColumnOptions();
-
-    WebTableColumnGroup createTableColumnGroup(CoreTableColumnGroupOptions options);
-
-    WebTableColumnGroupOptions createTableColumnGroupOptions();
-
-    WebAppLayoutBody createAppLayoutBody(CoreAppLayoutBodyOptions options);
-
-    WebAppLayoutBodyOptions createAppLayoutBodyOptions();
-
-    WebMenu createMenu(CoreMenuOptions options);
-
-    WebMenuOptions createMenuOptions();
-
-    WebTableRow createTableRow(CoreTableRowOptions options);
-
-    WebTableRowOptions createTableRowOptions();
-
-    WebSkeleton createSkeleton(CoreSkeletonOptions options);
-
-    WebSkeletonOptions createSkeletonOptions();
-
-    WebBasicInputField createBasicInputField(CoreBasicInputFieldOptions options);
-
-    WebBasicInputFieldOptions createBasicInputFieldOptions();
-
-    WebTab createTab(CoreTabOptions options);
-
-    WebTabOptions createTabOptions();
-
-    WebFilePicker createFilePicker(WebFilePickerOptions options);
-
-    WebFilePickerOptions createFilePickerOptions();
-
-    WebVideoPlayer createVideoPlayer(CoreVideoPlayerOptions options);
-
-    WebVideoPlayerOptions createVideoPlayerOptions();
-
-    WebDrawer createDrawer(CoreDrawerOptions options);
-
-    WebDrawerOptions createDrawerOptions();
-
-    WebProgressIndicator createProgressIndicator(CoreProgressIndicatorOptions options);
-
-    WebProgressIndicatorOptions createProgressIndicatorOptions();
-
-    WebSplitContainerPanel createSplitContainerPanel(CoreSplitContainerPanelOptions options);
-
-    WebSplitContainerPanelOptions createSplitContainerPanelOptions();
-
-    WebIcon createIcon(CoreIconOptions options);
-
-    WebIconOptions createIconOptions();
-
-    WebSvgRect createSvgRect(WebSvgRectOptions options);
-
-    WebSvgRectOptions createSvgRectOptions();
-
-    WebBaseComponent createBaseComponent(CoreBaseComponentPartOptions options);
-
-    WebBaseComponentOptions createBaseComponentOptions();
-
-    WebDivider createDivider(CoreDividerOptions options);
-
-    WebDividerOptions createDividerOptions();
-
-    WebCheckboxTableCell createCheckboxTableCell(CoreCheckboxTableCellOptions options);
-
-    WebCheckboxTableCellOptions createCheckboxTableCellOptions();
-
-    WebSurface createSurface(CoreSurfaceOptions options);
-
-    WebSurfaceOptions createSurfaceOptions();
-
-    WebText createText(CoreTextOptions options);
-
-    WebTextOptions createTextOptions();
-
-    WebLabel createLabel(CoreLabelOptions options);
-
-    WebLabelOptions createLabelOptions();
-
-    WebMultiEmailAddressField createMultiEmailAddressField(CoreMultiEmailAddressFieldOptions options);
-
-    WebMultiEmailAddressFieldOptions createMultiEmailAddressFieldOptions();
-
-    WebTableHeaderCell createTableHeaderCell(CoreTableHeaderCellOptions options);
-
-    WebTableHeaderCellOptions createTableHeaderCellOptions();
-
-    WebBasicCheckbox createBasicCheckbox(CoreBasicCheckboxOptions options);
-
-    WebBasicCheckboxOptions createBasicCheckboxOptions();
-
-    WebTableColumn createTableColumn(CoreTableColumnOptions options);
-
-    WebTableColumnOptions createTableColumnOptions();
-
-    WebDropZone createDropZone(CoreDropZoneOptions options);
-
-    WebDropZoneOptions createDropZoneOptions();
-
-    WebChip createChip(CoreChipOptions options);
-
-    WebChipOptions createChipOptions();
-
-    WebTextTrack createTextTrack(CoreTextTrackOptions options);
-
-    WebTextTrackOptions createTextTrackOptions();
-
-    WebAudioPlayer createAudioPlayer(CoreAudioPlayerOptions options);
-
-    WebAudioPlayerOptions createAudioPlayerOptions();
-
-    WebTableCell createTableCell(CoreTableCellOptions options);
-
-    WebTableCellOptions createTableCellOptions();
-
-    WebCheckbox createCheckbox(CoreCheckboxOptions options);
-
-    WebCheckboxOptions createCheckboxOptions();
-
-    WebCard createCard(CoreCardOptions options);
-
-    WebCardOptions createCardOptions();
-
-    WebSplitContainer createSplitContainer(CoreSplitContainerOptions options);
-
-    WebSplitContainerOptions createSplitContainerOptions();
-
-    WebDialog createDialog(CoreDialogOptions options);
-
-    WebDialogOptions createDialogOptions();
-
-    WebAvatar createAvatar(CoreAvatarOptions options);
-
-    WebAvatarOptions createAvatarOptions();
-
-    WebScrollableContainerEdge createScrollableContainerEdge(CoreScrollableContainerEdgeOptions options);
-
-    WebScrollableContainerEdgeOptions createScrollableContainerEdgeOptions();
-
-    WebTableHeaderRow createTableHeaderRow(CoreTableHeaderRowOptions options);
-
-    WebTableHeaderRowOptions createTableHeaderRowOptions();
-
-    WebSvgGroup createSvgGroup(WebSvgGroupOptions options);
-
-    WebSvgGroupOptions createSvgGroupOptions();
-
-    WebLink createLink(CoreLinkOptions options);
-
-    WebLinkOptions createLinkOptions();
-
-    WebTopAppBar createTopAppBar(CoreTopAppBarOptions options);
-
-    WebTopAppBarOptions createTopAppBarOptions();
-
-    WebDocument createDocument(WebDocumentOptions options);
-
-    WebDocumentOptions createDocumentOptions();
-
-    WebFlexContainer createFlexContainer(CoreFlexContainerOptions options);
-
-    WebFlexContainerOptions createFlexContainerOptions();
 
     WebFieldSet createFieldSet(CoreFieldSetOptions options);
 
     WebFieldSetOptions createFieldSetOptions();
 
+    WebMessageDialog createMessageDialog(CoreMessageDialogOptions options);
+
+    WebMessageDialogOptions createMessageDialogOptions();
+
+    WebBasicInputField createBasicInputField(CoreBasicInputFieldOptions options);
+
+    WebBasicInputFieldOptions createBasicInputFieldOptions();
+
     WebTabBar createTabBar(CoreTabBarOptions options);
 
     WebTabBarOptions createTabBarOptions();
+
+    WebSplitContainerDivider createSplitContainerDivider(CoreSplitContainerDividerOptions options);
+
+    WebSplitContainerDividerOptions createSplitContainerDividerOptions();
+
+    WebListView createListView(CoreListViewOptions options);
+
+    WebListViewOptions createListViewOptions();
+
+    WebView createView(CoreViewOptions options);
+
+    WebViewOptions createViewOptions();
+
+    WebDrawer createDrawer(CoreDrawerOptions options);
+
+    WebDrawerOptions createDrawerOptions();
+
+    WebListItem createListItem(CoreListItemOptions options);
+
+    WebListItemOptions createListItemOptions();
+
+    WebTableCell createTableCell(CoreTableCellOptions options);
+
+    WebTableCellOptions createTableCellOptions();
+
+    WebRouteLayout createRouteLayout(WebRouteLayoutOptions options);
+
+    WebRouteLayoutOptions createRouteLayoutOptions();
+
+    WebIcon createIcon(CoreIconOptions options);
+
+    WebIconOptions createIconOptions();
+
+    WebSplitContainer createSplitContainer(CoreSplitContainerOptions options);
+
+    WebSplitContainerOptions createSplitContainerOptions();
+
+    WebChipField createChipField(CoreChipFieldOptions options);
+
+    WebChipFieldOptions createChipFieldOptions();
+
+    WebTable createTable(CoreTableOptions options);
+
+    WebTableOptions createTableOptions();
+
+    WebScrollableContainer createScrollableContainer(CoreScrollableContainerOptions options);
+
+    WebScrollableContainerOptions createScrollableContainerOptions();
+
+    WebInlineText createInlineText(CoreInlineTextOptions options);
+
+    WebInlineTextOptions createInlineTextOptions();
+
+    WebMenu createMenu(CoreMenuOptions options);
+
+    WebMenuOptions createMenuOptions();
+
+    WebSplitContainerPanel createSplitContainerPanel(CoreSplitContainerPanelOptions options);
+
+    WebSplitContainerPanelOptions createSplitContainerPanelOptions();
+
+    WebCheckbox createCheckbox(CoreCheckboxOptions options);
+
+    WebCheckboxOptions createCheckboxOptions();
+
+    WebTextField createTextField(CoreTextFieldOptions options);
+
+    WebTextFieldOptions createTextFieldOptions();
+
+    WebPasswordField createPasswordField(CorePasswordFieldOptions options);
+
+    WebPasswordFieldOptions createPasswordFieldOptions();
+
+    WebDivider createDivider(CoreDividerOptions options);
+
+    WebDividerOptions createDividerOptions();
+
+    WebImage createImage(CoreImageOptions options);
+
+    WebImageOptions createImageOptions();
+
+    WebCheckboxTableCell createCheckboxTableCell(CoreCheckboxTableCellOptions options);
+
+    WebCheckboxTableCellOptions createCheckboxTableCellOptions();
+
+    WebTableBody createTableBody(CoreTableBodyOptions options);
+
+    WebTableBodyOptions createTableBodyOptions();
+
+    WebSvgImage createSvgImage(WebSvgImageOptions options);
+
+    WebSvgImageOptions createSvgImageOptions();
+
+    WebAppLayout createAppLayout(CoreAppLayoutOptions options);
+
+    WebAppLayoutOptions createAppLayoutOptions();
+
+    WebDialog createDialog(CoreDialogOptions options);
+
+    WebDialogOptions createDialogOptions();
+
+    WebBasicListItem createBasicListItem(CoreBasicListItemOptions options);
+
+    WebBasicListItemOptions createBasicListItemOptions();
+
+    WebFlexContainer createFlexContainer(CoreFlexContainerOptions options);
+
+    WebFlexContainerOptions createFlexContainerOptions();
+
+    WebTableHeaderRow createTableHeaderRow(CoreTableHeaderRowOptions options);
+
+    WebTableHeaderRowOptions createTableHeaderRowOptions();
+
+    WebSearchField createSearchField(CoreSearchFieldOptions options);
+
+    WebSearchFieldOptions createSearchFieldOptions();
+
+    WebScrollableContainerScrollArea createScrollableContainerScrollArea(CoreScrollableContainerScrollAreaOptions options);
+
+    WebScrollableContainerScrollAreaOptions createScrollableContainerScrollAreaOptions();
+
+    WebText createText(CoreTextOptions options);
+
+    WebTextOptions createTextOptions();
+
+    WebTableColumnGroup createTableColumnGroup(CoreTableColumnGroupOptions options);
+
+    WebTableColumnGroupOptions createTableColumnGroupOptions();
+
+    WebTableColumn createTableColumn(CoreTableColumnOptions options);
+
+    WebTableColumnOptions createTableColumnOptions();
+
+    WebBottomAppBar createBottomAppBar(CoreBottomAppBarOptions options);
+
+    WebBottomAppBarOptions createBottomAppBarOptions();
+
+    WebScriptComponent createScriptComponent(WebScriptComponentOptions options);
+
+    WebScriptComponentOptions createScriptComponentOptions();
+
+    WebIconButton createIconButton(CoreIconButtonOptions options);
+
+    WebIconButtonOptions createIconButtonOptions();
+
+    WebScrollableContainerEdge createScrollableContainerEdge(CoreScrollableContainerEdgeOptions options);
+
+    WebScrollableContainerEdgeOptions createScrollableContainerEdgeOptions();
+
+    WebNavigationLink createNavigationLink(CoreNavigationLinkOptions options);
+
+    WebNavigationLinkOptions createNavigationLinkOptions();
+
+    WebBasicList createBasicList(CoreBasicListOptions options);
+
+    WebBasicListOptions createBasicListOptions();
+
+    WebBaseComponent createBaseComponent(CoreBaseComponentPartOptions options);
+
+    WebBaseComponentOptions createBaseComponentOptions();
+
+    WebSegmentedTextField createSegmentedTextField(CoreSegmentedTextFieldOptions options);
+
+    WebSegmentedTextFieldOptions createSegmentedTextFieldOptions();
+
+    WebProgressIndicator createProgressIndicator(CoreProgressIndicatorOptions options);
+
+    WebProgressIndicatorOptions createProgressIndicatorOptions();
+
+    WebLabel createLabel(CoreLabelOptions options);
+
+    WebLabelOptions createLabelOptions();
+
+    WebDocumentBody createDocumentBody(WebDocumentBodyOptions options);
+
+    WebDocumentBodyOptions createDocumentBodyOptions();
+
+    WebBasicCheckbox createBasicCheckbox(CoreBasicCheckboxOptions options);
+
+    WebBasicCheckboxOptions createBasicCheckboxOptions();
+
+    WebTextTrack createTextTrack(CoreTextTrackOptions options);
+
+    WebTextTrackOptions createTextTrackOptions();
+
+    WebTableFooter createTableFooter(CoreTableFooterOptions options);
+
+    WebTableFooterOptions createTableFooterOptions();
+
+    WebContainer createContainer(CoreContainerOptions options);
+
+    WebContainerOptions createContainerOptions();
+
+    WebDropZone createDropZone(CoreDropZoneOptions options);
+
+    WebDropZoneOptions createDropZoneOptions();
+
+    WebSvgShape createSvgShape(WebSvgShapeOptions options);
+
+    WebSvgShapeOptions createSvgShapeOptions();
+
+    WebCheckboxTableColumn createCheckboxTableColumn(CoreCheckboxTableColumnOptions options);
+
+    WebCheckboxTableColumnOptions createCheckboxTableColumnOptions();
+
+    WebTableHeader createTableHeader(CoreTableHeaderOptions options);
+
+    WebTableHeaderOptions createTableHeaderOptions();
+
+    WebBadge createBadge(CoreBadgeOptions options);
+
+    WebBadgeOptions createBadgeOptions();
+
+    WebMenuItem createMenuItem(CoreMenuItemOptions options);
+
+    WebMenuItemOptions createMenuItemOptions();
+
+    WebSlideContainerEdge createSlideContainerEdge(CoreSlideContainerEdgeOptions options);
+
+    WebSlideContainerEdgeOptions createSlideContainerEdgeOptions();
+
+    WebAvatar createAvatar(CoreAvatarOptions options);
+
+    WebAvatarOptions createAvatarOptions();
+
+    WebAppLayoutBody createAppLayoutBody(CoreAppLayoutBodyOptions options);
+
+    WebAppLayoutBodyOptions createAppLayoutBodyOptions();
+
+    WebHeading createHeading(CoreHeadingOptions options);
+
+    WebHeadingOptions createHeadingOptions();
+
+    WebSvgPath createSvgPath(WebSvgPathOptions options);
+
+    WebSvgPathOptions createSvgPathOptions();
 
     void setRootComponent(RootComponent rootComponent);
 

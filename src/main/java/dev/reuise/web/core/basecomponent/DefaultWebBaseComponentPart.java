@@ -252,6 +252,11 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
     }
 
     @Override
+    public S clearStyleClasses() {
+        return self();
+    }
+
+    @Override
     public S addStoreInElementOptions(String option) {
         return self();
     }

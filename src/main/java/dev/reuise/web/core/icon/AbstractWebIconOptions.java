@@ -88,6 +88,14 @@ public abstract class AbstractWebIconOptions<S extends AbstractWebIconOptions<S>
     }
 
     @Override
+    public dev.reuise.web.core.graphics.svg.WebSvgOptions getOrCreateSvgOptions() {
+        if (!hasSvgOptions())
+            svgOptions = createDefaultSvgOptions();
+
+        return svgOptions;
+    }
+
+    @Override
     public S setSvgOptions(dev.reuise.web.core.graphics.svg.WebSvgOptions svgOptions) {
         if (!hasSvgOptions())
             this.svgOptions = createDefaultSvgOptions();

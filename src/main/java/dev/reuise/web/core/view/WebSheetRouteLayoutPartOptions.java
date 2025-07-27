@@ -22,6 +22,8 @@ public interface WebSheetRouteLayoutPartOptions {
 
     WebSheetRouteLayoutPartOptions removeRoute(RouteOptions route);
 
+    WebSheetRouteLayoutPartOptions clearRoutes();
+
     boolean hasRoute(RouteOptions route);
 
     WebSheetRouteLayoutPartOptions addRoute(String path, RouteViewCreator creator);
@@ -42,6 +44,8 @@ public interface WebSheetRouteLayoutPartOptions {
 
     WebSheetRouteLayoutPartOptions removeRevealHandler(RouteViewRevealHandler revealHandler);
 
+    WebSheetRouteLayoutPartOptions clearRevealHandlers();
+
     List<RouteViewBeforeRevealHandler> getBeforeRevealHandlers();
 
     WebSheetRouteLayoutPartOptions setBeforeRevealHandlers(List<RouteViewBeforeRevealHandler> beforeRevealHandlers);
@@ -51,6 +55,8 @@ public interface WebSheetRouteLayoutPartOptions {
     WebSheetRouteLayoutPartOptions setBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler);
 
     WebSheetRouteLayoutPartOptions removeBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler);
+
+    WebSheetRouteLayoutPartOptions clearBeforeRevealHandlers();
 
     WebView getCurrentView();
 

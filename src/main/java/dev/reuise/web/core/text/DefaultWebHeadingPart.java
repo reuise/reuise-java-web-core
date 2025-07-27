@@ -236,6 +236,12 @@ public abstract class DefaultWebHeadingPart<S extends DefaultWebHeadingPart<S, O
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

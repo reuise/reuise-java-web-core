@@ -271,6 +271,12 @@ public abstract class DefaultWebChipPart<S extends DefaultWebChipPart<S, O>, O e
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

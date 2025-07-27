@@ -181,6 +181,12 @@ public abstract class DefaultWebScriptComponentPart<S extends DefaultWebScriptCo
     }
 
     @Override
+    public S clearChildren() {
+        parentComponentPart.clearChildren();
+        return self();
+    }
+
+    @Override
     public RootComponent getRootComponent() {
         return parentComponentPart.getRootComponent();
     }
@@ -195,6 +201,12 @@ public abstract class DefaultWebScriptComponentPart<S extends DefaultWebScriptCo
         parentComponentPart.add(child);
         child.setRootComponent(getRootComponent());
         child.setParent(self());
+        return self();
+    }
+
+    @Override
+    public S addAll(List<? extends CoreComponent> children) {
+        parentComponentPart.addAll(children);
         return self();
     }
 
@@ -316,6 +328,12 @@ public abstract class DefaultWebScriptComponentPart<S extends DefaultWebScriptCo
     @Override
     public S setStyleClasses(String... styleClasses) {
         baseComponentPart.setStyleClasses(styleClasses);
+        return self();
+    }
+
+    @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
         return self();
     }
 

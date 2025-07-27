@@ -219,6 +219,12 @@ public abstract class DefaultWebListViewPart<S extends DefaultWebListViewPart<S,
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }
@@ -529,7 +535,7 @@ public abstract class DefaultWebListViewPart<S extends DefaultWebListViewPart<S,
         commonStyles.addRule(".reuise-listitem .reuise-listitem_label").setFontSize(16);
         commonStyles.addRule(".reuise-listitem .reuise-listitem_secondarylabel").setFontSize(14);
         commonStyles.addRule(".reuise-listitem--togglecheckboxonclick").setCursor("pointer");
-        commonStyles.addRule(".reuise-basiclistitem_link").setColor("black").setWidth("100%");
+        commonStyles.addRule(".reuise-basiclistitem_link").setWidth("100%");
         commonStyles.addRule(".reuise-listview>.reuise-listitem:has(.reuise-basiclistitem_link)").setPadding("0").setCursor("pointer");
         commonStyles.addRule(".reuise-listview>.reuise-listitem>.reuise-basiclistitem_link").setDisplay("flex").setPadding("8px 16px").setTextDecoration("none").setAlignItems("center");
     }

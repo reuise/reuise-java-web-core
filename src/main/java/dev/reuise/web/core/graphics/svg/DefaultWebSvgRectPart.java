@@ -171,6 +171,12 @@ public abstract class DefaultWebSvgRectPart<S extends DefaultWebSvgRectPart<S, O
     }
 
     @Override
+    public S addAll(List<? extends CoreComponent> children) {
+        svgShapePart.addAll(children);
+        return self();
+    }
+
+    @Override
     public void insertBefore(CoreComponent child, CoreComponent beforeChild) {
         svgShapePart.insertBefore(child, beforeChild);
     }
@@ -276,6 +282,12 @@ public abstract class DefaultWebSvgRectPart<S extends DefaultWebSvgRectPart<S, O
     }
 
     @Override
+    public S clearChildren() {
+        parentComponentPart.clearChildren();
+        return self();
+    }
+
+    @Override
     public String getId() {
         return baseComponentPart.getId();
     }
@@ -367,6 +379,12 @@ public abstract class DefaultWebSvgRectPart<S extends DefaultWebSvgRectPart<S, O
     @Override
     public S setStyleClasses(String... styleClasses) {
         baseComponentPart.setStyleClasses(styleClasses);
+        return self();
+    }
+
+    @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
         return self();
     }
 

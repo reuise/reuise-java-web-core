@@ -248,6 +248,12 @@ public abstract class DefaultWebTableColumnPart<S extends DefaultWebTableColumnP
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

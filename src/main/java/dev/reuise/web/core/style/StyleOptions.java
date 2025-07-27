@@ -2279,6 +2279,63 @@ public class StyleOptions implements Style {
     }
 
     @Override
+    public String getMask() {
+        Object mask = getPropertyValue(Style.MASK);
+        if (mask == null)
+            return null;
+
+        return mask.toString();
+    }
+
+    @Override
+    public StyleOptions setMask(String mask) {
+        return setMask(mask, false);
+    }
+
+    @Override
+    public StyleOptions setMask(String mask, boolean important) {
+        return setProperty(Style.MASK, mask, important);
+    }
+
+    @Override
+    public String getMaskImage() {
+        Object maskImage = getPropertyValue(Style.MASK_IMAGE);
+        if (maskImage == null)
+            return null;
+
+        return maskImage.toString();
+    }
+
+    @Override
+    public StyleOptions setMaskImage(String maskImage) {
+        return setMaskImage(maskImage, false);
+    }
+
+    @Override
+    public StyleOptions setMaskImage(String maskImage, boolean important) {
+        return setProperty(Style.MASK_IMAGE, maskImage, important);
+    }
+
+    @Override
+    public String getMaskSize() {
+        Object maskSize = getPropertyValue(Style.MASK_SIZE);
+        if (maskSize == null)
+            return null;
+
+        return maskSize.toString();
+    }
+
+    @Override
+    public StyleOptions setMaskSize(String maskSize) {
+        return setMaskSize(maskSize, false);
+    }
+
+    @Override
+    public StyleOptions setMaskSize(String maskSize, boolean important) {
+        return setProperty(Style.MASK_SIZE, maskSize, important);
+    }
+
+    @Override
     public Object getMaxHeight() {
         Object maxHeight = getPropertyValue(Style.MAX_HEIGHT);
         if (maxHeight == null)

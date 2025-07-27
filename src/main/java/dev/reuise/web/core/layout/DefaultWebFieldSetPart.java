@@ -301,6 +301,12 @@ public abstract class DefaultWebFieldSetPart<S extends DefaultWebFieldSetPart<S,
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

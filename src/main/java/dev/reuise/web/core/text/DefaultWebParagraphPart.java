@@ -216,6 +216,12 @@ public abstract class DefaultWebParagraphPart<S extends DefaultWebParagraphPart<
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

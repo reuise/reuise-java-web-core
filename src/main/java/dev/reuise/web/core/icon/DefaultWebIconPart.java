@@ -10,6 +10,7 @@ import dev.reuise.core.State;
 import dev.reuise.core.icon.DefaultCoreIconPart;
 import dev.reuise.core.option.ComponentCreator;
 import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.theme.Color;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
@@ -91,7 +92,33 @@ import java.util.Set;
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O extends WebIconPartOptions> extends DefaultCoreIconPart<S, O> implements WebIcon , WebComponentPart {
     @Override
-    public S setSize(Integer size) {
+    public S setColor(Color color) {
+        if (color == null)
+            return self();
+
+        if (getTagName().equals("img"))
+            setTagName("div");
+
+        if (this.image != null)
+            removeChild(this.image);
+
+        if (this.svg != null)
+            removeChild(this.svg);
+
+        Style inlineStyle = getStyle();
+        inlineStyle.setMaskImage(("url(" + getUrl()) + ")");
+        inlineStyle.setMaskSize("contain");
+        inlineStyle.setBackgroundColor(color.toHexWithAlpha());
+        return self();
+    }
+
+    @Override
+    public S setColor(String color) {
+        return setColor(Color.parse(color));
+    }
+
+    @Override
+    public S setSize(Object size) {
         super.setSize(size);
         if (this.image != null) {
             WebImage webImage = ((WebImage) (this.image));
@@ -283,6 +310,12 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
     @Override
     public S setStyleClasses(String... styleClasses) {
         baseComponentPart.setStyleClasses(styleClasses);
+        return self();
+    }
+
+    @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
         return self();
     }
 
@@ -565,7 +598,9 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
             return false;
 
         // Layout children
-        svg = createSvg(options);
+        if (needsSvg(options)) {
+            svg = createSvg(options);
+        }
         setupReferences();
         return true;
     }
@@ -576,10 +611,13 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
 
     private boolean needsSvg(O options) {
         if (svg != null)
-            return true;
+            return false;
 
         if (options == null)
             return false;
+
+        if ((options.getUrl() != null) && (options.getColor() == null))
+            return true;
 
         return options.hasSvgOptions();
     }
@@ -588,7 +626,7 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
         if ((svg != null) || (options == null))
             return svg;
 
-        WebSvgOptions svgOptions = options.getSvgOptions();
+        WebSvgOptions svgOptions = options.getOrCreateSvgOptions();
         if (svgOptions == null)
             return svg;
 

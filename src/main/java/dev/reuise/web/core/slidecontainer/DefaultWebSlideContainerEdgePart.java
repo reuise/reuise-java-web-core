@@ -243,6 +243,12 @@ public abstract class DefaultWebSlideContainerEdgePart<S extends DefaultWebSlide
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

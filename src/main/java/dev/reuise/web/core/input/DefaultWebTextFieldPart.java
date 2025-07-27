@@ -310,6 +310,12 @@ public abstract class DefaultWebTextFieldPart<S extends DefaultWebTextFieldPart<
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }
@@ -651,7 +657,7 @@ public abstract class DefaultWebTextFieldPart<S extends DefaultWebTextFieldPart<
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-textfield").setWidth("100%").setDisplay("flex").setFlexDirection("column");
+        commonStyles.addRule(".reuise-textfield").setWidth("100%").setDisplay("flex").setFlexDirection("column").setMinWidth(0);
         commonStyles.addRule(".reuise-textfield_inputcontainer").setDisplay("flex").setPosition("relative").setHeight("inherit").setFlexDirection("row").setBoxSizing("border-box").setBorder("none").setBackground("rgb(0 0 0 / 6%)").setAlignItems("center").setCursor("text").setOverflow("hidden");
         commonStyles.addRule(".reuise-textfield_inputcontainer:focus-within").setOutlineWidth("1px").setOutlineStyle("solid").setOutlineOffset("-1px");
         commonStyles.addRule(".reuise-textfield_input").setFlex("1 1 auto").setBorder("none").setHeight("inherit").setOverflow("auto").setBackgroundColor("transparent");

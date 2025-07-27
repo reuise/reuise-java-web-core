@@ -222,6 +222,12 @@ public abstract class DefaultWebBasicCheckboxPart<S extends DefaultWebBasicCheck
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

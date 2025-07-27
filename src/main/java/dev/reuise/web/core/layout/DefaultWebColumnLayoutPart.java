@@ -290,6 +290,12 @@ public abstract class DefaultWebColumnLayoutPart<S extends DefaultWebColumnLayou
     }
 
     @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
+        return self();
+    }
+
+    @Override
     public Map<String, String> getData() {
         return baseComponentPart.getData();
     }

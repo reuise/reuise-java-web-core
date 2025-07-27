@@ -94,6 +94,16 @@ public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLa
     }
 
     @Override
+    public S clearRoutes() {
+        List<RouteOptions> list = getRoutes();
+        if (list == null) {
+            return self();
+        }
+        list.clear();
+        return self();
+    }
+
+    @Override
     public boolean hasRoute(RouteOptions route) {
         List<RouteOptions> list = getRoutes();
         if (list == null) {
@@ -170,6 +180,16 @@ public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLa
         return self();
     }
 
+    @Override
+    public S clearRevealHandlers() {
+        List<RouteViewRevealHandler> list = getRevealHandlers();
+        if (list == null) {
+            return self();
+        }
+        list.clear();
+        return self();
+    }
+
     private void setDefaultRevealHandlers(List<RouteViewRevealHandler> revealHandlers) {
         setDefaultOption("revealHandlers", revealHandlers, true);
     }
@@ -215,6 +235,16 @@ public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLa
             return self();
         }
         list.remove(beforeRevealHandler);
+        return self();
+    }
+
+    @Override
+    public S clearBeforeRevealHandlers() {
+        List<RouteViewBeforeRevealHandler> list = getBeforeRevealHandlers();
+        if (list == null) {
+            return self();
+        }
+        list.clear();
         return self();
     }
 

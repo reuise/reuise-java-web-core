@@ -234,6 +234,12 @@ public abstract class AbstractWebBaseComponentOptions<S extends AbstractWebBaseC
         return self();
     }
 
+    // Implementation
+    @Override
+    public S clearStyleClasses() {
+        return self();
+    }
+
     @Override
     public boolean hasStyleClass(String styleClass) {
         List<String> list = getStyleClasses();

@@ -13,6 +13,8 @@ public interface WebRouteLayoutFeatures {
 
     WebRouteLayoutFeatures removeRoute(RouteOptions route);
 
+    WebRouteLayoutFeatures clearRoutes();
+
     boolean hasRoute(RouteOptions route);
 
     RouteViewRevealer getRouteViewRevealer();
@@ -29,6 +31,8 @@ public interface WebRouteLayoutFeatures {
 
     WebRouteLayoutFeatures removeRevealHandler(RouteViewRevealHandler revealHandler);
 
+    WebRouteLayoutFeatures clearRevealHandlers();
+
     List<RouteViewBeforeRevealHandler> getBeforeRevealHandlers();
 
     WebRouteLayoutFeatures setBeforeRevealHandlers(List<RouteViewBeforeRevealHandler> beforeRevealHandlers);
@@ -38,6 +42,8 @@ public interface WebRouteLayoutFeatures {
     WebRouteLayoutFeatures setBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler);
 
     WebRouteLayoutFeatures removeBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler);
+
+    WebRouteLayoutFeatures clearBeforeRevealHandlers();
 
     WebView getCurrentView();
 

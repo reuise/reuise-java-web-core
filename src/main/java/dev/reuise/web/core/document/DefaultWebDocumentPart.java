@@ -161,6 +161,12 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
         return self();
     }
 
+    @Override
+    public S clearChildren() {
+        parentComponentPart.clearChildren();
+        return self();
+    }
+
     // Implementation
     @Override
     public RootComponent getRootComponent() {
@@ -267,6 +273,12 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     @Override
     public S setStyleClasses(String... styleClasses) {
         baseComponentPart.setStyleClasses(styleClasses);
+        return self();
+    }
+
+    @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
         return self();
     }
 
@@ -831,15 +843,19 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
             if (cornerRadius != 0)
                 commonStyles.addRule(".reuise-button").setBorderRadius(cornerRadius + "px");
 
+            ThemeColorSet primaryColor = buttonTheme.getPrimaryColor();
+            ThemeColorSet secondaryColor = buttonTheme.getSecondaryColor();
+            ThemeColorSet textColor = buttonTheme.getTextColor();
             for (ButtonType type : ButtonType.values()) {
                 for (Interaction interaction : Interaction.values()) {
-                    ThemeColorSet primaryColor = buttonTheme.getPrimaryColor();
                     if (primaryColor != null)
                         commonStyles.addRule(".reuise-button", interaction).setBackgroundColor(primaryColor.getColor(interaction).toHex());
 
-                    ThemeColorSet secondaryColor = buttonTheme.getSecondaryColor();
                     if (secondaryColor != null)
                         commonStyles.addRule(".reuise-button", interaction).setBackgroundColor(secondaryColor.getColor(interaction).toHex());
+
+                    if (textColor != null)
+                        commonStyles.addRule(".reuise-button", interaction).setColor(textColor.getColor(interaction).toHex());
 
                 }
             }
@@ -848,9 +864,19 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
         ComponentTheme globalTheme = theme.getGlobalTheme();
         if (globalTheme != null) {
             ThemeColorSet accentColor = globalTheme.getAccentColor();
+            ThemeColorSet primaryColor = buttonTheme.getPrimaryColor();
+            ThemeColorSet textColor = buttonTheme.getTextColor();
+            if (textColor != null)
+                commonStyles.addRule(".body").setColor(textColor.getNormal().toHex());
+
             if (accentColor != null) {
                 for (Interaction interaction : Interaction.values()) {
-                    commonStyles.addRule("a,.reuise-link", interaction).setColor(accentColor.getColor(interaction).toHex());
+                    if (accentColor != null)
+                        commonStyles.addRule("a,.reuise-link", interaction).setColor(accentColor.getColor(interaction).toHex());
+
+                    if (primaryColor != null)
+                        commonStyles.addRule(".reuise-listitem:has(.reuise-navigationlink--active)", interaction).setBackgroundColor(primaryColor.getColor(interaction).toHex());
+
                 }
             }
         }
@@ -1111,7 +1137,7 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
 
     private boolean needsBody(O options) {
         if (body != null)
-            return true;
+            return false;
 
         if (options == null)
             return false;
@@ -1139,6 +1165,12 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
         body.add(child);
         child.setRootComponent(this);
         child.setParent(self());
+        return self();
+    }
+
+    @Override
+    public S addAll(List<? extends CoreComponent> children) {
+        body.addAll(children);
         return self();
     }
 

@@ -94,6 +94,7 @@ dev\reuise\web\core\checkbox\WebBasicCheckboxFeatures.class
 dev\reuise\web\core\topappbar\WebTopAppBarPart.class
 dev\reuise\web\core\bottomappbar\WebBottomAppBarPartOptions.class
 dev\reuise\web\core\list\WebListItemFeatures.class
+dev\reuise\web\core\input\WebSegmentedTextFieldPart.class
 dev\reuise\web\core\tabs\AbstractWebTabOptions.class
 dev\reuise\web\core\text\WebTextBlockPart.class
 dev\reuise\web\core\divider\WebDividerOptions.class
@@ -145,6 +146,7 @@ dev\reuise\web\core\icon\WebIconPartOptions.class
 dev\reuise\web\core\input\DefaultWebChipFieldPart.class
 dev\reuise\web\core\table\WebTableColumnGroupPartOptions.class
 dev\reuise\web\core\table\WebTableHeaderRowOptions.class
+dev\reuise\web\core\input\AbstractWebSegmentedTextFieldOptions.class
 dev\reuise\web\core\document\AbstractWebDocumentBodyOptions.class
 dev\reuise\web\core\button\AbstractWebIconButtonOptions.class
 dev\reuise\web\core\applayout\WebAppLayout.class
@@ -175,6 +177,7 @@ dev\reuise\web\core\text\WebInlineTextOptions.class
 dev\reuise\web\core\input\DefaultWebTextFieldPart.class
 dev\reuise\web\core\list\AbstractWebListViewOptions.class
 dev\reuise\web\core\basecomponent\WebBaseComponentPart.class
+dev\reuise\web\core\input\DefaultWebSegmentedTextFieldPart.class
 dev\reuise\web\core\dialog\WebMessageDialog.class
 dev\reuise\web\core\tabs\DefaultWebTabPart.class
 dev\reuise\web\core\tabs\WebTabBarPartOptions.class
@@ -219,6 +222,7 @@ dev\reuise\web\core\table\WebTableHeaderCellPart.class
 dev\reuise\web\core\bottomappbar\WebBottomAppBarPart.class
 dev\reuise\web\core\text\AbstractWebLabelOptions.class
 dev\reuise\web\core\splitcontainer\DefaultWebSplitContainerPanelPart.class
+dev\reuise\web\core\input\WebSegmentedTextFieldPartOptions.class
 dev\reuise\web\core\view\DefaultWebSheetViewPart.class
 dev\reuise\web\core\card\DefaultWebCardPart.class
 dev\reuise\web\core\button\WebButtonFeatures.class
@@ -431,6 +435,7 @@ dev\reuise\web\core\media\WebVideoPlayer.class
 dev\reuise\web\core\dialog\WebMessageDialogPart.class
 dev\reuise\web\core\skeleton\DefaultWebSkeletonPart.class
 dev\reuise\web\core\chip\WebChipGroupFeatures.class
+dev\reuise\web\core\input\WebSegmentedTextFieldOptions.class
 dev\reuise\web\core\text\WebTextOptions.class
 dev\reuise\web\core\parentcomponent\WebParentComponentPartOptions.class
 dev\reuise\web\core\list\WebBasicListOptions.class
@@ -468,6 +473,7 @@ dev\reuise\web\core\scrollablecontainer\WebScrollableContainerScrollAreaFeatures
 dev\reuise\web\core\layout\WebColumnLayoutFeatures.class
 dev\reuise\web\core\media\WebMediaPlayerPart.class
 dev\reuise\web\core\input\WebPasswordFieldOptions.class
+dev\reuise\web\core\input\WebSegmentedTextField.class
 dev\reuise\web\core\graphics\svg\WebSvgTextPartOptions.class
 dev\reuise\web\core\chip\WebFilterChip.class
 dev\reuise\web\core\dialog\AbstractWebMessageDialogOptions.class
@@ -581,6 +587,7 @@ dev\reuise\web\core\layout\WebSurface.class
 dev\reuise\web\core\view\RouteOptions.class
 dev\reuise\web\core\text\WebIconLabelFeatures.class
 dev\reuise\web\core\avatar\WebAvatarPartOptions.class
+dev\reuise\web\core\input\WebSegmentedTextFieldFeatures.class
 dev\reuise\web\core\basecomponent\AbstractWebBaseComponentOptions.class
 dev\reuise\web\core\text\WebLabel.class
 dev\reuise\web\core\parentcomponent\WebParentComponentFeatures.class

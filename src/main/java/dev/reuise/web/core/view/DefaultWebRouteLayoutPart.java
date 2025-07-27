@@ -666,6 +666,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     }
 
     @Override
+    public S addAll(List<? extends CoreComponent> children) {
+        containerPart.addAll(children);
+        return self();
+    }
+
+    @Override
     public void insertBefore(CoreComponent child, CoreComponent beforeChild) {
         containerPart.insertBefore(child, beforeChild);
     }
@@ -706,6 +712,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     @Override
     public S removeChild(CoreComponent child) {
         parentComponentPart.removeChild(child);
+        return self();
+    }
+
+    @Override
+    public S clearChildren() {
+        parentComponentPart.clearChildren();
         return self();
     }
 
@@ -801,6 +813,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     @Override
     public S setStyleClasses(String... styleClasses) {
         baseComponentPart.setStyleClasses(styleClasses);
+        return self();
+    }
+
+    @Override
+    public S clearStyleClasses() {
+        baseComponentPart.clearStyleClasses();
         return self();
     }
 
@@ -1670,6 +1688,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     }
 
     @Override
+    public S clearRoutes() {
+        this.routes.clear();
+        return self();
+    }
+
+    @Override
     public boolean hasRoute(RouteOptions route) {
         return this.routes.contains(route);
     }
@@ -1719,6 +1743,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     }
 
     @Override
+    public S clearRevealHandlers() {
+        this.revealHandlers.clear();
+        return self();
+    }
+
+    @Override
     public List<RouteViewBeforeRevealHandler> getBeforeRevealHandlers() {
         return beforeRevealHandlers;
     }
@@ -1748,6 +1778,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     @Override
     public S removeBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler) {
         this.beforeRevealHandlers.remove(beforeRevealHandler);
+        return self();
+    }
+
+    @Override
+    public S clearBeforeRevealHandlers() {
+        this.beforeRevealHandlers.clear();
         return self();
     }
 

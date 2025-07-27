@@ -73,6 +73,12 @@ public abstract class AbstractWebSheetRouteLayoutOptions<S extends AbstractWebSh
     }
 
     @Override
+    public S clearRoutes() {
+        routeLayoutOptions.clearRoutes();
+        return self();
+    }
+
+    @Override
     public boolean hasRoute(RouteOptions route) {
         return routeLayoutOptions.hasRoute(route);
     }
@@ -130,6 +136,12 @@ public abstract class AbstractWebSheetRouteLayoutOptions<S extends AbstractWebSh
     }
 
     @Override
+    public S clearRevealHandlers() {
+        routeLayoutOptions.clearRevealHandlers();
+        return self();
+    }
+
+    @Override
     public List<RouteViewBeforeRevealHandler> getBeforeRevealHandlers() {
         return routeLayoutOptions.getBeforeRevealHandlers();
     }
@@ -155,6 +167,12 @@ public abstract class AbstractWebSheetRouteLayoutOptions<S extends AbstractWebSh
     @Override
     public S removeBeforeRevealHandler(RouteViewBeforeRevealHandler beforeRevealHandler) {
         routeLayoutOptions.removeBeforeRevealHandler(beforeRevealHandler);
+        return self();
+    }
+
+    @Override
+    public S clearBeforeRevealHandlers() {
+        routeLayoutOptions.clearBeforeRevealHandlers();
         return self();
     }
 

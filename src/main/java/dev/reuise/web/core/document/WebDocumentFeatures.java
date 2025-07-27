@@ -23,6 +23,8 @@ public interface WebDocumentFeatures {
 
     WebDocumentFeatures removeKeyword(String keyword);
 
+    WebDocumentFeatures clearKeywords();
+
     boolean hasKeyword(String keyword);
 
     String getThemeColor();
