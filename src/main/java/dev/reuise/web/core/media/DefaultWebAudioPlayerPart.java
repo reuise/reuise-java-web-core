@@ -110,6 +110,11 @@ public abstract class DefaultWebAudioPlayerPart<S extends DefaultWebAudioPlayerP
     }
 
     @Override
+    public void refreshTextTracks() {
+        this.mediaPlayerPart.refreshTextTracks();
+    }
+
+    @Override
     public RootComponent getRootComponent() {
         return mediaPlayerPart.getRootComponent();
     }

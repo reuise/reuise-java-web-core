@@ -3,7 +3,6 @@ import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
-import dev.reuise.core.Html;
 import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
@@ -28,6 +27,7 @@ import java.util.Set;
 // Option: Parameters - WEB
 // Option: ContentType - WEB
 // Option: Title - CORE
+// Option: Revealed - CORE
 // Option: Direction - CORE
 // Option: JustifyContent - CORE
 // Option: AlignItems - CORE
@@ -84,9 +84,7 @@ import java.util.Set;
 // add composition for view: onHide
 // base comp: flexContainer
 // base comp: container
-// add composition for container: addHeading
-// add composition for container: addDivider
-// add composition for container: addParagraph
+// add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
 // add composition for baseComponent: isRehydrated
@@ -188,43 +186,8 @@ public abstract class DefaultWebSheetViewPart<S extends DefaultWebSheetViewPart<
         return self();
     }
 
-    public S addHeading(int level, String text) {
-        viewPart.addHeading(level, text);
-        return self();
-    }
-
-    public S addHeading(String text) {
-        viewPart.addHeading(text);
-        return self();
-    }
-
-    public S addHeading(int level, Html html) {
-        viewPart.addHeading(level, html);
-        return self();
-    }
-
-    public S addHeading(Html html) {
-        viewPart.addHeading(html);
-        return self();
-    }
-
-    public S addDivider() {
-        viewPart.addDivider();
-        return self();
-    }
-
-    public S addDivider(String label) {
-        viewPart.addDivider(label);
-        return self();
-    }
-
-    public S addParagraph(String text) {
-        viewPart.addParagraph(text);
-        return self();
-    }
-
-    public S addParagraph(Html html) {
-        viewPart.addParagraph(html);
+    public S addMarkdown(String markdown) {
+        viewPart.addMarkdown(markdown);
         return self();
     }
 

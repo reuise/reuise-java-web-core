@@ -5,6 +5,8 @@ import java.util.Collection;
 public interface WebRouteLayoutPart extends WebComponentPart , WebContainerPart , WebRouteLayoutFeatures {
     boolean isCurrentView(WebView view);
 
+    boolean isPathMatch(String... paths);
+
     Collection<WebView> getViews();
 
     void reveal(String url);

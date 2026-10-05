@@ -7,11 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLayoutOptions<S>> implements WebRouteLayoutOptions , WebComponentOptions {
     public S addRoute(String path, RouteViewCreator creator) {
-        return addRoute(path, creator, false);
+        return addRoute(path, creator, RouteViewCreator.Mode.REUSE_CREATE_ON_FIRST_REVEAL);
     }
 
-    public S addRoute(String path, RouteViewCreator creator, boolean preCreate) {
-        return addRoute(new RouteOptions(path, creator, preCreate));
+    public S addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode) {
+        return addRoute(new RouteOptions(path, creator, creatorMode));
     }
 
     public S setUrl(String url, boolean updateUrl) {
@@ -53,6 +53,20 @@ public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLa
 
     private void setDefaultUrl(String url) {
         setDefaultOption("url", url);
+    }
+
+    @Override
+    public String getPath() {
+        return ((String) (getOptionValue("path")));
+    }
+
+    @Override
+    public ComponentOption<String> getPathOption() {
+        return ((ComponentOption<String>) (getOption("path")));
+    }
+
+    private void setDefaultPath(String path) {
+        setDefaultOption("path", path);
     }
 
     @Override

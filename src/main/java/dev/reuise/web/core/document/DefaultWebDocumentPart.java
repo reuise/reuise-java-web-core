@@ -1186,6 +1186,12 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     }
 
     @Override
+    public S addLineBreak() {
+        body.addLineBreak();
+        return self();
+    }
+
+    @Override
     public void remove(CoreComponent child) {
         body.remove(child);
     }

@@ -222,6 +222,12 @@ public abstract class DefaultWebScriptComponentPart<S extends DefaultWebScriptCo
     }
 
     @Override
+    public S addLineBreak() {
+        parentComponentPart.addLineBreak();
+        return self();
+    }
+
+    @Override
     public void remove(CoreComponent child) {
         parentComponentPart.remove(child);
     }

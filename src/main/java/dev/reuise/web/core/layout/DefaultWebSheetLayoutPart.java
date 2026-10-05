@@ -3,7 +3,6 @@ import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
-import dev.reuise.core.Html;
 import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
@@ -76,9 +75,7 @@ import java.util.Set;
 // Option: DebugId - CORE
 // base comp: splitContainer
 // base comp: container
-// add composition for container: addHeading
-// add composition for container: addDivider
-// add composition for container: addParagraph
+// add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
 // add composition for baseComponent: isRehydrated
@@ -173,43 +170,8 @@ public abstract class DefaultWebSheetLayoutPart<S extends DefaultWebSheetLayoutP
         return self();
     }
 
-    public S addHeading(int level, String text) {
-        splitContainerPart.addHeading(level, text);
-        return self();
-    }
-
-    public S addHeading(String text) {
-        splitContainerPart.addHeading(text);
-        return self();
-    }
-
-    public S addHeading(int level, Html html) {
-        splitContainerPart.addHeading(level, html);
-        return self();
-    }
-
-    public S addHeading(Html html) {
-        splitContainerPart.addHeading(html);
-        return self();
-    }
-
-    public S addDivider() {
-        splitContainerPart.addDivider();
-        return self();
-    }
-
-    public S addDivider(String label) {
-        splitContainerPart.addDivider(label);
-        return self();
-    }
-
-    public S addParagraph(String text) {
-        splitContainerPart.addParagraph(text);
-        return self();
-    }
-
-    public S addParagraph(Html html) {
-        splitContainerPart.addParagraph(html);
+    public S addMarkdown(String markdown) {
+        splitContainerPart.addMarkdown(markdown);
         return self();
     }
 

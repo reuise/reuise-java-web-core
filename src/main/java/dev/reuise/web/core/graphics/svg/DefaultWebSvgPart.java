@@ -191,6 +191,12 @@ public abstract class DefaultWebSvgPart<S extends DefaultWebSvgPart<S, O>, O ext
     }
 
     @Override
+    public S addLineBreak() {
+        parentComponentPart.addLineBreak();
+        return self();
+    }
+
+    @Override
     public void remove(CoreComponent child) {
         parentComponentPart.remove(child);
     }

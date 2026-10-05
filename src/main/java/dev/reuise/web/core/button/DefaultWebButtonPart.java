@@ -11,6 +11,8 @@ import dev.reuise.core.button.ButtonSize;
 import dev.reuise.core.button.ButtonType;
 import dev.reuise.core.button.DefaultCoreButtonPart;
 import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.skeleton.CoreSkeletonOptions;
+import dev.reuise.core.skeleton.SkeletonShape;
 import dev.reuise.core.theme.ComponentTheme;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.core.theme.ThemeColorSet;
@@ -19,6 +21,7 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.skeleton.WebLoadingSkeletonSupport;
 import dev.reuise.web.core.text.WebInlineText;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
@@ -90,6 +93,10 @@ import java.util.Set;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>, O extends WebButtonPartOptions> extends DefaultCoreButtonPart<S, O> implements WebButton , WebComponentPart {
+    private static final String BUTTON_LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton--button";
+
+    private final WebLoadingSkeletonSupport loadingSkeletonSupport;
+
     @Override
     public S setSize(ButtonSize size) {
         if (size == null) {
@@ -173,12 +180,32 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
         return self();
     }
 
+    @Override
+    public S setLoading(Boolean loading) {
+        super.setLoading(loading);
+        loadingSkeletonSupport.update(isLoading());
+        return self();
+    }
+
+    @Override
+    public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
+        super.setSkeletonOptions(skeletonOptions);
+        loadingSkeletonSupport.refreshIfLoading(isLoading());
+
+        return self();
+    }
+
     private WebParentComponentPart parentComponentPart;
 
     private WebBaseComponentPart baseComponentPart;
 
     protected DefaultWebButtonPart(O options) {
         super(options);
+        loadingSkeletonSupport = new WebLoadingSkeletonSupport(this::getStyle,
+                this::addOrRemoveStyleClass,
+                this::getSkeletonOptions,
+                (style, skeletonOptions) -> applyLoadingSkeletonStyles(),
+                BUTTON_LOADING_SKELETON_STYLE_CLASS);
     }
 
     protected void setupReferences() {
@@ -681,9 +708,43 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
         commonStyles.addRule(".reuise-button_label").setWhiteSpace("nowrap").setOverflow("hidden").setPointerEvents("none");
         commonStyles.addRule(".reuise-button .reuise-button_starticon").setMarginRight(8);
         commonStyles.addRule(".reuise-button .reuise-button_starticon svg:empty").setDisplay("none");
+        WebLoadingSkeletonSupport.addCommonStyles(commonStyles);
+        commonStyles.addRule(".reuise-loading-skeleton--button").setCursor("default");
         for (ButtonSize s : ButtonSize.values()) {
             commonStyles.addRule("." + createSizeStyleClassName(s)).setHeight(s.getHeight()).setBorderRadius(s.getRadius()).setPaddingTop(s.getPaddingY()).setPaddingRight(s.getPaddingX()).setPaddingBottom(s.getPaddingY()).setPaddingLeft(s.getPaddingX()).setFontSize(s.getFontSize());
             commonStyles.addRule(((((((("." + createSizeStyleClassName(s)) + " .reuise-button_starticon,.") + createSizeStyleClassName(s)) + " .reuise-button_endicon,.") + createSizeStyleClassName(s)) + " .reuise-button_starticon>*,") + createSizeStyleClassName(s)) + " .reuise-button_endicon>*").setWidth(s.getIconSize()).setHeight(s.getIconSize());
         }
+    }
+
+    private void applyLoadingSkeletonStyles() {
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        CoreSkeletonOptions skeletonOptions = getSkeletonOptions();
+        if (skeletonOptions != null && skeletonOptions.getWidth() != null)
+            style.setWidth(Style.parseProperty(skeletonOptions.getWidth()));
+
+        if (skeletonOptions != null && skeletonOptions.getHeight() != null)
+            style.setHeight(Style.parseProperty(skeletonOptions.getHeight()));
+
+        if (skeletonOptions != null && skeletonOptions.getMinWidth() != null)
+            style.setMinWidth(Style.parseProperty(skeletonOptions.getMinWidth()));
+        else if ((getLabel() == null || getLabel().isEmpty()) && style.getMinWidth() == null)
+            style.setMinWidth("96px");
+
+        if (skeletonOptions != null && skeletonOptions.getShape() == SkeletonShape.CIRCULAR) {
+            style.setBorderRadius("50%");
+            return;
+        }
+
+        if (skeletonOptions != null && skeletonOptions.getShape() == SkeletonShape.RECTANGULAR && style.getBorderRadius() == null) {
+            style.setBorderRadius("6px");
+            return;
+        }
+
+        ButtonSize size = getSize() != null ? getSize() : ButtonSize.MEDIUM;
+        if (style.getBorderRadius() == null)
+            style.setBorderRadius(size.getRadius() + "px");
     }
 }

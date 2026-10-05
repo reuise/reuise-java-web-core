@@ -3,7 +3,6 @@ import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
-import dev.reuise.core.Html;
 import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
@@ -88,9 +87,7 @@ import java.util.Set;
 // base comp: surface
 // base comp: flexContainer
 // base comp: container
-// add composition for container: addHeading
-// add composition for container: addDivider
-// add composition for container: addParagraph
+// add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
 // add composition for baseComponent: isRehydrated
@@ -291,43 +288,8 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
         return self();
     }
 
-    public S addHeading(int level, String text) {
-        surfacePart.addHeading(level, text);
-        return self();
-    }
-
-    public S addHeading(String text) {
-        surfacePart.addHeading(text);
-        return self();
-    }
-
-    public S addHeading(int level, Html html) {
-        surfacePart.addHeading(level, html);
-        return self();
-    }
-
-    public S addHeading(Html html) {
-        surfacePart.addHeading(html);
-        return self();
-    }
-
-    public S addDivider() {
-        surfacePart.addDivider();
-        return self();
-    }
-
-    public S addDivider(String label) {
-        surfacePart.addDivider(label);
-        return self();
-    }
-
-    public S addParagraph(String text) {
-        surfacePart.addParagraph(text);
-        return self();
-    }
-
-    public S addParagraph(Html html) {
-        surfacePart.addParagraph(html);
+    public S addMarkdown(String markdown) {
+        surfacePart.addMarkdown(markdown);
         return self();
     }
 

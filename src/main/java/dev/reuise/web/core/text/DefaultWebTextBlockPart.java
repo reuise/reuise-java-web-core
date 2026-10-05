@@ -25,6 +25,8 @@ import java.util.Set;
 // Option: Text - CORE
 // Option: FontSize - CORE
 // Option: LineHeight - CORE
+// Option: FontWeight - CORE
+// Option: FontStyle - CORE
 // Option: HighlightText - CORE
 // Option: Children - CORE
 // Option: Id - WEB

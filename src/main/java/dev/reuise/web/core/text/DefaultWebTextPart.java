@@ -8,12 +8,16 @@ import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
 import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.skeleton.CoreSkeletonOptions;
+import dev.reuise.core.skeleton.SkeletonShape;
 import dev.reuise.core.text.DefaultCoreTextPart;
+import dev.reuise.core.text.FontWeight;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.skeleton.WebLoadingSkeletonSupport;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -84,6 +88,10 @@ import java.util.Set;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebTextPart<S extends DefaultWebTextPart<S, O>, O extends WebTextPartOptions> extends DefaultCoreTextPart<S, O> implements WebText , WebComponentPart {
+    private static final String TEXT_LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton--text";
+
+    private final WebLoadingSkeletonSupport loadingSkeletonSupport;
+
     private WebParentComponentPart parentComponentPart;
 
     private WebBaseComponentPart baseComponentPart;
@@ -92,6 +100,11 @@ public abstract class DefaultWebTextPart<S extends DefaultWebTextPart<S, O>, O e
 
     protected DefaultWebTextPart(O options) {
         super(options);
+        loadingSkeletonSupport = new WebLoadingSkeletonSupport(this::getStyle,
+                this::addOrRemoveStyleClass,
+                this::getSkeletonOptions,
+                (style, skeletonOptions) -> applyLoadingSkeletonStyles(),
+                TEXT_LOADING_SKELETON_STYLE_CLASS);
     }
 
     protected void setupReferences() {
@@ -109,6 +122,20 @@ public abstract class DefaultWebTextPart<S extends DefaultWebTextPart<S, O>, O e
     @Override
     public void setRootComponent(RootComponent rootComponent) {
         this.parentComponentPart.setRootComponent(rootComponent);
+    }
+
+    @Override
+    public S setLoading(Boolean loading) {
+        super.setLoading(loading);
+        loadingSkeletonSupport.update(isLoading());
+        return self();
+    }
+
+    @Override
+    public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
+        super.setSkeletonOptions(skeletonOptions);
+        loadingSkeletonSupport.refreshIfLoading(isLoading());
+        return self();
     }
 
     @Override
@@ -523,6 +550,28 @@ public abstract class DefaultWebTextPart<S extends DefaultWebTextPart<S, O>, O e
     }
 
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        WebLoadingSkeletonSupport.addCommonStyles(commonStyles);
+        commonStyles.addRule(".reuise-loading-skeleton--text").setDisplay("inline-block").setMaxWidth("100%");
+    }
+
+    private void applyLoadingSkeletonStyles() {
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        CoreSkeletonOptions skeletonOptions = getSkeletonOptions();
+        if (skeletonOptions != null && skeletonOptions.getWidth() != null)
+            style.setWidth(Style.parseProperty(skeletonOptions.getWidth()));
+        else if (style.getWidth() == null)
+            style.setWidth("fit-content");
+
+        if (skeletonOptions != null && skeletonOptions.getMinWidth() != null)
+            style.setMinWidth(Style.parseProperty(skeletonOptions.getMinWidth()));
+        else if ((getText() == null || getText().isEmpty()) && style.getMinWidth() == null)
+            style.setMinWidth("8ch");
+
+        if (skeletonOptions != null && skeletonOptions.getShape() == SkeletonShape.CIRCULAR)
+            style.setBorderRadius("50%");
     }
 
     // Implementation
@@ -592,6 +641,76 @@ public abstract class DefaultWebTextPart<S extends DefaultWebTextPart<S, O>, O e
 
     @Override
     public S setLineHeightAllStates(Object lineHeight) {
+        return self();
+    }
+
+    @Override
+    public Object getFontWeight() {
+        return getFontWeight(null);
+    }
+
+    @Override
+    public Object getFontWeight(State state) {
+        Style style = getStyle(state);
+        if (style == null)
+            return null;
+
+        return style.getFontWeight();
+    }
+
+    // Implementation
+    @Override
+    public S setFontWeight(Object fontWeight) {
+        return setFontWeight(fontWeight, null);
+    }
+
+    // Implementation
+    @Override
+    public S setFontWeight(Object fontWeight, State state) {
+        Style style = getStyle(state);
+        if (style == null)
+            return self();
+
+        style.setFontWeight(fontWeight instanceof FontWeight fw ? fw.getValue().toString() : Style.parseProperty(fontWeight));
+        return self();
+    }
+
+    @Override
+    public S setFontWeightAllStates(Object fontWeight) {
+        return self();
+    }
+
+    @Override
+    public Object getFontStyle() {
+        return getFontStyle(null);
+    }
+
+    @Override
+    public Object getFontStyle(State state) {
+        Style style = getStyle(state);
+        if (style == null)
+            return null;
+
+        return style.getFontStyle();
+    }
+
+    @Override
+    public S setFontStyle(Object fontStyle) {
+        return setFontStyle(fontStyle, null);
+    }
+
+    @Override
+    public S setFontStyle(Object fontStyle, State state) {
+        Style style = getStyle(state);
+        if (style == null)
+            return self();
+
+        style.setFontStyle(Style.parseProperty(fontStyle));
+        return self();
+    }
+
+    @Override
+    public S setFontStyleAllStates(Object fontStyle) {
         return self();
     }
 

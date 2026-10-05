@@ -7,7 +7,6 @@ import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
-import dev.reuise.core.list.CoreListItem;
 import dev.reuise.core.list.DefaultCoreListViewPart;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.core.theme.Theme;
@@ -18,8 +17,6 @@ import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -538,11 +535,5 @@ public abstract class DefaultWebListViewPart<S extends DefaultWebListViewPart<S,
         commonStyles.addRule(".reuise-basiclistitem_link").setWidth("100%");
         commonStyles.addRule(".reuise-listview>.reuise-listitem:has(.reuise-basiclistitem_link)").setPadding("0").setCursor("pointer");
         commonStyles.addRule(".reuise-listview>.reuise-listitem>.reuise-basiclistitem_link").setDisplay("flex").setPadding("8px 16px").setTextDecoration("none").setAlignItems("center");
-    }
-
-    @Override
-    public S setItem(CoreListItem item) {
-        setItems(new ArrayList<CoreListItem>(Arrays.asList(item)));
-        return self();
     }
 }

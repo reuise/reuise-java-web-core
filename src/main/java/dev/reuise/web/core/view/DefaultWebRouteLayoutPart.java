@@ -16,8 +16,14 @@ import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.divider.WebDivider;
+import dev.reuise.web.core.image.WebImage;
 import dev.reuise.web.core.layout.WebContainerPart;
+import dev.reuise.web.core.link.WebLink;
+import dev.reuise.web.core.list.WebBasicList;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.text.WebHeading;
+import dev.reuise.web.core.text.WebParagraph;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -29,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -73,9 +80,7 @@ import java.util.function.Consumer;
 // Option: Debug - CORE
 // Option: DebugId - CORE
 // base comp: container
-// add composition for container: addHeading
-// add composition for container: addDivider
-// add composition for container: addParagraph
+// add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
 // add composition for baseComponent: isRehydrated
@@ -122,11 +127,11 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     }
 
     public S addRoute(String path, RouteViewCreator creator) {
-        return addRoute(path, creator, false);
+        return addRoute(path, creator, RouteViewCreator.Mode.REUSE_CREATE_ON_FIRST_REVEAL);
     }
 
-    public S addRoute(String path, RouteViewCreator creator, boolean preCreate) {
-        return addRoute(new RouteOptions(path, creator, preCreate));
+    public S addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode) {
+        return addRoute(new RouteOptions(path, creator, creatorMode));
     }
 
     public void reveal(String url, List<RouteViewRevealHandler> revealHandlers, List<RouteViewBeforeRevealHandler> beforeRevealHandlers) {
@@ -168,10 +173,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
                 }// cancel current call and allow new call
 
             }
-            getRouteView(route, view -> {
+            /* || isRehydrated() */
+            getRouteView(route, revealOpts, view -> {
                 revealOpts.setView(view);
                 reveal(revealOpts);
-            }, match || isRehydrated());
+            }, match);// 
+
         }
     }
 
@@ -192,6 +199,9 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
 
         }
         WebView routeView = ((WebView) (revealOpts.getView()));
+        if (routeView != null)
+            routeView.setRevealed(reveal);
+
         if (reveal) {
             if (routeView != null)
                 routeView.onReveal(revealOpts);
@@ -212,13 +222,13 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
         if (this.routeViewRevealer == null)
             return;
 
-        getRouteView(route, view -> {
+        RouteViewRevealOptions revealOpts = new RouteViewRevealOptions();
+        revealOpts.setRoute(route);
+        revealOpts.setReveal(reveal);
+        getRouteView(route, revealOpts, view -> {
             if (view == null)
                 return;
 
-            RouteViewRevealOptions revealOpts = new RouteViewRevealOptions();
-            revealOpts.setRoute(route);
-            revealOpts.setReveal(reveal);
             revealOpts.setView(view);
             reveal(revealOpts);
         }, forceCreate);
@@ -248,13 +258,13 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
         return path.substring(path.indexOf("/"));
     }
 
-    private void getRouteView(RouteOptions route, Consumer<WebView> viewCallback, boolean create) {
+    private void getRouteView(RouteOptions route, RouteViewRevealOptions revealOpts, Consumer<WebView> viewCallback, boolean create) {
         WebView routeView = null;
         int routeIndex = this.routes.indexOf(route);
         if (routeIndex != (-1))
             routeView = routeViews.get(routeIndex);
 
-        if (routeView != null) {
+        if ((routeView != null) && (route.isReuseView() || ((!route.isReuseView()) && routeView.isRevealed()))) {
             if (viewCallback != null)
                 viewCallback.accept(routeView);
 
@@ -266,7 +276,7 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
 
             return;
         }
-        createView(route, view -> {
+        createView(route, revealOpts, view -> {
             viewCallback.accept(view);
             if (view != null)
                 add(view);
@@ -275,12 +285,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
         });
     }
 
-    protected void createView(RouteOptions route, Consumer<WebView> viewCallback) {
+    protected void createView(RouteOptions route, RouteViewRevealOptions revealOpts, Consumer<WebView> viewCallback) {
         RouteViewCreator routeViewCreator = route.getViewCreator();
         if (routeViewCreator == null)
             return;
 
-        WebView routeView = routeViewCreator.create(route);
+        WebView routeView = routeViewCreator.create(route, revealOpts);
         if (viewCallback != null)
             viewCallback.accept(routeView);
 
@@ -294,6 +304,16 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     @Override
     public S setCurrentView(WebView currentView) {
         return self();
+    }
+
+    @Override
+    public String getPath() {
+        return getUrlPath(getUrl());
+    }
+
+    public boolean isPathMatch(String path) {
+        String urlPath = getPath();
+        return (urlPath != null) && matcher.match(path, urlPath);
     }
 
     private WebContainerPart containerPart;
@@ -607,6 +627,11 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
         return self();
     }
 
+    public S addMarkdown(String markdown) {
+        containerPart.addMarkdown(markdown);
+        return self();
+    }
+
     public S addHeading(int level, String text) {
         containerPart.addHeading(level, text);
         return self();
@@ -627,6 +652,22 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
         return self();
     }
 
+    public WebHeading createHeading(int level, String text) {
+        return ((WebHeading) (containerPart.createHeading(level, text)));
+    }
+
+    public WebHeading createHeading(String text) {
+        return ((WebHeading) (containerPart.createHeading(text)));
+    }
+
+    public WebHeading createHeading(int level, Html html) {
+        return ((WebHeading) (containerPart.createHeading(level, html)));
+    }
+
+    public WebHeading createHeading(Html html) {
+        return ((WebHeading) (containerPart.createHeading(html)));
+    }
+
     public S addDivider() {
         containerPart.addDivider();
         return self();
@@ -637,6 +678,32 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
         return self();
     }
 
+    public WebDivider createDivider() {
+        return ((WebDivider) (containerPart.createDivider()));
+    }
+
+    public WebDivider createDivider(String label) {
+        return ((WebDivider) (containerPart.createDivider(label)));
+    }
+
+    public S addImage(String altText, String url) {
+        containerPart.addImage(altText, url);
+        return self();
+    }
+
+    public WebImage createImage(String altText, String url) {
+        return ((WebImage) (containerPart.createImage(altText, url)));
+    }
+
+    public S addLink(String label, String url) {
+        containerPart.addLink(label, url);
+        return self();
+    }
+
+    public WebLink createLink(String label, String url) {
+        return ((WebLink) (containerPart.createLink(label, url)));
+    }
+
     public S addParagraph(String text) {
         containerPart.addParagraph(text);
         return self();
@@ -645,6 +712,50 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     public S addParagraph(Html html) {
         containerPart.addParagraph(html);
         return self();
+    }
+
+    public WebParagraph createParagraph(String text) {
+        return ((WebParagraph) (containerPart.createParagraph(text)));
+    }
+
+    public WebParagraph createParagraph(Html html) {
+        return ((WebParagraph) (containerPart.createParagraph(html)));
+    }
+
+    public S addBasicList(boolean ordered, String... items) {
+        containerPart.addBasicList(ordered, items);
+        return self();
+    }
+
+    public S addBasicList(boolean ordered, List<String> items) {
+        containerPart.addBasicList(ordered, items);
+        return self();
+    }
+
+    public S addBasicList(String... items) {
+        containerPart.addBasicList(items);
+        return self();
+    }
+
+    public S addBasicList(List<String> items) {
+        containerPart.addBasicList(items);
+        return self();
+    }
+
+    public WebBasicList createBasicList(boolean ordered, String... items) {
+        return ((WebBasicList) (containerPart.createBasicList(ordered, items)));
+    }
+
+    public WebBasicList createBasicList(boolean ordered, List<String> items) {
+        return ((WebBasicList) (containerPart.createBasicList(ordered, items)));
+    }
+
+    public WebBasicList createBasicList(String... items) {
+        return ((WebBasicList) (containerPart.createBasicList(items)));
+    }
+
+    public WebBasicList createBasicList(List<String> items) {
+        return ((WebBasicList) (containerPart.createBasicList(items)));
     }
 
     @Override
@@ -679,6 +790,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     @Override
     public S addText(String text) {
         containerPart.addText(text);
+        return self();
+    }
+
+    @Override
+    public S addLineBreak() {
+        containerPart.addLineBreak();
         return self();
     }
 
@@ -1672,7 +1789,7 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
         if (matcher.match(routePath, urlPath))
             reveal(urlPath);
         else if (route.isPreCreate()) {
-            getRouteView(route, view -> {
+            getRouteView(route, null, view -> {
                 if (view != null)
                     view.setVisible(false);
 
@@ -1790,6 +1907,12 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     // Implementation
     public boolean isCurrentView(WebView view) {
         return false;
+    }
+
+    // Implementation
+    public boolean isPathMatch(String... paths) {
+        String urlPath = getPath();
+        return (urlPath != null) && Arrays.asList(paths).stream().anyMatch(this::isPathMatch);
     }
 
     // Implementation

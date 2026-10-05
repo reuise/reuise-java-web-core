@@ -3,7 +3,6 @@ import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
-import dev.reuise.core.Html;
 import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
@@ -79,9 +78,7 @@ import java.util.Set;
 // base comp: rowLayout
 // base comp: flexContainer
 // base comp: container
-// add composition for container: addHeading
-// add composition for container: addDivider
-// add composition for container: addParagraph
+// add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
 // add composition for baseComponent: isRehydrated
@@ -161,43 +158,8 @@ public abstract class DefaultWebSegmentedTextFieldPart<S extends DefaultWebSegme
         return self();
     }
 
-    public S addHeading(int level, String text) {
-        rowLayoutPart.addHeading(level, text);
-        return self();
-    }
-
-    public S addHeading(String text) {
-        rowLayoutPart.addHeading(text);
-        return self();
-    }
-
-    public S addHeading(int level, Html html) {
-        rowLayoutPart.addHeading(level, html);
-        return self();
-    }
-
-    public S addHeading(Html html) {
-        rowLayoutPart.addHeading(html);
-        return self();
-    }
-
-    public S addDivider() {
-        rowLayoutPart.addDivider();
-        return self();
-    }
-
-    public S addDivider(String label) {
-        rowLayoutPart.addDivider(label);
-        return self();
-    }
-
-    public S addParagraph(String text) {
-        rowLayoutPart.addParagraph(text);
-        return self();
-    }
-
-    public S addParagraph(Html html) {
-        rowLayoutPart.addParagraph(html);
+    public S addMarkdown(String markdown) {
+        rowLayoutPart.addMarkdown(markdown);
         return self();
     }
 

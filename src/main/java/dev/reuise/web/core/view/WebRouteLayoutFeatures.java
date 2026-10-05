@@ -5,6 +5,8 @@ public interface WebRouteLayoutFeatures {
 
     WebRouteLayoutFeatures setUrl(String url);
 
+    String getPath();
+
     List<RouteOptions> getRoutes();
 
     WebRouteLayoutFeatures setRoutes(List<RouteOptions> routes);
@@ -51,5 +53,5 @@ public interface WebRouteLayoutFeatures {
 
     WebRouteLayoutFeatures addRoute(String path, RouteViewCreator creator);
 
-    WebRouteLayoutFeatures addRoute(String path, RouteViewCreator creator, boolean preCreate);
+    WebRouteLayoutFeatures addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode);
 }

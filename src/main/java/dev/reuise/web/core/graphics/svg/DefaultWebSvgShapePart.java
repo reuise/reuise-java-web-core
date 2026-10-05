@@ -242,6 +242,12 @@ public abstract class DefaultWebSvgShapePart<S extends DefaultWebSvgShapePart<S,
     }
 
     @Override
+    public S addLineBreak() {
+        svgPart.addLineBreak();
+        return self();
+    }
+
+    @Override
     public void remove(CoreComponent child) {
         svgPart.remove(child);
     }

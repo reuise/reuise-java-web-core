@@ -90,8 +90,8 @@ public abstract class AbstractWebSheetRouteLayoutOptions<S extends AbstractWebSh
     }
 
     @Override
-    public S addRoute(String path, RouteViewCreator creator, boolean preCreate) {
-        this.routeLayoutOptions.addRoute(path, creator, preCreate);
+    public S addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode) {
+        this.routeLayoutOptions.addRoute(path, creator, creatorMode);
         return self();
     }
 

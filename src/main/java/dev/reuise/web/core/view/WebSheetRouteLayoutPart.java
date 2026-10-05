@@ -27,7 +27,7 @@ public interface WebSheetRouteLayoutPart extends WebSheetRouteLayoutFeatures , W
 
     WebSheetRouteLayoutPart addRoute(String path, RouteViewCreator creator);
 
-    WebSheetRouteLayoutPart addRoute(String path, RouteViewCreator creator, boolean preCreate);
+    WebSheetRouteLayoutPart addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode);
 
     RouteViewRevealer getRouteViewRevealer();
 

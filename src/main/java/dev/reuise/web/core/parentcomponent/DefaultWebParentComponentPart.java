@@ -13,6 +13,8 @@ import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.text.WebLineBreak;
+import dev.reuise.web.core.text.WebLineBreakOptions;
 import dev.reuise.web.core.text.WebText;
 import dev.reuise.web.core.text.WebTextOptions;
 import dev.reuise.webstyles.Style;
@@ -91,6 +93,14 @@ public abstract class DefaultWebParentComponentPart<S extends DefaultWebParentCo
         textOpts.setText(text);
         WebText textComp = getBaseComponentPart().getComponentFactory().createText(textOpts);
         add(textComp);
+        return self();
+    }
+
+    @Override
+    public S addLineBreak() {
+        WebLineBreakOptions lineBreakOpts = getBaseComponentPart().getComponentFactory().createLineBreakOptions();
+        WebLineBreak lineBreakComp = getBaseComponentPart().getComponentFactory().createLineBreak(lineBreakOpts);
+        add(lineBreakComp);
         return self();
     }
 

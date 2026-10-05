@@ -10,6 +10,10 @@ public interface WebRouteLayoutPartOptions {
 
     WebRouteLayoutPartOptions setUrl(String url);
 
+    String getPath();
+
+    ComponentOption<String> getPathOption();
+
     List<RouteOptions> getRoutes();
 
     ComponentOption<List<RouteOptions>> getRoutesOption();
@@ -74,7 +78,7 @@ public interface WebRouteLayoutPartOptions {
 
     WebRouteLayoutPartOptions addRoute(String path, RouteViewCreator creator);
 
-    WebRouteLayoutPartOptions addRoute(String path, RouteViewCreator creator, boolean preCreate);
+    WebRouteLayoutPartOptions addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode);
 
     WebComponentFactory getComponentFactory();
 

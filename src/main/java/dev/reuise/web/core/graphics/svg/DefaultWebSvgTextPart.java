@@ -209,6 +209,12 @@ public abstract class DefaultWebSvgTextPart<S extends DefaultWebSvgTextPart<S, O
     }
 
     @Override
+    public S addLineBreak() {
+        svgPart.addLineBreak();
+        return self();
+    }
+
+    @Override
     public void remove(CoreComponent child) {
         svgPart.remove(child);
     }

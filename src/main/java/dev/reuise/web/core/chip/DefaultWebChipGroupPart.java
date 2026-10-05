@@ -3,7 +3,6 @@ import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
-import dev.reuise.core.Html;
 import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
@@ -75,9 +74,7 @@ import java.util.Set;
 // Option: DebugId - CORE
 // base comp: fieldSet
 // base comp: container
-// add composition for container: addHeading
-// add composition for container: addDivider
-// add composition for container: addParagraph
+// add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
 // add composition for baseComponent: isRehydrated
@@ -173,43 +170,8 @@ public abstract class DefaultWebChipGroupPart<S extends DefaultWebChipGroupPart<
         return self();
     }
 
-    public S addHeading(int level, String text) {
-        fieldSetPart.addHeading(level, text);
-        return self();
-    }
-
-    public S addHeading(String text) {
-        fieldSetPart.addHeading(text);
-        return self();
-    }
-
-    public S addHeading(int level, Html html) {
-        fieldSetPart.addHeading(level, html);
-        return self();
-    }
-
-    public S addHeading(Html html) {
-        fieldSetPart.addHeading(html);
-        return self();
-    }
-
-    public S addDivider() {
-        fieldSetPart.addDivider();
-        return self();
-    }
-
-    public S addDivider(String label) {
-        fieldSetPart.addDivider(label);
-        return self();
-    }
-
-    public S addParagraph(String text) {
-        fieldSetPart.addParagraph(text);
-        return self();
-    }
-
-    public S addParagraph(Html html) {
-        fieldSetPart.addParagraph(html);
+    public S addMarkdown(String markdown) {
+        fieldSetPart.addMarkdown(markdown);
         return self();
     }
 

@@ -723,5 +723,6 @@ public abstract class DefaultWebAppLayoutPart<S extends DefaultWebAppLayoutPart<
         }
         commonStyles.addRule(".reuise-app-layout--draweropened .reuise-app-layout_drawerscrim").setVisibility("visible").setBackgroundColor("#2d303866");
         commonStyles.addRule(".reuise-app-layout_drawerscrim").setPosition("fixed").setZIndex(99999).setInset("0").setBackgroundColor("transparent").setVisibility("hidden").setTransitionTimingFunction("cubic-bezier(0.25, 0.8, 0.25, 1)").setTransitionDuration("400ms").setTransitionProperty("background-color,visibility");
+        commonStyles.addRule(".reuise-app-layout_topappbarsplit>.reuise-splitcontainer_container>.reuise-splitcontainer_endpanel").setDisplay("flex").setFlexDirection("column");
     }
 }

@@ -121,6 +121,11 @@ public abstract class DefaultWebVideoPlayerPart<S extends DefaultWebVideoPlayerP
     }
 
     @Override
+    public void refreshTextTracks() {
+        this.mediaPlayerPart.refreshTextTracks();
+    }
+
+    @Override
     public RootComponent getRootComponent() {
         return mediaPlayerPart.getRootComponent();
     }

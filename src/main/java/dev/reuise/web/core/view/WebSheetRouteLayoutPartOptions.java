@@ -28,7 +28,7 @@ public interface WebSheetRouteLayoutPartOptions {
 
     WebSheetRouteLayoutPartOptions addRoute(String path, RouteViewCreator creator);
 
-    WebSheetRouteLayoutPartOptions addRoute(String path, RouteViewCreator creator, boolean preCreate);
+    WebSheetRouteLayoutPartOptions addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode);
 
     RouteViewRevealer getRouteViewRevealer();
 

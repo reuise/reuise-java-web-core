@@ -14,6 +14,7 @@ import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.image.WebImageOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
@@ -112,6 +113,14 @@ public abstract class DefaultWebContainerPart<S extends DefaultWebContainerPart<
             return BackdropFilterSetting.parseCss(backdropFilterValue);
 
         return null;
+    }
+
+    public S addImage(String altText, String url) {
+        WebImageOptions opts = getComponentFactory().createImageOptions();
+        opts.setAltText(altText);
+        opts.setUrl(url);
+        getComponent().add(getComponentFactory().createImage(opts));
+        return self();
     }
 
     private WebParentComponentPart parentComponentPart;

@@ -19,13 +19,19 @@ import dev.reuise.core.view.SheetSize;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.divider.WebDivider;
+import dev.reuise.web.core.image.WebImage;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.layout.WebContainerPart;
 import dev.reuise.web.core.layout.WebSheetLayoutPart;
+import dev.reuise.web.core.link.WebLink;
+import dev.reuise.web.core.list.WebBasicList;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.web.core.splitcontainer.WebSplitContainerDivider;
 import dev.reuise.web.core.splitcontainer.WebSplitContainerPanel;
 import dev.reuise.web.core.splitcontainer.WebSplitContainerPart;
+import dev.reuise.web.core.text.WebHeading;
+import dev.reuise.web.core.text.WebParagraph;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -88,9 +94,7 @@ import java.util.Set;
 // add composition for sheetLayout: setMaxSheetSize
 // base comp: splitContainer
 // base comp: container
-// add composition for container: addHeading
-// add composition for container: addDivider
-// add composition for container: addParagraph
+// add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
 // add composition for baseComponent: isRehydrated
@@ -216,6 +220,12 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     @Override
     public S addText(String text) {
         sheetLayoutPart.addText(text);
+        return self();
+    }
+
+    @Override
+    public S addLineBreak() {
+        sheetLayoutPart.addLineBreak();
         return self();
     }
 
@@ -701,44 +711,135 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
         return self();
     }
 
+    public S addMarkdown(String markdown) {
+        sheetLayoutPart.addMarkdown(markdown);
+        return self();
+    }
+
     public S addHeading(int level, String text) {
-        sheetLayoutPart.addHeading(level, text);
+        containerPart.addHeading(level, text);
         return self();
     }
 
     public S addHeading(String text) {
-        sheetLayoutPart.addHeading(text);
+        containerPart.addHeading(text);
         return self();
     }
 
     public S addHeading(int level, Html html) {
-        sheetLayoutPart.addHeading(level, html);
+        containerPart.addHeading(level, html);
         return self();
     }
 
     public S addHeading(Html html) {
-        sheetLayoutPart.addHeading(html);
+        containerPart.addHeading(html);
         return self();
     }
 
+    public WebHeading createHeading(int level, String text) {
+        return ((WebHeading) (containerPart.createHeading(level, text)));
+    }
+
+    public WebHeading createHeading(String text) {
+        return ((WebHeading) (containerPart.createHeading(text)));
+    }
+
+    public WebHeading createHeading(int level, Html html) {
+        return ((WebHeading) (containerPart.createHeading(level, html)));
+    }
+
+    public WebHeading createHeading(Html html) {
+        return ((WebHeading) (containerPart.createHeading(html)));
+    }
+
     public S addDivider() {
-        sheetLayoutPart.addDivider();
+        containerPart.addDivider();
         return self();
     }
 
     public S addDivider(String label) {
-        sheetLayoutPart.addDivider(label);
+        containerPart.addDivider(label);
         return self();
     }
 
+    public WebDivider createDivider() {
+        return ((WebDivider) (containerPart.createDivider()));
+    }
+
+    public WebDivider createDivider(String label) {
+        return ((WebDivider) (containerPart.createDivider(label)));
+    }
+
+    public S addImage(String altText, String url) {
+        containerPart.addImage(altText, url);
+        return self();
+    }
+
+    public WebImage createImage(String altText, String url) {
+        return ((WebImage) (containerPart.createImage(altText, url)));
+    }
+
+    public S addLink(String label, String url) {
+        containerPart.addLink(label, url);
+        return self();
+    }
+
+    public WebLink createLink(String label, String url) {
+        return ((WebLink) (containerPart.createLink(label, url)));
+    }
+
     public S addParagraph(String text) {
-        sheetLayoutPart.addParagraph(text);
+        containerPart.addParagraph(text);
         return self();
     }
 
     public S addParagraph(Html html) {
-        sheetLayoutPart.addParagraph(html);
+        containerPart.addParagraph(html);
         return self();
+    }
+
+    public WebParagraph createParagraph(String text) {
+        return ((WebParagraph) (containerPart.createParagraph(text)));
+    }
+
+    public WebParagraph createParagraph(Html html) {
+        return ((WebParagraph) (containerPart.createParagraph(html)));
+    }
+
+    public S addBasicList(boolean ordered, String... items) {
+        containerPart.addBasicList(ordered, items);
+        return self();
+    }
+
+    public S addBasicList(boolean ordered, List<String> items) {
+        containerPart.addBasicList(ordered, items);
+        return self();
+    }
+
+    public S addBasicList(String... items) {
+        containerPart.addBasicList(items);
+        return self();
+    }
+
+    public S addBasicList(List<String> items) {
+        containerPart.addBasicList(items);
+        return self();
+    }
+
+    public WebBasicList createBasicList(boolean ordered, String... items) {
+        return ((WebBasicList) (containerPart.createBasicList(ordered, items)));
+    }
+
+    public WebBasicList createBasicList(boolean ordered, List<String> items) {
+        return ((WebBasicList) (containerPart.createBasicList(ordered, items)));
+    }
+
+    public WebBasicList createBasicList(String... items) {
+        return ((WebBasicList) (containerPart.createBasicList(items)));
+    }
+
+    public WebBasicList createBasicList(List<String> items) {
+        return ((WebBasicList) (containerPart.createBasicList(items)));
     }
 
     @Override
@@ -1779,8 +1880,8 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     }
 
     @Override
-    public S addRoute(String path, RouteViewCreator creator, boolean preCreate) {
-        this.routeLayout.addRoute(path, creator, preCreate);
+    public S addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode) {
+        this.routeLayout.addRoute(path, creator, creatorMode);
         return self();
     }
 

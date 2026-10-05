@@ -231,6 +231,12 @@ public abstract class DefaultWebSvgImagePart<S extends DefaultWebSvgImagePart<S,
     }
 
     @Override
+    public S addLineBreak() {
+        svgPart.addLineBreak();
+        return self();
+    }
+
+    @Override
     public void remove(CoreComponent child) {
         svgPart.remove(child);
     }
