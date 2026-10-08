@@ -11,6 +11,9 @@ import dev.reuise.core.card.CardGridPositionMode;
 import dev.reuise.core.card.CoreCardGridPart;
 import dev.reuise.core.card.DefaultCoreCardGridPart;
 import dev.reuise.core.layout.BackdropFilter;
+import dev.reuise.core.layout.CoreContainerOptions;
+import dev.reuise.core.option.ComponentOption;
+import dev.reuise.core.option.DefaultComponentOption;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
@@ -615,16 +618,67 @@ public abstract class DefaultWebCardGridPart<S extends DefaultWebCardGridPart<S,
         webCardContainer.getStyle().setWidth("100%");
         if (!isRehydrated()) {
             columnGap.entrySet().forEach(e -> {
-                webCardContainer.setPaddingLeft(e.getValue(), e.getKey());
-                webCardContainer.setPaddingRight(e.getValue(), e.getKey());
+                if (!hasUserPadding(options, "left", e.getKey()))
+                    webCardContainer.setPaddingLeft(e.getValue(), e.getKey());
+
+                if (!hasUserPadding(options, "right", e.getKey()))
+                    webCardContainer.setPaddingRight(e.getValue(), e.getKey());
+
                 webCardContainer.getStyle(e.getKey()).setColumnGap(e.getValue());
             });
             rowGap.entrySet().forEach(e -> {
-                webCardContainer.setPaddingTop(e.getValue(), e.getKey());
-                webCardContainer.setPaddingBottom(e.getValue(), e.getKey());
+                if (!hasUserPadding(options, "top", e.getKey()))
+                    webCardContainer.setPaddingTop(e.getValue(), e.getKey());
+
+                if (!hasUserPadding(options, "bottom", e.getKey()))
+                    webCardContainer.setPaddingBottom(e.getValue(), e.getKey());
+
                 webCardContainer.getStyle(e.getKey()).setRowGap(e.getValue());
             });
         }
+    }
+
+    // Returns true when the user has explicitly configured a padding (shorthand or the matching
+    // longhand side) on the card container options, either globally or for the given state, so the
+    // column/row-gap-driven padding below should not clobber it.
+    private boolean isExplicitOption(ComponentOption<?> option) {
+        return (option != null) && (!(option instanceof DefaultComponentOption));
+    }
+
+    private boolean hasUserPadding(O options, String side, State state) {
+        if (options == null)
+            return false;
+
+        CoreContainerOptions cardContainerOptions = options.getCardContainerOptions();
+        if (cardContainerOptions == null)
+            return false;
+
+        if (isExplicitOption(cardContainerOptions.getPaddingOption(state)) || isExplicitOption(cardContainerOptions.getPaddingOption()))
+            return true;
+
+        ComponentOption<Object> sideOption;
+        ComponentOption<Object> defaultSideOption;
+        switch (side) {
+            case "left" :
+                sideOption = cardContainerOptions.getPaddingLeftOption(state);
+                defaultSideOption = cardContainerOptions.getPaddingLeftOption();
+                break;
+            case "right" :
+                sideOption = cardContainerOptions.getPaddingRightOption(state);
+                defaultSideOption = cardContainerOptions.getPaddingRightOption();
+                break;
+            case "top" :
+                sideOption = cardContainerOptions.getPaddingTopOption(state);
+                defaultSideOption = cardContainerOptions.getPaddingTopOption();
+                break;
+            case "bottom" :
+                sideOption = cardContainerOptions.getPaddingBottomOption(state);
+                defaultSideOption = cardContainerOptions.getPaddingBottomOption();
+                break;
+            default :
+                return false;
+        }
+        return isExplicitOption(sideOption) || isExplicitOption(defaultSideOption);
     }
 
     public void applyOptions(O options, OptionApplicator applicator, Collection<State> states) {
