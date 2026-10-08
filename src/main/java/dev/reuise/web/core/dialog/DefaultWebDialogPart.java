@@ -32,6 +32,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.dialog.DefaultWebDialogPartImpl.addStyleClass;
+import static dev.reuise.web.core.dialog.DefaultWebDialogPartImpl.getAria;
+import static dev.reuise.web.core.dialog.DefaultWebDialogPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.dialog.DefaultWebDialogPartImpl.getContainer;
+import static dev.reuise.web.core.dialog.DefaultWebDialogPartImpl.removeFromParent;
+import static dev.reuise.web.core.dialog.DefaultWebDialogPartImpl.removeStyleClass;
+import static dev.reuise.web.core.dialog.DefaultWebDialogPartImpl.self;
+import static dev.reuise.web.core.dialog.DefaultWebDialogPartImpl.setAria;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -103,7 +111,7 @@ public abstract class DefaultWebDialogPart<S extends DefaultWebDialogPart<S, O>,
     @Override
     public void close() {
         removeStyleClass("reuise-dialog--opened");
-        if (Boolean.TRUE.equals(this.removeOnClose))
+        if (Boolean.TRUE.equals(removeOnClose))
             removeFromParent();
 
     }
@@ -123,7 +131,7 @@ public abstract class DefaultWebDialogPart<S extends DefaultWebDialogPart<S, O>,
         if (size == null)
             return self();
 
-        Style containerStyle = ((WebContainer) (this.container)).getStyle(state);
+        Style containerStyle = ((WebContainer) (container)).getStyle(state);
         if (containerStyle == null)
             self();
 
@@ -215,7 +223,7 @@ public abstract class DefaultWebDialogPart<S extends DefaultWebDialogPart<S, O>,
     // Implementation
     @Override
     public S setTheme(Theme theme) {
-        this.parentComponentPart.setTheme(theme);
+        parentComponentPart.setTheme(theme);
         if (theme == null)
             return self();
 

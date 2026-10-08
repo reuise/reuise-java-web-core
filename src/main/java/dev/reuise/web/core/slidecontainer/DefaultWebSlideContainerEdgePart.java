@@ -25,6 +25,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerEdgePartImpl.getBaseComponentPart;
+import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerEdgePartImpl.isRehydrated;
+import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerEdgePartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -91,7 +94,7 @@ public abstract class DefaultWebSlideContainerEdgePart<S extends DefaultWebSlide
     protected WebContainer fade;
 
     public void setSlideButtonOptions(SlideContainerSlideButtonOptions slideOpts) {
-        if ((slideOpts != null) && (this.slideButton == null))
+        if ((slideOpts != null) && (slideButton == null))
             initSlideButton();
 
     }
@@ -103,9 +106,9 @@ public abstract class DefaultWebSlideContainerEdgePart<S extends DefaultWebSlide
         else
             slideButtonOpts.setRehydration(".reuise-slidecontainer_edge_slidebutton", this);
 
-        this.slideButton = getBaseComponentPart().getComponentFactory().createButton(slideButtonOpts);
+        slideButton = getBaseComponentPart().getComponentFactory().createButton(slideButtonOpts);
         if (!isRehydrated())
-            add(this.slideButton);
+            add(slideButton);
 
     }
 
@@ -559,7 +562,7 @@ public abstract class DefaultWebSlideContainerEdgePart<S extends DefaultWebSlide
     // Implementation
     @Override
     public WebButton getSlideButton() {
-        return this.slideButton;
+        return slideButton;
     }
 
     // Implementation

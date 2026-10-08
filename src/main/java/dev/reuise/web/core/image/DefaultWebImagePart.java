@@ -22,6 +22,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.image.DefaultWebImagePartImpl.getAttribute;
+import static dev.reuise.web.core.image.DefaultWebImagePartImpl.getLink;
+import static dev.reuise.web.core.image.DefaultWebImagePartImpl.self;
+import static dev.reuise.web.core.image.DefaultWebImagePartImpl.setAttribute;
 // Option: Id - WEB
 // Option: TagName - WEB
 // Option: XmlNamespace - WEB

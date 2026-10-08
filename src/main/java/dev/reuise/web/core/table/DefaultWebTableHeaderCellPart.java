@@ -28,6 +28,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.table.DefaultWebTableHeaderCellPartImpl.getComponentFactory;
+import static dev.reuise.web.core.table.DefaultWebTableHeaderCellPartImpl.getMenuButton;
+import static dev.reuise.web.core.table.DefaultWebTableHeaderCellPartImpl.isRehydrated;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

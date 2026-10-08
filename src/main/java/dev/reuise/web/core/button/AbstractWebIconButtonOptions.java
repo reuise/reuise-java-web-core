@@ -3,6 +3,8 @@ import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.button.AbstractCoreIconButtonOptions;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.icon.WebIconOptions;
+import static dev.reuise.web.core.button.AbstractWebIconButtonOptionsImpl.self;
+import static dev.reuise.web.core.button.AbstractWebIconButtonOptionsImpl.setUseHistoryApi;
 public abstract class AbstractWebIconButtonOptions<S extends AbstractWebIconButtonOptions<S>> extends AbstractCoreIconButtonOptions<S> implements WebIconButtonOptions {
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {

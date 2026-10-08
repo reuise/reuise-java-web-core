@@ -11,7 +11,6 @@ import dev.reuise.core.layout.BackdropFilter;
 import dev.reuise.core.layout.CoreContainer;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.core.slidecontainer.DefaultCoreSlideContainerPart;
-import dev.reuise.core.slidecontainer.SlideContainerSlideButtonOptions;
 import dev.reuise.core.slidecontainer.SlideDirection;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
@@ -27,6 +26,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerPartImpl.getBaseComponentPart;
+import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerPartImpl.getSlideAreaAfter;
+import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerPartImpl.getSlideAreaBefore;
+import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerPartImpl.isRehydrated;
+import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -113,12 +117,12 @@ public abstract class DefaultWebSlideContainerPart<S extends DefaultWebSlideCont
     private WebSlideContainerEdge rightEdge;
 
     private boolean hasSlideDirection(SlideDirection dir) {
-        return (this.slideButtonOptions != null) && (this.slideButtonOptions.getSlideDirection() == dir);
+        return (slideButtonOptions != null) && (slideButtonOptions.getSlideDirection() == dir);
     }
 
     @Override
     public SlideDirection getSlideDirection() {
-        String overflow = ((WebContainer) (this.slideArea)).getStyle().getOverflow();
+        String overflow = ((WebContainer) (slideArea)).getStyle().getOverflow();
         if (overflow.equalsIgnoreCase(OVERFLOW_VERTICAL))
             return SlideDirection.VERTICAL;
 
@@ -130,7 +134,7 @@ public abstract class DefaultWebSlideContainerPart<S extends DefaultWebSlideCont
 
     @Override
     public S setSlideDirection(SlideDirection slideDirection) {
-        Style slideAreaStyle = ((WebContainer) (this.slideArea)).getStyle();
+        Style slideAreaStyle = ((WebContainer) (slideArea)).getStyle();
         if (slideDirection == SlideDirection.VERTICAL) {
             slideAreaStyle.setOverflow(OVERFLOW_VERTICAL);
         } else if (slideDirection == SlideDirection.HORIZONTAL) {
@@ -165,7 +169,7 @@ public abstract class DefaultWebSlideContainerPart<S extends DefaultWebSlideCont
             edgeOpts.setRehydration((".reuise-slidecontainer_" + direction) + "edge", parent);
 
         DefaultWebSlideContainerEdgePart<?, ?> edge = ((DefaultWebSlideContainerEdgePart) (getBaseComponentPart().getComponentFactory().createSlideContainerEdge(edgeOpts)));
-        edge.setSlideButtonOptions(this.slideButtonOptions);
+        edge.setSlideButtonOptions(slideButtonOptions);
         if (!isRehydrated())
             parent.add(edge);
 
@@ -657,7 +661,7 @@ public abstract class DefaultWebSlideContainerPart<S extends DefaultWebSlideCont
     public void onInitialize(O options) {
         super.onInitialize(options);
         // Init edges
-        this.slideButtonOptions = options.getSlideButtonOptions();
+        slideButtonOptions = options.getSlideButtonOptions();
         if (hasSlideDirection(SlideDirection.HORIZONTAL)) {
             initHorizontalEdge();
         } else if (hasSlideDirection(SlideDirection.VERTICAL)) {

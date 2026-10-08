@@ -3,6 +3,8 @@ import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.text.AbstractCoreIconLabelOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
 import dev.reuise.web.core.link.WebLinkOptions;
+import static dev.reuise.web.core.text.AbstractWebIconLabelOptionsImpl.getOrCreateLinkOptions;
+import static dev.reuise.web.core.text.AbstractWebIconLabelOptionsImpl.self;
 public abstract class AbstractWebIconLabelOptions<S extends AbstractWebIconLabelOptions<S>> extends AbstractCoreIconLabelOptions<S> implements WebIconLabelOptions {
     @Override
     public S setLinkUrl(String url, Boolean useHistoryApi) {

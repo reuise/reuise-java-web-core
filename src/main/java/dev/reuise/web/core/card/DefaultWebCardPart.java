@@ -33,6 +33,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.card.DefaultWebCardPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.card.DefaultWebCardPartImpl.self;
 // Option: Type - CORE
 // Option: Direction - CORE
 // Option: JustifyContent - CORE
@@ -150,28 +152,28 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
 
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {
-        if (this.mediaLink != null)
-            ((WebLink) (this.mediaLink)).setUrl(url, useHistoryApi);
+        if (mediaLink != null)
+            ((WebLink) (mediaLink)).setUrl(url, useHistoryApi);
 
-        if (this.headingLink != null)
-            ((WebLink) (this.headingLink)).setUrl(url, useHistoryApi);
+        if (headingLink != null)
+            ((WebLink) (headingLink)).setUrl(url, useHistoryApi);
 
         return self();
     }
 
     public S setImageAltText(String imageAltText) {
-        if (this.image != null) {
-            WebImage webImage = ((WebImage) (this.image));
+        if (image != null) {
+            WebImage webImage = ((WebImage) (image));
             webImage.setAltText(imageAltText);
         }
         return self();
     }
 
     public String getImageAltText() {
-        if (this.image == null)
+        if (image == null)
             return null;
 
-        WebImage webImage = ((WebImage) (this.image));
+        WebImage webImage = ((WebImage) (image));
         return webImage.getAltText();
     }
 

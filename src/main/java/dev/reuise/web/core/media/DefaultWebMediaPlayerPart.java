@@ -22,6 +22,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.media.DefaultWebMediaPlayerPartImpl.getAttribute;
+import static dev.reuise.web.core.media.DefaultWebMediaPlayerPartImpl.getParentComponentPart;
+import static dev.reuise.web.core.media.DefaultWebMediaPlayerPartImpl.removeAttribute;
+import static dev.reuise.web.core.media.DefaultWebMediaPlayerPartImpl.self;
+import static dev.reuise.web.core.media.DefaultWebMediaPlayerPartImpl.setAttribute;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.scriptcomponent.DefaultWebScriptComponentPartImpl.getAttribute;
+import static dev.reuise.web.core.scriptcomponent.DefaultWebScriptComponentPartImpl.self;
+import static dev.reuise.web.core.scriptcomponent.DefaultWebScriptComponentPartImpl.setAttribute;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

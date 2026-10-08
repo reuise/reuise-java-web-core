@@ -26,6 +26,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.input.DefaultWebTextFieldPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.input.DefaultWebTextFieldPartImpl.isRehydrated;
+import static dev.reuise.web.core.input.DefaultWebTextFieldPartImpl.self;
+import static dev.reuise.web.core.input.DefaultWebTextFieldPartImpl.setSupportingText;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -128,7 +132,7 @@ public abstract class DefaultWebTextFieldPart<S extends DefaultWebTextFieldPart<
 
     @Override
     public S setError(Boolean error) {
-        this.input.setError(error);
+        input.setError(error);
         addOrRemoveStyleClass(getBaseStyleClass() + "--error", error);
         return self();
     }
@@ -605,13 +609,13 @@ public abstract class DefaultWebTextFieldPart<S extends DefaultWebTextFieldPart<
     // Implementation
     public void onCreate(O options) {
         super.onCreate(options);
-        if (this.input != null) {
-            WebBasicInputField webInput = ((WebBasicInputField) (this.input));
+        if (input != null) {
+            WebBasicInputField webInput = ((WebBasicInputField) (input));
             webInput.setId(webInput.getUniqueId());
         }
         if (!isRehydrated()) {
-            addOrRemoveStyleClass(getBaseStyleClass() + "--withstarticon", this.startIcon != null);
-            addOrRemoveStyleClass(getBaseStyleClass() + "--withendicon", this.endIcon != null);
+            addOrRemoveStyleClass(getBaseStyleClass() + "--withstarticon", startIcon != null);
+            addOrRemoveStyleClass(getBaseStyleClass() + "--withendicon", endIcon != null);
         }
     }
 

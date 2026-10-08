@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.tabs.DefaultWebTabBarPartImpl.getTabByIndex;
+import static dev.reuise.web.core.tabs.DefaultWebTabBarPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -100,7 +102,7 @@ import java.util.Set;
 public abstract class DefaultWebTabBarPart<S extends DefaultWebTabBarPart<S, O>, O extends WebTabBarPartOptions> extends DefaultCoreTabBarPart<S, O> implements WebComponentPart , WebTabBar {
     @Override
     public S setActiveTab(Integer activeTab) {
-        if ((((this.tabs == null) || (activeTab == null)) || (activeTab < 0)) || (activeTab >= this.tabs.size()))
+        if ((((tabs == null) || (activeTab == null)) || (activeTab < 0)) || (activeTab >= tabs.size()))
             return null;
 
         if (this.activeTab != null) {

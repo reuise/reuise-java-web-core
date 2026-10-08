@@ -26,6 +26,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.card.DefaultWebCardGridPartImpl.addOrRemoveStyleClass;
+import static dev.reuise.web.core.card.DefaultWebCardGridPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.card.DefaultWebCardGridPartImpl.hasStyleClass;
+import static dev.reuise.web.core.card.DefaultWebCardGridPartImpl.isRehydrated;
+import static dev.reuise.web.core.card.DefaultWebCardGridPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -101,7 +106,7 @@ import java.util.Set;
 public abstract class DefaultWebCardGridPart<S extends DefaultWebCardGridPart<S, O>, O extends WebCardGridPartOptions> extends DefaultCoreCardGridPart<S, O> implements WebCardGrid , WebComponentPart {
     @Override
     public void showScrim(Boolean show) {
-        ((WebContainer) (this.scrim)).addOrRemoveStyleClass("reuise-cardgrid_scrim--visible", show);
+        ((WebContainer) (scrim)).addOrRemoveStyleClass("reuise-cardgrid_scrim--visible", show);
     }
 
     @Override
@@ -606,15 +611,15 @@ public abstract class DefaultWebCardGridPart<S extends DefaultWebCardGridPart<S,
     // Implementation
     public void onCreate(O options) {
         super.onCreate(options);
-        WebContainer webCardContainer = ((WebContainer) (this.cardContainer));
+        WebContainer webCardContainer = ((WebContainer) (cardContainer));
         webCardContainer.getStyle().setWidth("100%");
         if (!isRehydrated()) {
-            this.columnGap.entrySet().forEach(e -> {
+            columnGap.entrySet().forEach(e -> {
                 webCardContainer.setPaddingLeft(e.getValue(), e.getKey());
                 webCardContainer.setPaddingRight(e.getValue(), e.getKey());
                 webCardContainer.getStyle(e.getKey()).setColumnGap(e.getValue());
             });
-            this.rowGap.entrySet().forEach(e -> {
+            rowGap.entrySet().forEach(e -> {
                 webCardContainer.setPaddingTop(e.getValue(), e.getKey());
                 webCardContainer.setPaddingBottom(e.getValue(), e.getKey());
                 webCardContainer.getStyle(e.getKey()).setRowGap(e.getValue());

@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.parentcomponent.DefaultWebParentComponentPartImpl.getBaseComponentPart;
+import static dev.reuise.web.core.parentcomponent.DefaultWebParentComponentPartImpl.self;
 // Option: Id - WEB
 // Option: TagName - WEB
 // Option: XmlNamespace - WEB

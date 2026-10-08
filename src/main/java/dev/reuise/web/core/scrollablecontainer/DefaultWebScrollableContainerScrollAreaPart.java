@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerScrollAreaPartImpl.getStyle;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerScrollAreaPartImpl.isRehydrated;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerScrollAreaPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -90,13 +93,13 @@ public abstract class DefaultWebScrollableContainerScrollAreaPart<S extends Defa
     private boolean fadeMask = false;
 
     private void initHorizontalEdge() {
-        initFade(((WebContainer) (this.scrollAreaLeftFade)));
-        initFade(((WebContainer) (this.scrollAreaRightFade)));
+        initFade(((WebContainer) (scrollAreaLeftFade)));
+        initFade(((WebContainer) (scrollAreaRightFade)));
     }
 
     private void initVerticalEdge() {
-        initFade(((WebContainer) (this.scrollAreaTopFade)));
-        initFade(((WebContainer) (this.scrollAreaBottomFade)));
+        initFade(((WebContainer) (scrollAreaTopFade)));
+        initFade(((WebContainer) (scrollAreaBottomFade)));
     }
 
     private void initFade(WebContainer fade) {
@@ -109,13 +112,13 @@ public abstract class DefaultWebScrollableContainerScrollAreaPart<S extends Defa
     }
 
     private String createScrollDirectionClassName(ScrollDirection scrollDirection) {
-        return (((WebContainer) (this.scrollAreaContent)).getBaseStyleClass() + "--scroll-") + scrollDirection.name().toLowerCase();
+        return (((WebContainer) (scrollAreaContent)).getBaseStyleClass() + "--scroll-") + scrollDirection.name().toLowerCase();
     }
 
     @Override
     public ScrollDirection getScrollDirection() {
         for (ScrollDirection d : ScrollDirection.values())
-            if (((WebContainer) (this.scrollAreaContent)).hasStyleClass(createScrollDirectionClassName(d)))
+            if (((WebContainer) (scrollAreaContent)).hasStyleClass(createScrollDirectionClassName(d)))
                 return d;
 
 
@@ -125,7 +128,7 @@ public abstract class DefaultWebScrollableContainerScrollAreaPart<S extends Defa
     @Override
     public S setScrollDirection(ScrollDirection scrollDirection) {
         for (ScrollDirection d : ScrollDirection.values())
-            ((WebContainer) (this.scrollAreaContent)).addOrRemoveStyleClass(createScrollDirectionClassName(d), scrollDirection == d);
+            ((WebContainer) (scrollAreaContent)).addOrRemoveStyleClass(createScrollDirectionClassName(d), scrollDirection == d);
 
         return self();
     }
@@ -133,13 +136,13 @@ public abstract class DefaultWebScrollableContainerScrollAreaPart<S extends Defa
     @Override
     public S setBorderRadius(Integer radius) {
         getStyle().setClipPath(("inset(0 0 0 0 round " + radius) + "px)");
-        this.borderRadius = radius;
+        borderRadius = radius;
         return self();
     }
 
     @Override
     public Integer getBorderRadius() {
-        return this.borderRadius;
+        return borderRadius;
     }
 
     @Override

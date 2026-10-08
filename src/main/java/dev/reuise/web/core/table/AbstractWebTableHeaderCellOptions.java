@@ -6,6 +6,9 @@ import dev.reuise.web.core.graphics.svg.WebSvgOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
 import dev.reuise.web.core.menu.WebMenuOptions;
 import dev.reuise.web.core.text.WebInlineTextOptions;
+import static dev.reuise.web.core.table.AbstractWebTableHeaderCellOptionsImpl.getComponentFactory;
+import static dev.reuise.web.core.table.AbstractWebTableHeaderCellOptionsImpl.getMenuButtonOptions;
+import static dev.reuise.web.core.table.AbstractWebTableHeaderCellOptionsImpl.isRehydrated;
 public abstract class AbstractWebTableHeaderCellOptions<S extends AbstractWebTableHeaderCellOptions<S>> extends AbstractCoreTableHeaderCellOptions<S> implements WebTableHeaderCellOptions {
     protected AbstractWebTableHeaderCellOptions() {
     }

@@ -4,6 +4,10 @@ import dev.reuise.core.chip.AbstractCoreChipGroupOptions;
 import dev.reuise.core.chip.CoreChipOptions;
 import dev.reuise.web.core.graphics.svg.WebSvgOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
+import static dev.reuise.web.core.chip.AbstractWebChipGroupOptionsImpl.getAddButtonOptions;
+import static dev.reuise.web.core.chip.AbstractWebChipGroupOptionsImpl.getComponentFactory;
+import static dev.reuise.web.core.chip.AbstractWebChipGroupOptionsImpl.isHideUnselected;
+import static dev.reuise.web.core.chip.AbstractWebChipGroupOptionsImpl.isRehydrated;
 public abstract class AbstractWebChipGroupOptions<S extends AbstractWebChipGroupOptions<S>> extends AbstractCoreChipGroupOptions<S> implements WebChipGroupOptions {
     protected AbstractWebChipGroupOptions() {
     }

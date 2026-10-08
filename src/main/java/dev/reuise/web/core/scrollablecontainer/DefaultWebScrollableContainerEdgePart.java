@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerEdgePartImpl.getBaseComponentPart;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerEdgePartImpl.isRehydrated;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerEdgePartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -88,7 +91,7 @@ import java.util.Set;
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebScrollableContainerEdgePart<S extends DefaultWebScrollableContainerEdgePart<S, O>, O extends WebScrollableContainerEdgePartOptions> extends DefaultCoreScrollableContainerEdgePart<S, O> implements WebScrollableContainerEdge , WebComponentPart {
     public void setScrollButtonOptions(ScrollableContainerScrollButtonOptions scrollOpts) {
-        if ((scrollOpts != null) && (this.scrollButton == null))
+        if ((scrollOpts != null) && (scrollButton == null))
             initScrollButton();
 
     }
@@ -100,9 +103,9 @@ public abstract class DefaultWebScrollableContainerEdgePart<S extends DefaultWeb
         else
             scrollButtonOpts.setRehydration(".reuise-scrollablecontainer_edge_scrollbutton", this);
 
-        this.scrollButton = getBaseComponentPart().getComponentFactory().createButton(scrollButtonOpts);
+        scrollButton = getBaseComponentPart().getComponentFactory().createButton(scrollButtonOpts);
         if (!isRehydrated())
-            add(this.scrollButton);
+            add(scrollButton);
 
     }
 
@@ -556,7 +559,7 @@ public abstract class DefaultWebScrollableContainerEdgePart<S extends DefaultWeb
     // Implementation
     @Override
     public WebButton getScrollButton() {
-        return this.scrollButton;
+        return scrollButton;
     }
 
     // Implementation

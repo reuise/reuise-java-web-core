@@ -3,6 +3,8 @@ import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.image.AbstractCoreImageOptions;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.link.WebLinkOptions;
+import static dev.reuise.web.core.image.AbstractWebImageOptionsImpl.getOrCreateLinkOptions;
+import static dev.reuise.web.core.image.AbstractWebImageOptionsImpl.self;
 public abstract class AbstractWebImageOptions<S extends AbstractWebImageOptions<S>> extends AbstractCoreImageOptions<S> implements WebImageOptions {
     @Override
     public S setLinkUrl(String url, Boolean useHistoryApi) {

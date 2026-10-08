@@ -21,6 +21,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.graphics.svg.DefaultWebSvgPartImpl.getAttribute;
+import static dev.reuise.web.core.graphics.svg.DefaultWebSvgPartImpl.getBaseComponentPart;
+import static dev.reuise.web.core.graphics.svg.DefaultWebSvgPartImpl.self;
+import static dev.reuise.web.core.graphics.svg.DefaultWebSvgPartImpl.setAttribute;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

@@ -23,6 +23,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.input.DefaultWebBasicInputFieldPartImpl.getAttribute;
+import static dev.reuise.web.core.input.DefaultWebBasicInputFieldPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.input.DefaultWebBasicInputFieldPartImpl.getTagName;
+import static dev.reuise.web.core.input.DefaultWebBasicInputFieldPartImpl.hasAttribute;
+import static dev.reuise.web.core.input.DefaultWebBasicInputFieldPartImpl.removeAttribute;
+import static dev.reuise.web.core.input.DefaultWebBasicInputFieldPartImpl.self;
+import static dev.reuise.web.core.input.DefaultWebBasicInputFieldPartImpl.setAttribute;
+import static dev.reuise.web.core.input.DefaultWebBasicInputFieldPartImpl.setTagName;
 // Option: Id - WEB
 // Option: TagName - WEB
 // Option: XmlNamespace - WEB

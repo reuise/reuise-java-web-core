@@ -3,6 +3,10 @@ import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.chip.AbstractCoreFilterChipOptions;
 import dev.reuise.web.core.graphics.svg.WebSvgOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
+import static dev.reuise.web.core.chip.AbstractWebFilterChipOptionsImpl.getComponentFactory;
+import static dev.reuise.web.core.chip.AbstractWebFilterChipOptionsImpl.isHasCheckIcon;
+import static dev.reuise.web.core.chip.AbstractWebFilterChipOptionsImpl.isHasRemoveIcon;
+import static dev.reuise.web.core.chip.AbstractWebFilterChipOptionsImpl.isRehydrated;
 public abstract class AbstractWebFilterChipOptions<S extends AbstractWebFilterChipOptions<S>> extends AbstractCoreFilterChipOptions<S> implements WebFilterChipOptions {
     protected AbstractWebFilterChipOptions() {
     }

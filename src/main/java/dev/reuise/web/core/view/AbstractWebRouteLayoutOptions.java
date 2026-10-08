@@ -2,12 +2,13 @@ package dev.reuise.web.core.view;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.WebComponentOptions;
+import dev.reuise.web.core.view.RouteViewCreator.Mode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLayoutOptions<S>> implements WebRouteLayoutOptions , WebComponentOptions {
     public S addRoute(String path, RouteViewCreator creator) {
-        return addRoute(path, creator, RouteViewCreator.Mode.REUSE_CREATE_ON_FIRST_REVEAL);
+        return addRoute(path, creator, Mode.REUSE_CREATE_ON_FIRST_REVEAL);
     }
 
     public S addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode) {

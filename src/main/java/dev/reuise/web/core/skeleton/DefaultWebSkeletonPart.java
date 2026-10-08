@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.skeleton.DefaultWebSkeletonPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.skeleton.DefaultWebSkeletonPartImpl.self;
 // Option: Id - WEB
 // Option: TagName - WEB
 // Option: XmlNamespace - WEB
@@ -554,7 +556,7 @@ public abstract class DefaultWebSkeletonPart<S extends DefaultWebSkeletonPart<S,
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         commonStyles.addRule(".reuise-skeleton").setBackgroundColor("rgb(0 0 0 / 10%)").setAnimation("1.5s ease-in-out 0.5s infinite normal none running reuise-skeleton_animation");
-        commonStyles.addRule(".reuise-skeleton:empty:before").setContent("\'\\a0\'");
+        commonStyles.addRule(".reuise-skeleton:empty:before").setContent("'\\a0'");
         commonStyles.addRule(".reuise-skeleton--circular").setBorderRadius("50%");
         commonStyles.addRule(".reuise-skeleton--rectangular").setBorderRadius("6px");
     }

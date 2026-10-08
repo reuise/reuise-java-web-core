@@ -28,6 +28,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.getLink;
+import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.getStyle;
+import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.getTagName;
+import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.getUrl;
+import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.self;
+import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.setTagName;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -99,11 +105,11 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
         if (getTagName().equals("img"))
             setTagName("div");
 
-        if (this.image != null)
-            removeChild(this.image);
+        if (image != null)
+            removeChild(image);
 
-        if (this.svg != null)
-            removeChild(this.svg);
+        if (svg != null)
+            removeChild(svg);
 
         Style inlineStyle = getStyle();
         inlineStyle.setMaskImage(("url(" + getUrl()) + ")");
@@ -120,12 +126,12 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
     @Override
     public S setSize(Object size) {
         super.setSize(size);
-        if (this.image != null) {
-            WebImage webImage = ((WebImage) (this.image));
+        if (image != null) {
+            WebImage webImage = ((WebImage) (image));
             webImage.setWidth(size);
             webImage.setHeight(size);
-        } else if (this.svg != null) {
-            WebSvg webSvg = ((WebSvg) (this.svg));
+        } else if (svg != null) {
+            WebSvg webSvg = ((WebSvg) (svg));
             webSvg.setWidth(size);
             webSvg.setHeight(size);
         }
@@ -134,8 +140,8 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
 
     @Override
     public String getAltText() {
-        if (this.image != null) {
-            WebImage webImage = ((WebImage) (this.image));
+        if (image != null) {
+            WebImage webImage = ((WebImage) (image));
             return webImage.getAltText();
         }
         return "";
@@ -143,8 +149,8 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
 
     @Override
     public S setAltText(String altText) {
-        if (this.image != null) {
-            WebImage webImage = ((WebImage) (this.image));
+        if (image != null) {
+            WebImage webImage = ((WebImage) (image));
             webImage.setAltText(altText);
         }
         return self();

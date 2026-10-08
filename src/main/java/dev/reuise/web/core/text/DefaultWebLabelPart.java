@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+// Option: Loading - CORE
+// Option: SkeletonOptions - CORE
 // Option: Text - CORE
 // Option: FontSize - CORE
 // Option: LineHeight - CORE

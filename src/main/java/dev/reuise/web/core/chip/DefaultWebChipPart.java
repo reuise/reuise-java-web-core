@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.chip.DefaultWebChipPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.chip.DefaultWebChipPartImpl.self;
+import static dev.reuise.web.core.chip.DefaultWebChipPartImpl.setAria;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

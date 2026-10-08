@@ -8,9 +8,9 @@ import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
 import dev.reuise.core.option.OptionApplicator;
-import dev.reuise.core.text.DefaultCoreParagraphPart;
 import dev.reuise.core.skeleton.CoreSkeletonOptions;
 import dev.reuise.core.skeleton.SkeletonShape;
+import dev.reuise.core.text.DefaultCoreParagraphPart;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
@@ -24,6 +24,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.getSkeletonOptions;
+import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.getStyle;
+import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.isLoading;
+import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -91,17 +95,51 @@ public abstract class DefaultWebParagraphPart<S extends DefaultWebParagraphPart<
 
     private final WebLoadingSkeletonSupport loadingSkeletonSupport;
 
+    @Override
+    public S setLoading(Boolean loading) {
+        super.setLoading(loading);
+        loadingSkeletonSupport.update(isLoading());
+        return self();
+    }
+
+    @Override
+    public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
+        super.setSkeletonOptions(skeletonOptions);
+        loadingSkeletonSupport.refreshIfLoading(isLoading());
+        return self();
+    }
+
+    private void applyLoadingSkeletonStyles() {
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        CoreSkeletonOptions skeletonOptions = getSkeletonOptions();
+        if ((skeletonOptions != null) && (skeletonOptions.getWidth() != null))
+            style.setWidth(Style.parseProperty(skeletonOptions.getWidth()));
+        else if (style.getWidth() == null)
+            style.setWidth("100%");
+
+        if ((skeletonOptions != null) && (skeletonOptions.getMinHeight() != null))
+            style.setMinHeight(Style.parseProperty(skeletonOptions.getMinHeight()));
+        else if ((skeletonOptions != null) && (skeletonOptions.getHeight() != null))
+            style.setMinHeight(Style.parseProperty(skeletonOptions.getHeight()));
+        else if (style.getMinHeight() == null)
+            style.setMinHeight("4.2em");
+
+        if ((skeletonOptions != null) && (skeletonOptions.getShape() == SkeletonShape.CIRCULAR))
+            style.setBorderRadius("50%");
+        else if (style.getBorderRadius() == null)
+            style.setBorderRadius("6px");
+
+    }
+
     private WebParentComponentPart parentComponentPart;
 
     private WebBaseComponentPart baseComponentPart;
 
     protected DefaultWebParagraphPart(O options) {
         super(options);
-        loadingSkeletonSupport = new WebLoadingSkeletonSupport(this::getStyle,
-                this::addOrRemoveStyleClass,
-                this::getSkeletonOptions,
-                (style, skeletonOptions) -> applyLoadingSkeletonStyles(),
-                PARAGRAPH_LOADING_SKELETON_STYLE_CLASS);
     }
 
     protected void setupReferences() {
@@ -129,21 +167,6 @@ public abstract class DefaultWebParagraphPart<S extends DefaultWebParagraphPart<
     @Override
     public S setTheme(Theme theme) {
         this.parentComponentPart.setTheme(theme);
-        return self();
-    }
-
-    @Override
-    public S setLoading(Boolean loading) {
-        super.setLoading(loading);
-        loadingSkeletonSupport.update(isLoading());
-        return self();
-    }
-
-    @Override
-    public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
-        super.setSkeletonOptions(skeletonOptions);
-        loadingSkeletonSupport.refreshIfLoading(isLoading());
-
         return self();
     }
 
@@ -547,32 +570,12 @@ public abstract class DefaultWebParagraphPart<S extends DefaultWebParagraphPart<
         parentComponentPart.onInitializeComponentType(rootComponent);
     }
 
+    // Implementation
+    // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         WebLoadingSkeletonSupport.addCommonStyles(commonStyles);
         commonStyles.addRule(".reuise-loading-skeleton--paragraph").setDisplay("block").setWidth("100%");
         commonStyles.addRule(".reuise-loading-skeleton--paragraph::before").setBackground("repeating-linear-gradient(to bottom, rgb(0 0 0 / 10%) 0, rgb(0 0 0 / 10%) 1em, transparent 1em, transparent 1.6em)").setBackgroundColor("transparent");
-    }
-
-    private void applyLoadingSkeletonStyles() {
-        Style style = getStyle();
-        if (style == null)
-            return;
-
-        CoreSkeletonOptions skeletonOptions = getSkeletonOptions();
-        if (skeletonOptions != null && skeletonOptions.getWidth() != null)
-            style.setWidth(Style.parseProperty(skeletonOptions.getWidth()));
-        else if (style.getWidth() == null)
-            style.setWidth("100%");
-
-        if (skeletonOptions != null && skeletonOptions.getMinHeight() != null)
-            style.setMinHeight(Style.parseProperty(skeletonOptions.getMinHeight()));
-        else if (skeletonOptions != null && skeletonOptions.getHeight() != null)
-            style.setMinHeight(Style.parseProperty(skeletonOptions.getHeight()));
-        else if (style.getMinHeight() == null)
-            style.setMinHeight("4.2em");
-
-        if (skeletonOptions != null && skeletonOptions.getShape() == SkeletonShape.CIRCULAR)
-            style.setBorderRadius("50%");
     }
 
     // Implementation

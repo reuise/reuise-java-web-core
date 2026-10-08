@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.input.DefaultWebMultiEmailAddressFieldPartImpl.getChipFieldPart;
+import static dev.reuise.web.core.input.DefaultWebMultiEmailAddressFieldPartImpl.self;
 // Option: Multiple - CORE
 // Option: Values - CORE
 // Option: Delimiters - CORE

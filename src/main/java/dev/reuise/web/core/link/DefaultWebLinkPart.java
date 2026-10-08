@@ -23,6 +23,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.link.DefaultWebLinkPartImpl.getAttribute;
+import static dev.reuise.web.core.link.DefaultWebLinkPartImpl.getData;
+import static dev.reuise.web.core.link.DefaultWebLinkPartImpl.self;
+import static dev.reuise.web.core.link.DefaultWebLinkPartImpl.setAttribute;
+import static dev.reuise.web.core.link.DefaultWebLinkPartImpl.setData;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -160,7 +165,7 @@ public abstract class DefaultWebLinkPart<S extends DefaultWebLinkPart<S, O>, O e
     // Implementation
     @Override
     public S setTheme(Theme theme) {
-        this.parentComponentPart.setTheme(theme);
+        parentComponentPart.setTheme(theme);
         if (theme == null)
             return self();
 

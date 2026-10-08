@@ -23,6 +23,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.layout.DefaultWebSurfacePartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.layout.DefaultWebSurfacePartImpl.self;
 // Option: Direction - CORE
 // Option: JustifyContent - CORE
 // Option: AlignItems - CORE

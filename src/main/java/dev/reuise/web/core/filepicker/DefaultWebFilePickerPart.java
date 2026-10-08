@@ -20,6 +20,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.filepicker.DefaultWebFilePickerPartImpl.getAttribute;
+import static dev.reuise.web.core.filepicker.DefaultWebFilePickerPartImpl.hasAttribute;
+import static dev.reuise.web.core.filepicker.DefaultWebFilePickerPartImpl.isRehydrated;
+import static dev.reuise.web.core.filepicker.DefaultWebFilePickerPartImpl.self;
+import static dev.reuise.web.core.filepicker.DefaultWebFilePickerPartImpl.setAttribute;
 // Option: Id - WEB
 // Option: TagName - WEB
 // Option: XmlNamespace - WEB

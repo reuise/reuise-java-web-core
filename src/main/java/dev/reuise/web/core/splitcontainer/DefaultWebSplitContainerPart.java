@@ -27,6 +27,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.splitcontainer.DefaultWebSplitContainerPartImpl.isRehydrated;
+import static dev.reuise.web.core.splitcontainer.DefaultWebSplitContainerPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -101,14 +103,14 @@ import java.util.Set;
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebSplitContainerPart<S extends DefaultWebSplitContainerPart<S, O>, O extends WebSplitContainerPartOptions> extends DefaultCoreSplitContainerPart<S, O> implements WebSplitContainer , WebComponentPart {
     public void updatePanelSizes(State state) {
-        WebSplitContainerPanel webStartPanel = ((WebSplitContainerPanel) (this.startPanel));
-        WebSplitContainerDivider webDivider = ((WebSplitContainerDivider) (this.divider));
+        WebSplitContainerPanel webStartPanel = ((WebSplitContainerPanel) (startPanel));
+        WebSplitContainerDivider webDivider = ((WebSplitContainerDivider) (divider));
         SplitDirection direction = getDirection(state);
         if (direction == null)
             return;
 
-        setPanelSize(this.startPanel, direction, state);
-        setPanelSize(this.endPanel, direction, state);
+        setPanelSize(startPanel, direction, state);
+        setPanelSize(endPanel, direction, state);
         Style dividerStateStyle = null;
         if (webDivider != null) {
             dividerStateStyle = webDivider.getStyle(state);
@@ -131,11 +133,11 @@ public abstract class DefaultWebSplitContainerPart<S extends DefaultWebSplitCont
     @Override
     public S setDirection(SplitDirection direction, State state) {
         super.setDirection(direction, state);
-        setPanelSize(this.startPanel, direction, null);
-        setPanelSize(this.endPanel, direction, null);
+        setPanelSize(startPanel, direction, null);
+        setPanelSize(endPanel, direction, null);
         setDirectionInternal(direction, state);
-        if (this.divider != null) {
-            WebSplitContainerDivider webDivider = ((WebSplitContainerDivider) (this.divider));
+        if (divider != null) {
+            WebSplitContainerDivider webDivider = ((WebSplitContainerDivider) (divider));
             Style dividerStyle = webDivider.getStyle(state);
             if (dividerStyle == null)
                 return self();
@@ -143,14 +145,14 @@ public abstract class DefaultWebSplitContainerPart<S extends DefaultWebSplitCont
             if (direction == SplitDirection.VERTICAL) {
                 dividerStyle.setTop("0");
                 dividerStyle.setBottom("0");
-                dividerStyle.setWidth(this.divider.getThickness(state));
+                dividerStyle.setWidth(divider.getThickness(state));
                 dividerStyle.setHeight("100%");
                 dividerStyle.setCursor("col-resize");
             } else if (direction == SplitDirection.HORIZONTAL) {
                 dividerStyle.setLeft("0");
                 dividerStyle.setRight("0");
                 dividerStyle.setWidth("100%");
-                dividerStyle.setHeight(this.divider.getThickness(state));
+                dividerStyle.setHeight(divider.getThickness(state));
                 dividerStyle.setCursor("row-resize");
             }
         }
@@ -171,7 +173,7 @@ public abstract class DefaultWebSplitContainerPart<S extends DefaultWebSplitCont
         if (isRehydrated())
             return;
 
-        WebContainer webContainer = ((WebContainer) (this.container));
+        WebContainer webContainer = ((WebContainer) (container));
         Style style = webContainer.getStyle(state);
         if (style != null)
             style.setFlexDirection((direction == SplitDirection.VERTICAL ? "row" : "column") + (isReverseDirection(state) ? "-reverse" : ""), true);
@@ -673,9 +675,9 @@ public abstract class DefaultWebSplitContainerPart<S extends DefaultWebSplitCont
     public void onCreate(O options) {
         super.onCreate(options);
         // if(Boolean.TRUE.equals(isResizable())) {
-        WebSplitContainerPanel webStartPanel = ((WebSplitContainerPanel) (this.startPanel));
+        WebSplitContainerPanel webStartPanel = ((WebSplitContainerPanel) (startPanel));
         // Style startPanelStyle = webStartPanel.getStyle();
-        WebSplitContainerDivider webDivider = ((WebSplitContainerDivider) (this.divider));
+        WebSplitContainerDivider webDivider = ((WebSplitContainerDivider) (divider));
         // Style dividerStyle = webDivider.getStyle();
         /* if(getDirection() == SplitDirection.VERTICAL) {
         startPanelStyle.setWidth(options.getStartPanelOptions().getSize());

@@ -21,6 +21,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.checkbox.DefaultWebBasicCheckboxPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.checkbox.DefaultWebBasicCheckboxPartImpl.isRehydrated;
+import static dev.reuise.web.core.checkbox.DefaultWebBasicCheckboxPartImpl.self;
+import static dev.reuise.web.core.checkbox.DefaultWebBasicCheckboxPartImpl.setAttribute;
 // Option: Id - WEB
 // Option: TagName - WEB
 // Option: XmlNamespace - WEB

@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.divider.DefaultWebDividerPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.divider.DefaultWebDividerPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -90,9 +92,9 @@ import java.util.Set;
 public abstract class DefaultWebDividerPart<S extends DefaultWebDividerPart<S, O>, O extends WebDividerPartOptions> extends DefaultCoreDividerPart<S, O> implements WebDivider , WebComponentPart {
     @Override
     public S setThickness(Integer thickness) {
-        WebContainer webStartLine = ((WebContainer) (this.startLine));
+        WebContainer webStartLine = ((WebContainer) (startLine));
         webStartLine.setHeight(thickness);
-        WebContainer webEndLine = ((WebContainer) (this.endLine));
+        WebContainer webEndLine = ((WebContainer) (endLine));
         webEndLine.setHeight(thickness);
         return self();
     }

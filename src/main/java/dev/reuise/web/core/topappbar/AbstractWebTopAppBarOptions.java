@@ -6,6 +6,9 @@ import dev.reuise.web.core.button.WebIconButtonOptions;
 import dev.reuise.web.core.graphics.svg.WebSvgOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
 import dev.reuise.web.core.layout.WebContainerOptions;
+import static dev.reuise.web.core.topappbar.AbstractWebTopAppBarOptionsImpl.getComponentFactory;
+import static dev.reuise.web.core.topappbar.AbstractWebTopAppBarOptionsImpl.getNavigationButtonOptions;
+import static dev.reuise.web.core.topappbar.AbstractWebTopAppBarOptionsImpl.isRehydrated;
 public abstract class AbstractWebTopAppBarOptions<S extends AbstractWebTopAppBarOptions<S>> extends AbstractCoreTopAppBarOptions<S> implements WebTopAppBarOptions {
     protected AbstractWebTopAppBarOptions() {
     }

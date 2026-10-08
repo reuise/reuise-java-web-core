@@ -23,6 +23,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.media.DefaultWebTextTrackPartImpl.getAttribute;
+import static dev.reuise.web.core.media.DefaultWebTextTrackPartImpl.self;
+import static dev.reuise.web.core.media.DefaultWebTextTrackPartImpl.setAttribute;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

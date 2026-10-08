@@ -25,6 +25,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.tabs.DefaultWebTabPartImpl.getAttribute;
+import static dev.reuise.web.core.tabs.DefaultWebTabPartImpl.self;
+import static dev.reuise.web.core.tabs.DefaultWebTabPartImpl.setAria;
+import static dev.reuise.web.core.tabs.DefaultWebTabPartImpl.setAttribute;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -96,8 +100,8 @@ public abstract class DefaultWebTabPart<S extends DefaultWebTabPart<S, O>, O ext
 
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {
-        if (this.link != null)
-            ((WebLink) (this.link)).setUrl(url, useHistoryApi);
+        if (link != null)
+            ((WebLink) (link)).setUrl(url, useHistoryApi);
 
         return self();
     }

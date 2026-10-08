@@ -4,6 +4,9 @@ import dev.reuise.core.icon.CoreIconOptions;
 import dev.reuise.core.input.AbstractCoreSearchFieldOptions;
 import dev.reuise.web.core.graphics.svg.WebSvgOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
+import static dev.reuise.web.core.input.AbstractWebSearchFieldOptionsImpl.getComponentFactory;
+import static dev.reuise.web.core.input.AbstractWebSearchFieldOptionsImpl.getTextFieldPart;
+import static dev.reuise.web.core.input.AbstractWebSearchFieldOptionsImpl.isRehydrated;
 public abstract class AbstractWebSearchFieldOptions<S extends AbstractWebSearchFieldOptions<S>> extends AbstractCoreSearchFieldOptions<S> implements WebSearchFieldOptions {
     protected AbstractWebSearchFieldOptions() {
     }

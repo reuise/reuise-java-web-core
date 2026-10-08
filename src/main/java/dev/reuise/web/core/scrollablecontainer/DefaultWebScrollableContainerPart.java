@@ -12,7 +12,6 @@ import dev.reuise.core.layout.CoreContainer;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.core.scrollablecontainer.DefaultCoreScrollableContainerPart;
 import dev.reuise.core.scrollablecontainer.ScrollDirection;
-import dev.reuise.core.scrollablecontainer.ScrollableContainerScrollButtonOptions;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
@@ -27,6 +26,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerPartImpl.getBaseComponentPart;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerPartImpl.getScrollAreaAfter;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerPartImpl.getScrollAreaBefore;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerPartImpl.isRehydrated;
+import static dev.reuise.web.core.scrollablecontainer.DefaultWebScrollableContainerPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -134,7 +138,7 @@ public abstract class DefaultWebScrollableContainerPart<S extends DefaultWebScro
             edgeOpts.setRehydration((".reuise-scrollablecontainer_" + direction) + "edge", parent);
 
         DefaultWebScrollableContainerEdgePart<?, ?> edge = ((DefaultWebScrollableContainerEdgePart) (getBaseComponentPart().getComponentFactory().createScrollableContainerEdge(edgeOpts)));
-        edge.setScrollButtonOptions(this.scrollButtonOptions);
+        edge.setScrollButtonOptions(scrollButtonOptions);
         if (!isRehydrated())
             parent.add(edge);
 
@@ -626,7 +630,7 @@ public abstract class DefaultWebScrollableContainerPart<S extends DefaultWebScro
     public void onInitialize(O options) {
         super.onInitialize(options);
         // Init edges
-        this.scrollButtonOptions = options.getScrollButtonOptions();
+        scrollButtonOptions = options.getScrollButtonOptions();
         ScrollDirection scrollDir = options.getScrollDirection();
         if (scrollDir != null) {
             if (scrollDir != ScrollDirection.NONE)

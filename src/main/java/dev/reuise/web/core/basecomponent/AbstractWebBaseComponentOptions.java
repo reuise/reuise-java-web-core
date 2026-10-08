@@ -14,6 +14,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static dev.reuise.web.core.basecomponent.AbstractWebBaseComponentOptionsImpl.getBaseStyleClass;
+import static dev.reuise.web.core.basecomponent.AbstractWebBaseComponentOptionsImpl.getParent;
+import static dev.reuise.web.core.basecomponent.AbstractWebBaseComponentOptionsImpl.getRehydration;
+import static dev.reuise.web.core.basecomponent.AbstractWebBaseComponentOptionsImpl.self;
+import static dev.reuise.web.core.basecomponent.AbstractWebBaseComponentOptionsImpl.setRequiredLayoutComponent;
 public abstract class AbstractWebBaseComponentOptions<S extends AbstractWebBaseComponentOptions<S>> extends AbstractCoreBaseComponentOptions<S> implements WebBaseComponentOptions {
     public void setRehydrate(boolean rehydrate) {
         setRehydration(rehydrate ? "." + getBaseStyleClass() : null, getParent());

@@ -23,6 +23,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.input.DefaultWebPasswordFieldPartImpl.getInput;
+import static dev.reuise.web.core.input.DefaultWebPasswordFieldPartImpl.getValidators;
+import static dev.reuise.web.core.input.DefaultWebPasswordFieldPartImpl.isRehydrated;
+import static dev.reuise.web.core.input.DefaultWebPasswordFieldPartImpl.self;
+import static dev.reuise.web.core.input.DefaultWebPasswordFieldPartImpl.setRequired;
 // Option: Size - CORE
 // Option: SupportingText - CORE
 // Option: Label - CORE

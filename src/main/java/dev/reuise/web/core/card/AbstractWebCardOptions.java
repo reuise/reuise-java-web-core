@@ -6,15 +6,16 @@ import dev.reuise.web.core.image.WebImageOptions;
 import dev.reuise.web.core.layout.WebFlexContainerOptions;
 import dev.reuise.web.core.link.WebLinkOptions;
 import dev.reuise.web.core.text.WebTextBlockOptions;
+import static dev.reuise.web.core.card.AbstractWebCardOptionsImpl.self;
 public abstract class AbstractWebCardOptions<S extends AbstractWebCardOptions<S>> extends AbstractCoreCardOptions<S> implements WebCardOptions {
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {
         setUrl(url);
-        if (this.mediaLinkOptions != null)
-            ((WebLinkOptions) (this.mediaLinkOptions)).setUrl(url, useHistoryApi);
+        if (mediaLinkOptions != null)
+            ((WebLinkOptions) (mediaLinkOptions)).setUrl(url, useHistoryApi);
 
-        if (this.headingLinkOptions != null)
-            ((WebLinkOptions) (this.headingLinkOptions)).setUrl(url, useHistoryApi);
+        if (headingLinkOptions != null)
+            ((WebLinkOptions) (headingLinkOptions)).setUrl(url, useHistoryApi);
 
         return self();
     }

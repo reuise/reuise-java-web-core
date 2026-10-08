@@ -21,6 +21,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.table.DefaultWebTableColumnPartImpl.addText;
+import static dev.reuise.web.core.table.DefaultWebTableColumnPartImpl.getStyle;
+import static dev.reuise.web.core.table.DefaultWebTableColumnPartImpl.removeAll;
+import static dev.reuise.web.core.table.DefaultWebTableColumnPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

@@ -5,6 +5,9 @@ import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.graphics.svg.WebSvgOptions;
 import dev.reuise.web.core.image.WebImageOptions;
 import dev.reuise.web.core.link.WebLinkOptions;
+import static dev.reuise.web.core.icon.AbstractWebIconOptionsImpl.getOrCreateLinkOptions;
+import static dev.reuise.web.core.icon.AbstractWebIconOptionsImpl.self;
+import static dev.reuise.web.core.icon.AbstractWebIconOptionsImpl.setSvgOptions;
 public abstract class AbstractWebIconOptions<S extends AbstractWebIconOptions<S>> extends AbstractCoreIconOptions<S> implements WebIconOptions {
     @Override
     public S setUrl(String url) {

@@ -2,6 +2,8 @@ package dev.reuise.web.core.link;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.link.AbstractCoreLinkOptions;
 import dev.reuise.core.option.ComponentOption;
+import static dev.reuise.web.core.link.AbstractWebLinkOptionsImpl.self;
+import static dev.reuise.web.core.link.AbstractWebLinkOptionsImpl.setUseHistoryApi;
 public abstract class AbstractWebLinkOptions<S extends AbstractWebLinkOptions<S>> extends AbstractCoreLinkOptions<S> implements WebLinkOptions {
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {

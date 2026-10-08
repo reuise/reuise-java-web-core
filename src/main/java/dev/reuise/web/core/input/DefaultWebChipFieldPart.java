@@ -23,6 +23,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.input.DefaultWebChipFieldPartImpl.isRehydrated;
+import static dev.reuise.web.core.input.DefaultWebChipFieldPartImpl.self;
 // Option: Size - CORE
 // Option: SupportingText - CORE
 // Option: Label - CORE

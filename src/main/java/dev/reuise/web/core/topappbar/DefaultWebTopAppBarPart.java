@@ -28,6 +28,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.topappbar.DefaultWebTopAppBarPartImpl.addOrRemoveStyleClass;
+import static dev.reuise.web.core.topappbar.DefaultWebTopAppBarPartImpl.getComponentFactory;
+import static dev.reuise.web.core.topappbar.DefaultWebTopAppBarPartImpl.isRehydrated;
+import static dev.reuise.web.core.topappbar.DefaultWebTopAppBarPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -542,8 +546,8 @@ public abstract class DefaultWebTopAppBarPart<S extends DefaultWebTopAppBarPart<
         if (!super.onPreInitialize(options))
             return false;
 
-        if ((!isRehydrated()) && (this.navigationButton != null)) {
-            WebIconButton webNavigationButton = ((WebIconButton) (this.navigationButton));
+        if ((!isRehydrated()) && (navigationButton != null)) {
+            WebIconButton webNavigationButton = ((WebIconButton) (navigationButton));
             WebIcon icon = webNavigationButton.getIcon();
             if (icon != null) {
                 WebSvg svg = icon.getSvg();

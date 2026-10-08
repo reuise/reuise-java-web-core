@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.table.DefaultWebTableHeaderRowPartImpl.getComponentFactory;
+import static dev.reuise.web.core.table.DefaultWebTableHeaderRowPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

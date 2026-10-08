@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.list.DefaultWebListItemPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.list.DefaultWebListItemPartImpl.self;
 // Option: Url - CORE
 // Option: Children - CORE
 // Option: Id - WEB

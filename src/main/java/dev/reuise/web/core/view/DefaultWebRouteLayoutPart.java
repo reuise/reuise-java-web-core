@@ -24,6 +24,7 @@ import dev.reuise.web.core.list.WebBasicList;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.web.core.text.WebHeading;
 import dev.reuise.web.core.text.WebParagraph;
+import dev.reuise.web.core.view.RouteViewCreator.Mode;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -36,6 +37,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import static dev.reuise.web.core.view.DefaultWebRouteLayoutPartImpl.getBeforeRevealHandlers;
+import static dev.reuise.web.core.view.DefaultWebRouteLayoutPartImpl.getRevealHandlers;
+import static dev.reuise.web.core.view.DefaultWebRouteLayoutPartImpl.getUrl;
+import static dev.reuise.web.core.view.DefaultWebRouteLayoutPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -127,7 +132,7 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     }
 
     public S addRoute(String path, RouteViewCreator creator) {
-        return addRoute(path, creator, RouteViewCreator.Mode.REUSE_CREATE_ON_FIRST_REVEAL);
+        return addRoute(path, creator, Mode.REUSE_CREATE_ON_FIRST_REVEAL);
     }
 
     public S addRoute(String path, RouteViewCreator creator, RouteViewCreator.Mode creatorMode) {
@@ -135,14 +140,14 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     }
 
     public void reveal(String url, List<RouteViewRevealHandler> revealHandlers, List<RouteViewBeforeRevealHandler> beforeRevealHandlers) {
-        if ((this.routeViewRevealer == null) || (url == null))
+        if ((routeViewRevealer == null) || (url == null))
             return;
 
         currentRevealCount++;
         int revealCount = currentRevealCount;
         String urlPath = getUrlPath(url);
         int matches = 0;
-        for (RouteOptions route : this.routes) {
+        for (RouteOptions route : routes) {
             boolean match = matcher.match(route.getPath(), urlPath);
             // WebView routeView = getRouteView(route, match || isRehydrated());
             // if(routeView == null) continue; - commted out to allow null empty views
@@ -187,10 +192,10 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     }
 
     protected void reveal(RouteViewRevealOptions revealOpts) {
-        if (this.routeViewRevealer == null)
+        if (routeViewRevealer == null)
             return;
 
-        this.routeViewRevealer.reveal(revealOpts);
+        routeViewRevealer.reveal(revealOpts);
         boolean reveal = revealOpts.isReveal();
         List<RouteViewBeforeRevealHandler> beforeRevealHandlers = revealOpts.getBeforeRevealHandlers();
         if ((reveal && (beforeRevealHandlers != null)) && (!beforeRevealHandlers.isEmpty())) {
@@ -219,7 +224,7 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
     }
 
     public void reveal(RouteOptions route, boolean reveal, boolean forceCreate) {
-        if (this.routeViewRevealer == null)
+        if (routeViewRevealer == null)
             return;
 
         RouteViewRevealOptions revealOpts = new RouteViewRevealOptions();
@@ -260,7 +265,7 @@ public abstract class DefaultWebRouteLayoutPart<S extends DefaultWebRouteLayoutP
 
     private void getRouteView(RouteOptions route, RouteViewRevealOptions revealOpts, Consumer<WebView> viewCallback, boolean create) {
         WebView routeView = null;
-        int routeIndex = this.routes.indexOf(route);
+        int routeIndex = routes.indexOf(route);
         if (routeIndex != (-1))
             routeView = routeViews.get(routeIndex);
 

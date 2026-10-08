@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.drawer.DefaultWebDrawerPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.drawer.DefaultWebDrawerPartImpl.getStyle;
+import static dev.reuise.web.core.drawer.DefaultWebDrawerPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE

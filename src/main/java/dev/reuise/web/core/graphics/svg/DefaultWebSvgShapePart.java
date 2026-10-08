@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.graphics.svg.DefaultWebSvgShapePartImpl.getAttribute;
+import static dev.reuise.web.core.graphics.svg.DefaultWebSvgShapePartImpl.self;
+import static dev.reuise.web.core.graphics.svg.DefaultWebSvgShapePartImpl.setAttribute;
 // Option: X - WEB
 // Option: Y - WEB
 // Option: ViewBox - WEB

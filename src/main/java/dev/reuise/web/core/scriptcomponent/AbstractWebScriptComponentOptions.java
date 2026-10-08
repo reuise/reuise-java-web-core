@@ -3,6 +3,7 @@ import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.WebComponentOptions;
 import dev.reuise.web.core.document.ExternalScript;
+import static dev.reuise.web.core.scriptcomponent.AbstractWebScriptComponentOptionsImpl.self;
 public abstract class AbstractWebScriptComponentOptions<S extends AbstractWebScriptComponentOptions<S>> implements WebScriptComponentOptions , WebComponentOptions {
     @Override
     public S setExternalScriptOptions(ExternalScript options) {

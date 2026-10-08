@@ -31,6 +31,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.applayout.DefaultWebAppLayoutPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.applayout.DefaultWebAppLayoutPartImpl.getParentComponentPart;
+import static dev.reuise.web.core.applayout.DefaultWebAppLayoutPartImpl.isRehydrated;
+import static dev.reuise.web.core.applayout.DefaultWebAppLayoutPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -132,6 +136,7 @@ public abstract class DefaultWebAppLayoutPart<S extends DefaultWebAppLayoutPart<
         split.getStartPanel().add(topAppBar);
          */
         WebAppLayoutBody body = ((WebAppLayoutBody) (this.body));
+        CoreSplitContainerPanel topAppBarStartPanel = (this.topAppBarSplit != null) ? this.topAppBarSplit.getStartPanel() : null;
         // if (topAppBar != null && body != null) {
         // getParentComponentPart().insertBefore(topAppBar, body);
         WebTopAppBar webtopAppBar = ((WebTopAppBar) (topAppBar));
@@ -140,11 +145,10 @@ public abstract class DefaultWebAppLayoutPart<S extends DefaultWebAppLayoutPart<
                 Object height = webtopAppBar.getHeight(s);
                 if (height != null) {
                     // body.getStyle(s).setMarginTop(height);
-                    if (this.topAppBarSplit != null) {
-                        CoreSplitContainerPanel startPanel = this.topAppBarSplit.getStartPanel();
-                        startPanel.setSize(height, s);
-                        startPanel.setMinSize(height, s);
-                        startPanel.setMaxSize(height, s);
+                    if (topAppBarStartPanel != null) {
+                        topAppBarStartPanel.setSize(height, s);
+                        topAppBarStartPanel.setMinSize(height, s);
+                        topAppBarStartPanel.setMaxSize(height, s);
                     }
                 }
             });
@@ -648,35 +652,36 @@ public abstract class DefaultWebAppLayoutPart<S extends DefaultWebAppLayoutPart<
     public void onCreate(O options) {
         super.onCreate(options);
         if (!isRehydrated()) {
-            if ((this.drawer != null) && (this.drawerSplit != null)) {
-                this.drawerSplit.getStartPanel().add(this.drawer);
-                WebSplitContainer split = ((WebSplitContainer) (this.drawerSplit));
+            if ((drawer != null) && (drawerSplit != null)) {
+                drawerSplit.getStartPanel().add(drawer);
+                WebSplitContainer split = ((WebSplitContainer) (drawerSplit));
                 WebSplitContainerPanel startPanel = split.getStartPanel();
                 startPanel.setCollapsed(true, ScreenSize.EXTRA_SMALL);
                 startPanel.setCollapsed(true, ScreenSize.SMALL);
-                this.body.removeFromParent();
-                this.drawerSplit.add(this.body);
+                body.removeFromParent();
+                drawerSplit.add(body);
             }
-            if ((this.topAppBar != null) && (this.topAppBarSplit != null)) {
-                WebSplitContainer split = ((WebSplitContainer) (this.topAppBarSplit));
-                WebTopAppBar webtopAppBar = ((WebTopAppBar) (this.topAppBar));
+            if ((topAppBar != null) && (topAppBarSplit != null)) {
+                WebSplitContainer split = ((WebSplitContainer) (topAppBarSplit));
+                WebTopAppBar webtopAppBar = ((WebTopAppBar) (topAppBar));
                 WebSplitContainerPanel startPanel = split.getStartPanel();
                 WebAppLayoutBody body = ((WebAppLayoutBody) (this.body));
-                if (Boolean.TRUE.equals(this.topAppBar.isFixed())) {
+                CoreSplitContainerPanel topAppBarStartPanel = this.topAppBarSplit.getStartPanel();
+                if (Boolean.TRUE.equals(topAppBar.isFixed())) {
                     webtopAppBar.getStyleStates().stream().forEach(s -> {
                         Object height = webtopAppBar.getHeight(s);
                         if (height != null) {
                             // body.getStyle(s).setMarginTop(height);
-                            if (this.topAppBarSplit != null) {
-                                this.topAppBarSplit.getStartPanel().setSize(height, s);
+                            if (topAppBarStartPanel != null) {
+                                topAppBarStartPanel.setSize(height, s);
                                 startPanel.setMinSize(height, s);
                             }
                         }
                     });
                 }
-                this.topAppBarSplit.getStartPanel().add(this.topAppBar);
+                topAppBarSplit.getStartPanel().add(topAppBar);
                 body.removeFromParent();
-                this.topAppBarSplit.add(body);
+                topAppBarSplit.add(body);
             }
         }
     }

@@ -25,6 +25,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.input.DefaultWebSearchFieldPartImpl.getComponentFactory;
+import static dev.reuise.web.core.input.DefaultWebSearchFieldPartImpl.getStartIcon;
+import static dev.reuise.web.core.input.DefaultWebSearchFieldPartImpl.isRehydrated;
 // Option: Size - CORE
 // Option: SupportingText - CORE
 // Option: Label - CORE

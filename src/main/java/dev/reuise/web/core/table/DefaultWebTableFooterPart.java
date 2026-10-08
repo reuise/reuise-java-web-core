@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.table.DefaultWebTableFooterPartImpl.getBaseStyleClass;
+import static dev.reuise.web.core.table.DefaultWebTableFooterPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

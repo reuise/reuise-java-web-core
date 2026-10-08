@@ -22,6 +22,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.button.DefaultWebIconButtonPartImpl.getAttribute;
+import static dev.reuise.web.core.button.DefaultWebIconButtonPartImpl.getData;
+import static dev.reuise.web.core.button.DefaultWebIconButtonPartImpl.self;
+import static dev.reuise.web.core.button.DefaultWebIconButtonPartImpl.setAttribute;
+import static dev.reuise.web.core.button.DefaultWebIconButtonPartImpl.setData;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

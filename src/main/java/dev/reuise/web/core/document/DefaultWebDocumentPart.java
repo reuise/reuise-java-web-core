@@ -28,6 +28,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static dev.reuise.web.core.document.DefaultWebDocumentPartImpl.getViewId;
+import static dev.reuise.web.core.document.DefaultWebDocumentPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -100,7 +102,7 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
 
     @Override
     public S setViewId(String viewId) {
-        this.body.setData("viewid", viewId);
+        body.setData("viewid", viewId);
         return self();
     }
 
@@ -832,7 +834,7 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     // Implementation
     @Override
     public S setTheme(Theme theme) {
-        this.parentComponentPart.setTheme(theme);
+        parentComponentPart.setTheme(theme);
         if (theme == null)
             return self();
 
@@ -1127,7 +1129,7 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     // Implementation
     public boolean onPreInitialize(O options) {
         options.getComponentFactory().setRootComponent(((RootComponent) (options.getComponent())));
-        this.body = createBody(options);
+        body = createBody(options);
         return true;
     }
 

@@ -5,6 +5,8 @@ import dev.reuise.web.core.graphics.svg.WebSvgOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
 import dev.reuise.web.core.input.WebTextFieldOptions;
 import dev.reuise.web.core.menu.WebMenuOptions;
+import static dev.reuise.web.core.selectmenu.AbstractWebSelectMenuOptionsImpl.getComponentFactory;
+import static dev.reuise.web.core.selectmenu.AbstractWebSelectMenuOptionsImpl.getTextFieldOptions;
 public abstract class AbstractWebSelectMenuOptions<S extends AbstractWebSelectMenuOptions<S>> extends AbstractCoreSelectMenuOptions<S> implements WebSelectMenuOptions {
     protected AbstractWebSelectMenuOptions() {
         WebSvgOptions arrowSvgOpts = getComponentFactory().createSvgOptions();
