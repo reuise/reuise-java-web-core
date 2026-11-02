@@ -3,7 +3,7 @@ import dev.reuise.core.layout.CoreRowLayoutOptions;
 import dev.reuise.web.core.WebComponentOptions;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebRowLayoutOptions extends WebFlexContainerOptions , WebBaseComponentPartOptions , WebFlexContainerPartOptions , WebContainerPartOptions , WebParentComponentPartOptions , CoreRowLayoutOptions , WebComponentOptions , WebRowLayoutPartOptions {
     WebFlexContainerPartOptions getFlexContainerPart();
 

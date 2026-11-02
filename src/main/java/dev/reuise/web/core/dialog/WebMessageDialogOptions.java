@@ -3,7 +3,7 @@ import dev.reuise.core.dialog.CoreMessageDialogOptions;
 import dev.reuise.web.core.WebComponentOptions;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebMessageDialogOptions extends WebDialogOptions , WebBaseComponentPartOptions , WebMessageDialogPartOptions , WebDialogPartOptions , WebParentComponentPartOptions , CoreMessageDialogOptions , WebComponentOptions {
     WebDialogPartOptions getDialogPart();
 

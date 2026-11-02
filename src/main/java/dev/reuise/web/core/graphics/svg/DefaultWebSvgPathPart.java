@@ -21,9 +21,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.graphics.svg.DefaultWebSvgPathPartImpl.getAttribute;
-import static dev.reuise.web.core.graphics.svg.DefaultWebSvgPathPartImpl.self;
-import static dev.reuise.web.core.graphics.svg.DefaultWebSvgPathPartImpl.setAttribute;
 // Option: Fill - WEB
 // Option: Stroke - WEB
 // Option: StrokeWidth - WEB

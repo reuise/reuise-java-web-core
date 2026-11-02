@@ -21,9 +21,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.media.DefaultWebVideoPlayerPartImpl.getAttribute;
-import static dev.reuise.web.core.media.DefaultWebVideoPlayerPartImpl.self;
-import static dev.reuise.web.core.media.DefaultWebVideoPlayerPartImpl.setAttribute;
 // Option: Autoplay - CORE
 // Option: Controls - CORE
 // Option: Loop - CORE

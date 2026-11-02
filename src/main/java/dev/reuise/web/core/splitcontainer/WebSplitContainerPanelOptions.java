@@ -5,7 +5,7 @@ import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.layout.WebContainerOptions;
 import dev.reuise.web.core.layout.WebContainerPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebSplitContainerPanelOptions extends WebBaseComponentPartOptions , WebContainerPartOptions , WebParentComponentPartOptions , WebContainerOptions , WebSplitContainerPanelPartOptions , WebComponentOptions , CoreSplitContainerPanelOptions {
     WebContainerPartOptions getContainerPart();
 

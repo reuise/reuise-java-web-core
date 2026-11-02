@@ -2,7 +2,7 @@ package dev.reuise.web.core.graphics.svg;
 import dev.reuise.web.core.WebComponentOptions;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebSvgPathOptions extends WebSvgShapeOptions , WebBaseComponentPartOptions , WebSvgShapePartOptions , WebSvgPathPartOptions , WebParentComponentPartOptions , WebSvgPartOptions , WebComponentOptions {
     WebSvgShapePartOptions getSvgShapePart();
 

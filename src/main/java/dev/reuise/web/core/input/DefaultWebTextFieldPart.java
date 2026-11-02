@@ -1,4 +1,5 @@
 package dev.reuise.web.core.input;
+import dev.reuise.core.ColorScheme;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -26,10 +27,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.input.DefaultWebTextFieldPartImpl.getBaseStyleClass;
-import static dev.reuise.web.core.input.DefaultWebTextFieldPartImpl.isRehydrated;
-import static dev.reuise.web.core.input.DefaultWebTextFieldPartImpl.self;
-import static dev.reuise.web.core.input.DefaultWebTextFieldPartImpl.setSupportingText;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -675,6 +672,8 @@ public abstract class DefaultWebTextFieldPart<S extends DefaultWebTextFieldPart<
         commonStyles.addRule(".reuise-textfield_starticon").setPosition("absolute").setPadding("0 8px 0 16px");
         commonStyles.addRule(".reuise-textfield_endicon").setPosition("absolute").setRight(0).setPadding("0 16px 0 8px");
         commonStyles.addRule(".reuise-textfield--error .reuise-textfield_label, .reuise-textfield--error .reuise-textfield_supportingtext").setColor("#B3261E");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-textfield--error .reuise-textfield_label, body[data-reuise-color-scheme=\"dark\"] .reuise-textfield--error .reuise-textfield_supportingtext").setColor("#F2B8B5");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-textfield--error .reuise-textfield_label, body:not([data-reuise-color-scheme]) .reuise-textfield--error .reuise-textfield_supportingtext", ColorScheme.DARK).setColor("#F2B8B5");
         commonStyles.addRule(".reuise-textfield_supportingtext").setDisplay("flex").setPadding("4px 16px 0px 16px").setFontSize(12).setLineHeight(16).setFontWeight("400");
         /* commonStyles.addRule(".reuise-textfield:has()")
         .setWidth("100%")

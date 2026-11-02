@@ -6,7 +6,7 @@ import dev.reuise.web.core.layout.WebContainerPartOptions;
 import dev.reuise.web.core.layout.WebFieldSetOptions;
 import dev.reuise.web.core.layout.WebFieldSetPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebChipGroupOptions extends WebFieldSetOptions , WebBaseComponentPartOptions , WebContainerPartOptions , WebParentComponentPartOptions , CoreChipGroupOptions , WebChipGroupPartOptions , WebFieldSetPartOptions , WebComponentOptions {
     WebFieldSetPartOptions getFieldSetPart();
 

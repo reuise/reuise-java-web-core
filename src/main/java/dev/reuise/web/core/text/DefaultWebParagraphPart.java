@@ -16,18 +16,14 @@ import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
-import dev.reuise.web.core.skeleton.WebLoadingSkeletonSupport;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.getSkeletonOptions;
-import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.getStyle;
-import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.isLoading;
-import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -91,22 +87,72 @@ import static dev.reuise.web.core.text.DefaultWebParagraphPartImpl.self;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebParagraphPart<S extends DefaultWebParagraphPart<S, O>, O extends WebParagraphPartOptions> extends DefaultCoreParagraphPart<S, O> implements WebParagraph , WebComponentPart {
+    private static final String LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton";
+
     private static final String PARAGRAPH_LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton--paragraph";
 
-    private final WebLoadingSkeletonSupport loadingSkeletonSupport;
+    private boolean loadingSkeletonStylesCaptured;
+
+    private Object loadingSkeletonWidth;
+
+    private Object loadingSkeletonMinHeight;
+
+    private Object loadingSkeletonBorderRadius;
 
     @Override
     public S setLoading(Boolean loading) {
         super.setLoading(loading);
-        loadingSkeletonSupport.update(isLoading());
+        updateLoadingSkeletonState();
         return self();
     }
 
     @Override
     public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
         super.setSkeletonOptions(skeletonOptions);
-        loadingSkeletonSupport.refreshIfLoading(isLoading());
+        if (isLoading())
+            applyLoadingSkeletonStyles();
+
         return self();
+    }
+
+    private void updateLoadingSkeletonState() {
+        boolean loading = isLoading();
+        addOrRemoveStyleClass(LOADING_SKELETON_STYLE_CLASS, loading);
+        addOrRemoveStyleClass(PARAGRAPH_LOADING_SKELETON_STYLE_CLASS, loading);
+        if (loading) {
+            captureLoadingSkeletonStyles();
+            applyLoadingSkeletonStyles();
+            return;
+        }
+        restoreLoadingSkeletonStyles();
+    }
+
+    private void captureLoadingSkeletonStyles() {
+        if (loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        loadingSkeletonWidth = style.getWidth();
+        loadingSkeletonMinHeight = style.getMinHeight();
+        loadingSkeletonBorderRadius = style.getBorderRadius();
+        loadingSkeletonStylesCaptured = true;
+    }
+
+    private void restoreLoadingSkeletonStyles() {
+        if (!loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        style.setWidth(loadingSkeletonWidth);
+        style.setMinHeight(loadingSkeletonMinHeight);
+        style.setBorderRadius(loadingSkeletonBorderRadius);
+        loadingSkeletonStylesCaptured = false;
     }
 
     private void applyLoadingSkeletonStyles() {
@@ -129,8 +175,6 @@ public abstract class DefaultWebParagraphPart<S extends DefaultWebParagraphPart<
 
         if ((skeletonOptions != null) && (skeletonOptions.getShape() == SkeletonShape.CIRCULAR))
             style.setBorderRadius("50%");
-        else if (style.getBorderRadius() == null)
-            style.setBorderRadius("6px");
 
     }
 
@@ -573,9 +617,13 @@ public abstract class DefaultWebParagraphPart<S extends DefaultWebParagraphPart<
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        WebLoadingSkeletonSupport.addCommonStyles(commonStyles);
+        commonStyles.addRule(".reuise-loading-skeleton").setPosition("relative").setOverflow("hidden").setColor("transparent", true).setUserSelect("none").setPointerEvents("none");
+        commonStyles.addRule(".reuise-loading-skeleton>*").setVisibility("hidden");
+        commonStyles.addRule(".reuise-loading-skeleton::before").setContent("''").setPosition("absolute").setTop("0").setRight("0").setBottom("0").setLeft("0").setBackgroundColor("rgb(0 0 0 / 10%)").setBorderRadius("inherit").setAnimation("1.5s ease-in-out 0.5s infinite alternate reuise-loading-skeleton_pulse");
         commonStyles.addRule(".reuise-loading-skeleton--paragraph").setDisplay("block").setWidth("100%");
-        commonStyles.addRule(".reuise-loading-skeleton--paragraph::before").setBackground("repeating-linear-gradient(to bottom, rgb(0 0 0 / 10%) 0, rgb(0 0 0 / 10%) 1em, transparent 1em, transparent 1.6em)").setBackgroundColor("transparent");
+        StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-loading-skeleton_pulse");
+        keyframes.addRule("0%").setOpacity(1);
+        keyframes.addRule("100%").setOpacity(0.55);
     }
 
     // Implementation

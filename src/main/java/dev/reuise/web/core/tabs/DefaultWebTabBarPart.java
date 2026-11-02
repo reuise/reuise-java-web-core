@@ -25,8 +25,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.tabs.DefaultWebTabBarPartImpl.getTabByIndex;
-import static dev.reuise.web.core.tabs.DefaultWebTabBarPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -602,6 +600,6 @@ public abstract class DefaultWebTabBarPart<S extends DefaultWebTabBarPart<S, O>,
         commonStyles.addRule(".reuise-tab").setPosition("relative").setDisplay("inline-flex").setAlignItems("center").setPadding("10px 16px").setCursor("pointer");
         commonStyles.addRule(".reuise-tab--active");
         commonStyles.addRule(".reuise-tabbar .reuise-tab:has(.reuise-tab_link)").setPadding("0").setCursor("pointer");
-        commonStyles.addRule(".reuise-tabbar .reuise-tab>.reuise-tab_link").setPadding("10px 16px").setDisplay("block").setColor("inherit").setTextDecoration("none");
+        commonStyles.addRule(".reuise-tabbar .reuise-tab>.reuise-tab_link").setPadding("10px 16px").setDisplay("flex").setAlignItems("center").setJustifyContent("center").setRowGap("var(--reuise-tab-gap, 2px)").setColumnGap("var(--reuise-tab-gap, 2px)").setColor("inherit").setTextDecoration("none");
     }
 }

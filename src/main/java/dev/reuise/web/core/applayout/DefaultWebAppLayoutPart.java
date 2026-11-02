@@ -11,13 +11,9 @@ import dev.reuise.core.State;
 import dev.reuise.core.applayout.DefaultCoreAppLayoutPart;
 import dev.reuise.core.bottomappbar.CoreBottomAppBar;
 import dev.reuise.core.drawer.CoreDrawer;
-import dev.reuise.core.option.ComponentOption;
-import dev.reuise.core.option.DefaultComponentOption;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.core.parentcomponent.CoreParentComponentPart;
-import dev.reuise.core.splitcontainer.CoreSplitContainerOptions;
 import dev.reuise.core.splitcontainer.CoreSplitContainerPanel;
-import dev.reuise.core.splitcontainer.CoreSplitContainerPanelOptions;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.core.topappbar.CoreTopAppBar;
 import dev.reuise.web.core.WebComponentFactory;
@@ -35,10 +31,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.applayout.DefaultWebAppLayoutPartImpl.getBaseStyleClass;
-import static dev.reuise.web.core.applayout.DefaultWebAppLayoutPartImpl.getParentComponentPart;
-import static dev.reuise.web.core.applayout.DefaultWebAppLayoutPartImpl.isRehydrated;
-import static dev.reuise.web.core.applayout.DefaultWebAppLayoutPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -144,62 +136,21 @@ public abstract class DefaultWebAppLayoutPart<S extends DefaultWebAppLayoutPart<
         // if (topAppBar != null && body != null) {
         // getParentComponentPart().insertBefore(topAppBar, body);
         WebTopAppBar webtopAppBar = ((WebTopAppBar) (topAppBar));
-        O lastOptions = getLastAppliedOptions();
         if (Boolean.TRUE.equals(topAppBar.isFixed())) {
             webtopAppBar.getStyleStates().stream().forEach(s -> {
                 Object height = webtopAppBar.getHeight(s);
                 if (height != null) {
                     // body.getStyle(s).setMarginTop(height);
                     if (topAppBarStartPanel != null) {
-                        if (!hasUserStartPanelSize(lastOptions, "size", s))
-                            topAppBarStartPanel.setSize(height, s);
-                        if (!hasUserStartPanelSize(lastOptions, "minSize", s))
-                            topAppBarStartPanel.setMinSize(height, s);
-                        if (!hasUserStartPanelSize(lastOptions, "maxSize", s))
-                            topAppBarStartPanel.setMaxSize(height, s);
+                        topAppBarStartPanel.setSize(height, s);
+                        topAppBarStartPanel.setMinSize(height, s);
+                        topAppBarStartPanel.setMaxSize(height, s);
                     }
                 }
             });
         }
         // }
         return self();
-    }
-
-    private boolean isExplicitOption(ComponentOption<?> option) {
-        return (option != null) && !(option instanceof DefaultComponentOption);
-    }
-
-    private boolean hasUserStartPanelSize(O options, String dimension, State state) {
-        if (options == null)
-            return false;
-
-        CoreSplitContainerOptions topAppBarSplitOptions = options.getTopAppBarSplitOptions();
-        if (topAppBarSplitOptions == null)
-            return false;
-
-        CoreSplitContainerPanelOptions startPanelOptions = topAppBarSplitOptions.getStartPanelOptions();
-        if (startPanelOptions == null)
-            return false;
-
-        ComponentOption<?> stateOption;
-        ComponentOption<?> defaultOption;
-        switch (dimension) {
-            case "size" :
-                stateOption = startPanelOptions.getSizeOption(state);
-                defaultOption = startPanelOptions.getSizeOption();
-                break;
-            case "minSize" :
-                stateOption = startPanelOptions.getMinSizeOption(state);
-                defaultOption = startPanelOptions.getMinSizeOption();
-                break;
-            case "maxSize" :
-                stateOption = startPanelOptions.getMaxSizeOption(state);
-                defaultOption = startPanelOptions.getMaxSizeOption();
-                break;
-            default :
-                return false;
-        }
-        return isExplicitOption(stateOption) || isExplicitOption(defaultOption);
     }
 
     @Override
@@ -718,10 +669,8 @@ public abstract class DefaultWebAppLayoutPart<S extends DefaultWebAppLayoutPart<
                         if (height != null) {
                             // body.getStyle(s).setMarginTop(height);
                             if (topAppBarStartPanel != null) {
-                                if (!hasUserStartPanelSize(options, "size", s))
-                                    topAppBarStartPanel.setSize(height, s);
-                                if (!hasUserStartPanelSize(options, "minSize", s))
-                                    startPanel.setMinSize(height, s);
+                                topAppBarStartPanel.setSize(height, s);
+                                startPanel.setMinSize(height, s);
                             }
                         }
                     });

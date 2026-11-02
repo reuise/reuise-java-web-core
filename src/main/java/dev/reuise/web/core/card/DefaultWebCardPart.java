@@ -1,4 +1,5 @@
 package dev.reuise.web.core.card;
+import dev.reuise.core.ColorScheme;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -33,8 +34,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.card.DefaultWebCardPartImpl.getBaseStyleClass;
-import static dev.reuise.web.core.card.DefaultWebCardPartImpl.self;
 // Option: Type - CORE
 // Option: Direction - CORE
 // Option: JustifyContent - CORE
@@ -760,8 +759,14 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
         commonStyles.addRule(".reuise-card .reuise-card_textcontent").setDisplay("flex").setFlexDirection("column").setRowGap("32px").setPadding("16px");
         commonStyles.addRule(".reuise-card .reuise-card_headline").setDisplay("flex").setFlexDirection("column");
         commonStyles.addRule(".reuise-card .reuise-card_heading").setFontSize("16px").setFontWeight("400").setColor("#1D1B20").setLineHeight("24px");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-card .reuise-card_heading").setColor("#E6E1E5");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-card .reuise-card_heading", ColorScheme.DARK).setColor("#E6E1E5");
         commonStyles.addRule(".reuise-card .reuise-card_subheading").setFontSize("14px").setFontWeight("400").setColor("#49454F").setLineHeight("20px");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-card .reuise-card_subheading").setColor("#CAC4D0");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-card .reuise-card_subheading", ColorScheme.DARK).setColor("#CAC4D0");
         commonStyles.addRule(".reuise-card .reuise-card_text").setFontSize("14px").setFontWeight("400").setColor("#49454F").setLineHeight("20px");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-card .reuise-card_text").setColor("#CAC4D0");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-card .reuise-card_text", ColorScheme.DARK).setColor("#CAC4D0");
         commonStyles.addRule(".reuise-card .reuise-card_media").setDisplay("flex").setOverflow("hidden").setJustifyContent("center");
         commonStyles.addRule(".reuise-card .reuise-card_heading_link").setTextDecoration("none");
         /* commonStyles.addRule(".reuise-card .reuise-card_image")
@@ -770,6 +775,8 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
         commonStyles.addRule(".reuise-card--filled");
         commonStyles.addRule(".reuise-card--elevated").setBoxShadow("0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30)");
         commonStyles.addRule(".reuise-card--outlined").setBorder("1px solid #CAC4D0");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-card--outlined").setBorder("1px solid #49454F");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-card--outlined", ColorScheme.DARK).setBorder("1px solid #49454F");
     }
 
     @Override

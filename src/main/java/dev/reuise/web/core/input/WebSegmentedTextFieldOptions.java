@@ -7,7 +7,7 @@ import dev.reuise.web.core.layout.WebFlexContainerPartOptions;
 import dev.reuise.web.core.layout.WebRowLayoutOptions;
 import dev.reuise.web.core.layout.WebRowLayoutPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebSegmentedTextFieldOptions extends CoreSegmentedTextFieldOptions , WebBaseComponentPartOptions , WebFlexContainerPartOptions , WebContainerPartOptions , WebParentComponentPartOptions , WebComponentOptions , WebRowLayoutPartOptions , WebRowLayoutOptions , WebSegmentedTextFieldPartOptions {
     WebRowLayoutPartOptions getRowLayoutPart();
 

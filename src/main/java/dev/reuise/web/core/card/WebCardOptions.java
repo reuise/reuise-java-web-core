@@ -7,7 +7,7 @@ import dev.reuise.web.core.layout.WebFlexContainerPartOptions;
 import dev.reuise.web.core.layout.WebSurfaceOptions;
 import dev.reuise.web.core.layout.WebSurfacePartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebCardOptions extends WebCardPartOptions , WebSurfaceOptions , WebBaseComponentPartOptions , CoreCardOptions , WebFlexContainerPartOptions , WebContainerPartOptions , WebParentComponentPartOptions , WebSurfacePartOptions , WebComponentOptions {
     WebSurfacePartOptions getSurfacePart();
 

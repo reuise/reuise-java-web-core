@@ -5,7 +5,6 @@ import dev.reuise.web.core.badge.WebBadgeOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
 import dev.reuise.web.core.link.WebLinkOptions;
 import dev.reuise.web.core.text.WebInlineTextOptions;
-import static dev.reuise.web.core.tabs.AbstractWebTabOptionsImpl.self;
 public abstract class AbstractWebTabOptions<S extends AbstractWebTabOptions<S>> extends AbstractCoreTabOptions<S> implements WebTabOptions {
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {

@@ -5,7 +5,7 @@ import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.list.WebBasicListItemPartOptions;
 import dev.reuise.web.core.list.WebListItemPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebMenuDividerOptions extends CoreMenuDividerOptions , WebBasicListItemPartOptions , WebBaseComponentPartOptions , WebMenuDividerPartOptions , WebMenuItemOptions , WebListItemPartOptions , WebMenuItemPartOptions , WebParentComponentPartOptions , WebComponentOptions {
     WebMenuItemPartOptions getMenuItemPart();
 

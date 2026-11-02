@@ -39,9 +39,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.view.DefaultWebSheetRouteLayoutPartImpl.getRouteLayout;
-import static dev.reuise.web.core.view.DefaultWebSheetRouteLayoutPartImpl.getStartPanel;
-import static dev.reuise.web.core.view.DefaultWebSheetRouteLayoutPartImpl.self;
 // Option: Direction - CORE
 // Option: ReverseDirection - CORE
 // Option: Resizable - CORE
@@ -1819,7 +1816,7 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
 
         routeLayout.addRevealHandler((view, relvealOpts) -> {
             if (view instanceof WebSheetView sheetView)
-                setSheetSize(dev.reuise.web.core.view.sheetView);
+                setSheetSize(sheetView);
 
         });
     }

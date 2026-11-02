@@ -4,7 +4,7 @@ import dev.reuise.web.core.WebComponentOptions;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebIconButtonOptions extends WebBaseComponentPartOptions , WebParentComponentOptions , WebIconButtonPartOptions , WebParentComponentPartOptions , CoreIconButtonOptions , WebComponentOptions {
     WebParentComponentPartOptions getParentComponentPart();
 

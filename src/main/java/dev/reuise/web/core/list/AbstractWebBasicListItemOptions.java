@@ -2,7 +2,6 @@ package dev.reuise.web.core.list;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.list.AbstractCoreBasicListItemOptions;
 import dev.reuise.web.core.link.WebLinkOptions;
-import static dev.reuise.web.core.list.AbstractWebBasicListItemOptionsImpl.self;
 public abstract class AbstractWebBasicListItemOptions<S extends AbstractWebBasicListItemOptions<S>> extends AbstractCoreBasicListItemOptions<S> implements WebBasicListItemOptions {
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {

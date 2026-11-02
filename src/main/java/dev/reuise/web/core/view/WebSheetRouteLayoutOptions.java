@@ -6,7 +6,7 @@ import dev.reuise.web.core.layout.WebSheetLayoutOptions;
 import dev.reuise.web.core.layout.WebSheetLayoutPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
 import dev.reuise.web.core.splitcontainer.WebSplitContainerPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebSheetRouteLayoutOptions extends WebSheetLayoutOptions , WebSheetLayoutPartOptions , WebBaseComponentPartOptions , WebSheetRouteLayoutPartOptions , WebContainerPartOptions , WebParentComponentPartOptions , WebComponentOptions , WebSplitContainerPartOptions {
     WebSheetLayoutPartOptions getSheetLayoutPart();
 

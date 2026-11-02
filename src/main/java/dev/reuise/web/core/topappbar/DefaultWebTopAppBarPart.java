@@ -1,4 +1,5 @@
 package dev.reuise.web.core.topappbar;
+import dev.reuise.core.ColorScheme;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -28,10 +29,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.topappbar.DefaultWebTopAppBarPartImpl.addOrRemoveStyleClass;
-import static dev.reuise.web.core.topappbar.DefaultWebTopAppBarPartImpl.getComponentFactory;
-import static dev.reuise.web.core.topappbar.DefaultWebTopAppBarPartImpl.isRehydrated;
-import static dev.reuise.web.core.topappbar.DefaultWebTopAppBarPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -614,7 +611,11 @@ public abstract class DefaultWebTopAppBarPart<S extends DefaultWebTopAppBarPart<
         commonStyles.addRule(".reuise-top-app-bar_actionscontainer").setFlex("0 1 auto").setJustifyContent("end");
         commonStyles.addRule(".reuise-top-app-bar_navigationbutton").setWidth(24).setHeight(24).setAlignSelf("center").setBorder("none").setBorderRadius("50%").setBackgroundColor("transparent").setPadding(9).setBoxSizing("content-box", true).setCursor("pointer");
         commonStyles.addRule(".reuise-top-app-bar_navigationbutton:hover").setBackgroundColor("#3c404314");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-top-app-bar_navigationbutton:hover").setBackgroundColor("#e2e2e614");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-top-app-bar_navigationbutton:hover", ColorScheme.DARK).setBackgroundColor("#e2e2e614");
         commonStyles.addRule(".reuise-top-app-bar_navigationbutton path").setColor("#5f6368");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-top-app-bar_navigationbutton path").setColor("#c4c7c5");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-top-app-bar_navigationbutton path", ColorScheme.DARK).setColor("#c4c7c5");
     }
 
     @Override

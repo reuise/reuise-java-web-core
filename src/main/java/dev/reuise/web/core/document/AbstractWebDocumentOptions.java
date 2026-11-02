@@ -134,9 +134,9 @@ public abstract class AbstractWebDocumentOptions<S extends AbstractWebDocumentOp
     @Override
     public S removeKeyword(String keyword) {
         List<String> list = getKeywords();
-        if (list == null) {
+        if (list == null)
             return self();
-        }
+
         list.remove(keyword);
         return self();
     }
@@ -144,9 +144,9 @@ public abstract class AbstractWebDocumentOptions<S extends AbstractWebDocumentOp
     @Override
     public S clearKeywords() {
         List<String> list = getKeywords();
-        if (list == null) {
+        if (list == null)
             return self();
-        }
+
         list.clear();
         return self();
     }
@@ -154,9 +154,9 @@ public abstract class AbstractWebDocumentOptions<S extends AbstractWebDocumentOp
     @Override
     public boolean hasKeyword(String keyword) {
         List<String> list = getKeywords();
-        if (list == null) {
+        if (list == null)
             return false;
-        }
+
         return list.contains(keyword);
     }
 
@@ -326,9 +326,9 @@ public abstract class AbstractWebDocumentOptions<S extends AbstractWebDocumentOp
     @Override
     public S removeStyleSheet(StyleSheet styleSheet) {
         List<StyleSheet> list = getStyleSheet();
-        if (list == null) {
+        if (list == null)
             return self();
-        }
+
         list.remove(styleSheet);
         return self();
     }

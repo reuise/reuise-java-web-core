@@ -17,19 +17,14 @@ import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
-import dev.reuise.web.core.skeleton.WebLoadingSkeletonSupport;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.text.DefaultWebTextPartImpl.getSkeletonOptions;
-import static dev.reuise.web.core.text.DefaultWebTextPartImpl.getStyle;
-import static dev.reuise.web.core.text.DefaultWebTextPartImpl.getText;
-import static dev.reuise.web.core.text.DefaultWebTextPartImpl.isLoading;
-import static dev.reuise.web.core.text.DefaultWebTextPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -93,22 +88,87 @@ import static dev.reuise.web.core.text.DefaultWebTextPartImpl.self;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebTextPart<S extends DefaultWebTextPart<S, O>, O extends WebTextPartOptions> extends DefaultCoreTextPart<S, O> implements WebText , WebComponentPart {
+    private static final String LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton";
+
     private static final String TEXT_LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton--text";
 
-    private final WebLoadingSkeletonSupport loadingSkeletonSupport;
+    private boolean loadingSkeletonStylesCaptured;
+
+    private Object loadingSkeletonWidth;
+
+    private Object loadingSkeletonMinHeight;
+
+    private Object loadingSkeletonBorderRadius;
+
+    // When Text is composed as an internal part of another component (Heading,
+    // InlineText, Label, TextBlock), it shares its style/style-class target with
+    // the composing component, which owns and applies its own skeleton CSS. Text
+    // must not also apply its own skeleton styles in that case, or the two would
+    // clobber each other (the composing component's defaults would never "win").
+    // The composing component's Impl sets this flag immediately after creating
+    // this Text part, since detecting composition from shared state is unreliable.
+    private boolean skeletonCssOwnedExternally;
+
+    void setSkeletonCssOwnedExternally(boolean skeletonCssOwnedExternally) {
+        this.skeletonCssOwnedExternally = skeletonCssOwnedExternally;
+    }
 
     @Override
     public S setLoading(Boolean loading) {
         super.setLoading(loading);
-        loadingSkeletonSupport.update(isLoading());
+        if (!skeletonCssOwnedExternally)
+            updateLoadingSkeletonState();
+
         return self();
     }
 
     @Override
     public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
         super.setSkeletonOptions(skeletonOptions);
-        loadingSkeletonSupport.refreshIfLoading(isLoading());
+        if ((!skeletonCssOwnedExternally) && isLoading())
+            applyLoadingSkeletonStyles();
+
         return self();
+    }
+
+    private void updateLoadingSkeletonState() {
+        boolean loading = isLoading();
+        addOrRemoveStyleClass(LOADING_SKELETON_STYLE_CLASS, loading);
+        addOrRemoveStyleClass(TEXT_LOADING_SKELETON_STYLE_CLASS, loading);
+        if (loading) {
+            captureLoadingSkeletonStyles();
+            applyLoadingSkeletonStyles();
+            return;
+        }
+        restoreLoadingSkeletonStyles();
+    }
+
+    private void captureLoadingSkeletonStyles() {
+        if (loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        loadingSkeletonWidth = style.getWidth();
+        loadingSkeletonMinHeight = style.getMinHeight();
+        loadingSkeletonBorderRadius = style.getBorderRadius();
+        loadingSkeletonStylesCaptured = true;
+    }
+
+    private void restoreLoadingSkeletonStyles() {
+        if (!loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        style.setWidth(loadingSkeletonWidth);
+        style.setMinHeight(loadingSkeletonMinHeight);
+        style.setBorderRadius(loadingSkeletonBorderRadius);
+        loadingSkeletonStylesCaptured = false;
     }
 
     private void applyLoadingSkeletonStyles() {
@@ -120,17 +180,17 @@ public abstract class DefaultWebTextPart<S extends DefaultWebTextPart<S, O>, O e
         if ((skeletonOptions != null) && (skeletonOptions.getWidth() != null))
             style.setWidth(Style.parseProperty(skeletonOptions.getWidth()));
         else if (style.getWidth() == null)
-            style.setWidth("fit-content");
+            style.setWidth("100%");
 
-        if ((skeletonOptions != null) && (skeletonOptions.getMinWidth() != null))
-            style.setMinWidth(Style.parseProperty(skeletonOptions.getMinWidth()));
-        else if (((getText() == null) || getText().isEmpty()) && (style.getMinWidth() == null))
-            style.setMinWidth("8ch");
+        if ((skeletonOptions != null) && (skeletonOptions.getMinHeight() != null))
+            style.setMinHeight(Style.parseProperty(skeletonOptions.getMinHeight()));
+        else if ((skeletonOptions != null) && (skeletonOptions.getHeight() != null))
+            style.setMinHeight(Style.parseProperty(skeletonOptions.getHeight()));
+        else if (style.getMinHeight() == null)
+            style.setMinHeight("4.2em");
 
         if ((skeletonOptions != null) && (skeletonOptions.getShape() == SkeletonShape.CIRCULAR))
             style.setBorderRadius("50%");
-        else if (style.getBorderRadius() == null)
-            style.setBorderRadius("6px");
 
     }
 
@@ -575,8 +635,13 @@ public abstract class DefaultWebTextPart<S extends DefaultWebTextPart<S, O>, O e
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        WebLoadingSkeletonSupport.addCommonStyles(commonStyles);
-        commonStyles.addRule(".reuise-loading-skeleton--text").setDisplay("inline-block").setMaxWidth("100%");
+        commonStyles.addRule(".reuise-loading-skeleton").setPosition("relative").setOverflow("hidden").setColor("transparent", true).setUserSelect("none").setPointerEvents("none");
+        commonStyles.addRule(".reuise-loading-skeleton>*").setVisibility("hidden");
+        commonStyles.addRule(".reuise-loading-skeleton::before").setContent("''").setPosition("absolute").setTop("0").setRight("0").setBottom("0").setLeft("0").setBackgroundColor("rgb(0 0 0 / 10%)").setBorderRadius("inherit").setAnimation("1.5s ease-in-out 0.5s infinite alternate reuise-loading-skeleton_pulse");
+        commonStyles.addRule(".reuise-loading-skeleton--text").setDisplay("block").setWidth("100%");
+        StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-loading-skeleton_pulse");
+        keyframes.addRule("0%").setOpacity(1);
+        keyframes.addRule("100%").setOpacity(0.55);
     }
 
     // Implementation

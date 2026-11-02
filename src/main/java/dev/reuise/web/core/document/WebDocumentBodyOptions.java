@@ -3,7 +3,7 @@ import dev.reuise.web.core.WebComponentOptions;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebDocumentBodyOptions extends WebBaseComponentPartOptions , WebParentComponentOptions , WebDocumentBodyPartOptions , WebParentComponentPartOptions , WebComponentOptions {
     WebParentComponentPartOptions getParentComponentPart();
 

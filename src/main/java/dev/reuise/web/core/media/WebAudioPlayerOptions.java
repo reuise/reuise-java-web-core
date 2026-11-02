@@ -3,7 +3,7 @@ import dev.reuise.core.media.CoreAudioPlayerOptions;
 import dev.reuise.web.core.WebComponentOptions;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebAudioPlayerOptions extends WebAudioPlayerPartOptions , WebBaseComponentPartOptions , CoreAudioPlayerOptions , WebParentComponentPartOptions , WebComponentOptions , WebMediaPlayerOptions , WebMediaPlayerPartOptions {
     WebMediaPlayerPartOptions getMediaPlayerPart();
 

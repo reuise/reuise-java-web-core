@@ -23,9 +23,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.link.DefaultWebNavigationLinkPartImpl.addOrRemoveStyleClass;
-import static dev.reuise.web.core.link.DefaultWebNavigationLinkPartImpl.hasStyleClass;
-import static dev.reuise.web.core.link.DefaultWebNavigationLinkPartImpl.self;
 // Option: UseHistoryApi - WEB
 // Option: Text - CORE
 // Option: Url - CORE

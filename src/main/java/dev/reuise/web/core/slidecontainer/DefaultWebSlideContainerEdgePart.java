@@ -25,9 +25,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerEdgePartImpl.getBaseComponentPart;
-import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerEdgePartImpl.isRehydrated;
-import static dev.reuise.web.core.slidecontainer.DefaultWebSlideContainerEdgePartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

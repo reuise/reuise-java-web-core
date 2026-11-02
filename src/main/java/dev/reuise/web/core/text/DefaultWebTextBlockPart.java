@@ -9,6 +9,8 @@ import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
 import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.skeleton.CoreSkeletonOptions;
+import dev.reuise.core.skeleton.SkeletonShape;
 import dev.reuise.core.text.DefaultCoreTextBlockPart;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
@@ -17,6 +19,7 @@ import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
@@ -95,6 +98,117 @@ import java.util.Set;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebTextBlockPart<S extends DefaultWebTextBlockPart<S, O>, O extends WebTextBlockPartOptions> extends DefaultCoreTextBlockPart<S, O> implements WebTextBlock , WebComponentPart {
+    private static final String LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton";
+
+    private static final String TEXTBLOCK_LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton--textblock";
+
+    private boolean loadingSkeletonStylesCaptured;
+
+    private Object loadingSkeletonWidth;
+
+    private Object loadingSkeletonMinHeight;
+
+    private Object loadingSkeletonBorderRadius;
+
+    private boolean composedTextSkeletonSuppressed;
+
+    // The internal Text part exists only to be composed by this TextBlock; it
+    // must never apply its own skeleton CSS to the shared style, since
+    // TextBlock owns it. Done lazily (not via setupReferences, which the
+    // generator fully replaces rather than merges) the first time
+    // loading/skeleton state is touched.
+    private void suppressComposedTextSkeleton() {
+        if (composedTextSkeletonSuppressed)
+            return;
+
+        composedTextSkeletonSuppressed = true;
+        WebTextPart textPart = getTextPart();
+        if (textPart instanceof DefaultWebTextPart)
+            ((DefaultWebTextPart<?, ?>) (textPart)).setSkeletonCssOwnedExternally(true);
+
+    }
+
+    @Override
+    public S setLoading(Boolean loading) {
+        suppressComposedTextSkeleton();
+        super.setLoading(loading);
+        updateLoadingSkeletonState();
+        return self();
+    }
+
+    @Override
+    public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
+        suppressComposedTextSkeleton();
+        super.setSkeletonOptions(skeletonOptions);
+        if (isLoading())
+            applyLoadingSkeletonStyles();
+
+        return self();
+    }
+
+    private void updateLoadingSkeletonState() {
+        boolean loading = isLoading();
+        addOrRemoveStyleClass(LOADING_SKELETON_STYLE_CLASS, loading);
+        addOrRemoveStyleClass(TEXTBLOCK_LOADING_SKELETON_STYLE_CLASS, loading);
+        if (loading) {
+            captureLoadingSkeletonStyles();
+            applyLoadingSkeletonStyles();
+            return;
+        }
+        restoreLoadingSkeletonStyles();
+    }
+
+    private void captureLoadingSkeletonStyles() {
+        if (loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        loadingSkeletonWidth = style.getWidth();
+        loadingSkeletonMinHeight = style.getMinHeight();
+        loadingSkeletonBorderRadius = style.getBorderRadius();
+        loadingSkeletonStylesCaptured = true;
+    }
+
+    private void restoreLoadingSkeletonStyles() {
+        if (!loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        style.setWidth(loadingSkeletonWidth);
+        style.setMinHeight(loadingSkeletonMinHeight);
+        style.setBorderRadius(loadingSkeletonBorderRadius);
+        loadingSkeletonStylesCaptured = false;
+    }
+
+    private void applyLoadingSkeletonStyles() {
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        CoreSkeletonOptions skeletonOptions = getSkeletonOptions();
+        if ((skeletonOptions != null) && (skeletonOptions.getWidth() != null))
+            style.setWidth(Style.parseProperty(skeletonOptions.getWidth()));
+        else if (style.getWidth() == null)
+            style.setWidth("100%");
+
+        if ((skeletonOptions != null) && (skeletonOptions.getMinHeight() != null))
+            style.setMinHeight(Style.parseProperty(skeletonOptions.getMinHeight()));
+        else if ((skeletonOptions != null) && (skeletonOptions.getHeight() != null))
+            style.setMinHeight(Style.parseProperty(skeletonOptions.getHeight()));
+        else if (style.getMinHeight() == null)
+            style.setMinHeight("4.2em");
+
+        if ((skeletonOptions != null) && (skeletonOptions.getShape() == SkeletonShape.CIRCULAR))
+            style.setBorderRadius("50%");
+
+    }
+
     private WebTextPart textPart;
 
     private WebParentComponentPart parentComponentPart;
@@ -544,6 +658,15 @@ public abstract class DefaultWebTextBlockPart<S extends DefaultWebTextBlockPart<
         textPart.onInitializeComponentType(rootComponent);
     }
 
+    // Implementation
+    // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        commonStyles.addRule(".reuise-loading-skeleton").setPosition("relative").setOverflow("hidden").setColor("transparent", true).setUserSelect("none").setPointerEvents("none");
+        commonStyles.addRule(".reuise-loading-skeleton>*").setVisibility("hidden");
+        commonStyles.addRule(".reuise-loading-skeleton::before").setContent("''").setPosition("absolute").setTop("0").setRight("0").setBottom("0").setLeft("0").setBackgroundColor("rgb(0 0 0 / 10%)").setBorderRadius("inherit").setAnimation("1.5s ease-in-out 0.5s infinite alternate reuise-loading-skeleton_pulse");
+        commonStyles.addRule(".reuise-loading-skeleton--textblock").setDisplay("block").setWidth("100%");
+        StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-loading-skeleton_pulse");
+        keyframes.addRule("0%").setOpacity(1);
+        keyframes.addRule("100%").setOpacity(0.55);
     }
 }

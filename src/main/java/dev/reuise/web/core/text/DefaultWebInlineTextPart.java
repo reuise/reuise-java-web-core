@@ -9,6 +9,8 @@ import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
 import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.skeleton.CoreSkeletonOptions;
+import dev.reuise.core.skeleton.SkeletonShape;
 import dev.reuise.core.text.DefaultCoreInlineTextPart;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
@@ -17,6 +19,7 @@ import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
@@ -95,6 +98,127 @@ import java.util.Set;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebInlineTextPart<S extends DefaultWebInlineTextPart<S, O>, O extends WebInlineTextPartOptions> extends DefaultCoreInlineTextPart<S, O> implements WebInlineText , WebComponentPart {
+    private static final String LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton";
+
+    private static final String INLINETEXT_LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton--inlinetext";
+
+    private boolean loadingSkeletonStylesCaptured;
+
+    private Object loadingSkeletonWidth;
+
+    private Object loadingSkeletonMinWidth;
+
+    private Object loadingSkeletonBorderRadius;
+
+    // Set by a composing component (e.g. Label) that owns this InlineText
+    // internally, so this part must not apply its own skeleton CSS.
+    private boolean skeletonCssOwnedExternally;
+
+    private boolean composedTextSkeletonSuppressed;
+
+    void setSkeletonCssOwnedExternally(boolean skeletonCssOwnedExternally) {
+        this.skeletonCssOwnedExternally = skeletonCssOwnedExternally;
+    }
+
+    // The internal Text part exists only to be composed by this InlineText; it
+    // must never apply its own skeleton CSS to the shared style, since
+    // InlineText owns it. Done lazily (not via setupReferences, which the
+    // generator fully replaces rather than merges) the first time
+    // loading/skeleton state is touched.
+    private void suppressComposedTextSkeleton() {
+        if (composedTextSkeletonSuppressed)
+            return;
+
+        composedTextSkeletonSuppressed = true;
+        WebTextPart textPart = getTextPart();
+        if (textPart instanceof DefaultWebTextPart)
+            ((DefaultWebTextPart<?, ?>) (textPart)).setSkeletonCssOwnedExternally(true);
+
+    }
+
+    @Override
+    public S setLoading(Boolean loading) {
+        suppressComposedTextSkeleton();
+        super.setLoading(loading);
+        if (!skeletonCssOwnedExternally)
+            updateLoadingSkeletonState();
+
+        return self();
+    }
+
+    @Override
+    public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
+        suppressComposedTextSkeleton();
+        super.setSkeletonOptions(skeletonOptions);
+        if ((!skeletonCssOwnedExternally) && isLoading())
+            applyLoadingSkeletonStyles();
+
+        return self();
+    }
+
+    private void updateLoadingSkeletonState() {
+        boolean loading = isLoading();
+        addOrRemoveStyleClass(LOADING_SKELETON_STYLE_CLASS, loading);
+        addOrRemoveStyleClass(INLINETEXT_LOADING_SKELETON_STYLE_CLASS, loading);
+        if (loading) {
+            captureLoadingSkeletonStyles();
+            applyLoadingSkeletonStyles();
+            return;
+        }
+        restoreLoadingSkeletonStyles();
+    }
+
+    private void captureLoadingSkeletonStyles() {
+        if (loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        loadingSkeletonWidth = style.getWidth();
+        loadingSkeletonMinWidth = style.getMinWidth();
+        loadingSkeletonBorderRadius = style.getBorderRadius();
+        loadingSkeletonStylesCaptured = true;
+    }
+
+    private void restoreLoadingSkeletonStyles() {
+        if (!loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        style.setWidth(loadingSkeletonWidth);
+        style.setMinWidth(loadingSkeletonMinWidth);
+        style.setBorderRadius(loadingSkeletonBorderRadius);
+        loadingSkeletonStylesCaptured = false;
+    }
+
+    private void applyLoadingSkeletonStyles() {
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        CoreSkeletonOptions skeletonOptions = getSkeletonOptions();
+        if ((skeletonOptions != null) && (skeletonOptions.getWidth() != null))
+            style.setWidth(Style.parseProperty(skeletonOptions.getWidth()));
+        else if (style.getWidth() == null)
+            style.setWidth("fit-content");
+
+        if ((skeletonOptions != null) && (skeletonOptions.getMinWidth() != null))
+            style.setMinWidth(Style.parseProperty(skeletonOptions.getMinWidth()));
+        else if (((getText() == null) || getText().isEmpty()) && (style.getMinWidth() == null))
+            style.setMinWidth("8ch");
+
+        if ((skeletonOptions != null) && (skeletonOptions.getShape() == SkeletonShape.CIRCULAR))
+            style.setBorderRadius("50%");
+        else if (style.getBorderRadius() == null)
+            style.setBorderRadius("6px");
+
+    }
+
     private WebTextPart textPart;
 
     private WebParentComponentPart parentComponentPart;
@@ -544,6 +668,15 @@ public abstract class DefaultWebInlineTextPart<S extends DefaultWebInlineTextPar
         textPart.onInitializeComponentType(rootComponent);
     }
 
+    // Implementation
+    // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        commonStyles.addRule(".reuise-loading-skeleton").setPosition("relative").setOverflow("hidden").setColor("transparent", true).setUserSelect("none").setPointerEvents("none");
+        commonStyles.addRule(".reuise-loading-skeleton>*").setVisibility("hidden");
+        commonStyles.addRule(".reuise-loading-skeleton::before").setContent("''").setPosition("absolute").setTop("0").setRight("0").setBottom("0").setLeft("0").setBackgroundColor("rgb(0 0 0 / 10%)").setBorderRadius("inherit").setAnimation("1.5s ease-in-out 0.5s infinite alternate reuise-loading-skeleton_pulse");
+        commonStyles.addRule(".reuise-loading-skeleton--inlinetext").setDisplay("inline-block").setMaxWidth("100%");
+        StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-loading-skeleton_pulse");
+        keyframes.addRule("0%").setOpacity(1);
+        keyframes.addRule("100%").setOpacity(0.55);
     }
 }

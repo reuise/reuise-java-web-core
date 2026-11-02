@@ -27,8 +27,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.splitcontainer.DefaultWebSplitContainerPartImpl.isRehydrated;
-import static dev.reuise.web.core.splitcontainer.DefaultWebSplitContainerPartImpl.self;
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE

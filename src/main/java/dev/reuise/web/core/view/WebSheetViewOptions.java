@@ -5,7 +5,7 @@ import dev.reuise.web.core.basecomponent.WebBaseComponentPartOptions;
 import dev.reuise.web.core.layout.WebContainerPartOptions;
 import dev.reuise.web.core.layout.WebFlexContainerPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebSheetViewOptions extends CoreSheetViewOptions , WebViewPartOptions , WebBaseComponentPartOptions , WebViewOptions , WebFlexContainerPartOptions , WebContainerPartOptions , WebSheetViewPartOptions , WebParentComponentPartOptions , WebComponentOptions {
     WebViewPartOptions getViewPart();
 

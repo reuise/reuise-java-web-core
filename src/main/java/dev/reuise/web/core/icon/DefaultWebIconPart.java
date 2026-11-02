@@ -10,6 +10,8 @@ import dev.reuise.core.State;
 import dev.reuise.core.icon.DefaultCoreIconPart;
 import dev.reuise.core.option.ComponentCreator;
 import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.skeleton.CoreSkeletonOptions;
+import dev.reuise.core.skeleton.SkeletonShape;
 import dev.reuise.core.theme.Color;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
@@ -23,17 +25,12 @@ import dev.reuise.web.core.link.WebLinkPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.getLink;
-import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.getStyle;
-import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.getTagName;
-import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.getUrl;
-import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.self;
-import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.setTagName;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -97,6 +94,81 @@ import static dev.reuise.web.core.icon.DefaultWebIconPartImpl.setTagName;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O extends WebIconPartOptions> extends DefaultCoreIconPart<S, O> implements WebIcon , WebComponentPart {
+    private static final String LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton";
+
+    private static final String ICON_LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton--icon";
+
+    private boolean loadingSkeletonStylesCaptured;
+
+    private Object loadingSkeletonBorderRadius;
+
+    @Override
+    public S setLoading(Boolean loading) {
+        super.setLoading(loading);
+        updateLoadingSkeletonState();
+        return self();
+    }
+
+    @Override
+    public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
+        super.setSkeletonOptions(skeletonOptions);
+        if (isLoading())
+            applyLoadingSkeletonStyles();
+
+        return self();
+    }
+
+    private void updateLoadingSkeletonState() {
+        boolean loading = isLoading();
+        addOrRemoveStyleClass(LOADING_SKELETON_STYLE_CLASS, loading);
+        addOrRemoveStyleClass(ICON_LOADING_SKELETON_STYLE_CLASS, loading);
+        if (loading) {
+            captureLoadingSkeletonStyles();
+            applyLoadingSkeletonStyles();
+            return;
+        }
+        restoreLoadingSkeletonStyles();
+    }
+
+    private void captureLoadingSkeletonStyles() {
+        if (loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        loadingSkeletonBorderRadius = style.getBorderRadius();
+        loadingSkeletonStylesCaptured = true;
+    }
+
+    private void restoreLoadingSkeletonStyles() {
+        if (!loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        style.setBorderRadius(loadingSkeletonBorderRadius);
+        loadingSkeletonStylesCaptured = false;
+    }
+
+    private void applyLoadingSkeletonStyles() {
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        CoreSkeletonOptions skeletonOptions = getSkeletonOptions();
+        if (((skeletonOptions != null) && (skeletonOptions.getShape() != null)) && (skeletonOptions.getShape() != SkeletonShape.CIRCULAR)) {
+            if (style.getBorderRadius() == null)
+                style.setBorderRadius("6px");
+
+            return;
+        }
+        style.setBorderRadius("50%");
+    }
+
     @Override
     public S setColor(Color color) {
         if (color == null)
@@ -684,5 +756,12 @@ public abstract class DefaultWebIconPart<S extends DefaultWebIconPart<S, O>, O e
         commonStyles.addRule(".reuise-icon_image").setDisplay("block");
         commonStyles.addRule(".reuise-icon>*").setWidth("inherit").setHeight("inherit");
         commonStyles.addRule(".reuise-icon svg:empty").setDisplay("none");
+        commonStyles.addRule(".reuise-loading-skeleton").setPosition("relative").setOverflow("hidden").setColor("transparent", true).setUserSelect("none").setPointerEvents("none");
+        commonStyles.addRule(".reuise-loading-skeleton>*").setVisibility("hidden");
+        commonStyles.addRule(".reuise-loading-skeleton::before").setContent("''").setPosition("absolute").setTop("0").setRight("0").setBottom("0").setLeft("0").setBackgroundColor("rgb(0 0 0 / 10%)").setBorderRadius("inherit").setAnimation("1.5s ease-in-out 0.5s infinite alternate reuise-loading-skeleton_pulse");
+        commonStyles.addRule(".reuise-loading-skeleton--icon").setDisplay("inline-block");
+        StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-loading-skeleton_pulse");
+        keyframes.addRule("0%").setOpacity(1);
+        keyframes.addRule("100%").setOpacity(0.55);
     }
 }

@@ -9,6 +9,7 @@ import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
 import dev.reuise.core.list.DefaultCoreListItemPart;
 import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.skeleton.CoreSkeletonOptions;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
@@ -25,8 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.list.DefaultWebListItemPartImpl.getBaseStyleClass;
-import static dev.reuise.web.core.list.DefaultWebListItemPartImpl.self;
 // Option: Url - CORE
 // Option: Children - CORE
 // Option: Id - WEB
@@ -101,6 +100,53 @@ public abstract class DefaultWebListItemPart<S extends DefaultWebListItemPart<S,
     @Override
     public boolean isToggleCheckboxOnClick() {
         return hasStyleClass(getBaseStyleClass() + "--togglecheckboxonclick");
+    }
+
+    // ListItem has no skeleton overlay of its own; loading state and skeleton
+    // options are instead cascaded to whichever child parts are actually
+    // present (icon(s), labels), so each renders its own placeholder.
+    @Override
+    public S setLoading(Boolean loading) {
+        super.setLoading(loading);
+        WebIcon startIcon = getStartIcon();
+        if (startIcon != null)
+            startIcon.setLoading(loading);
+
+        WebIcon endIcon = getEndIcon();
+        if (endIcon != null)
+            endIcon.setLoading(loading);
+
+        WebInlineText labelContainer = getLabelContainer();
+        if (labelContainer != null)
+            labelContainer.setLoading(loading);
+
+        WebInlineText secondaryLabelContainer = getSecondaryLabelContainer();
+        if (secondaryLabelContainer != null)
+            secondaryLabelContainer.setLoading(loading);
+
+        return self();
+    }
+
+    @Override
+    public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
+        super.setSkeletonOptions(skeletonOptions);
+        WebIcon startIcon = getStartIcon();
+        if (startIcon != null)
+            startIcon.setSkeletonOptions(skeletonOptions);
+
+        WebIcon endIcon = getEndIcon();
+        if (endIcon != null)
+            endIcon.setSkeletonOptions(skeletonOptions);
+
+        WebInlineText labelContainer = getLabelContainer();
+        if (labelContainer != null)
+            labelContainer.setSkeletonOptions(skeletonOptions);
+
+        WebInlineText secondaryLabelContainer = getSecondaryLabelContainer();
+        if (secondaryLabelContainer != null)
+            secondaryLabelContainer.setSkeletonOptions(skeletonOptions);
+
+        return self();
     }
 
     private WebBasicListItemPart basicListItemPart;

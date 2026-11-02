@@ -25,10 +25,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.tabs.DefaultWebTabPartImpl.getAttribute;
-import static dev.reuise.web.core.tabs.DefaultWebTabPartImpl.self;
-import static dev.reuise.web.core.tabs.DefaultWebTabPartImpl.setAria;
-import static dev.reuise.web.core.tabs.DefaultWebTabPartImpl.setAttribute;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB

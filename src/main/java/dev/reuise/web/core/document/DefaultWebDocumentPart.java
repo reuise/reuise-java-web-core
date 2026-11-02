@@ -1,4 +1,5 @@
 package dev.reuise.web.core.document;
+import dev.reuise.core.ColorMode;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -28,8 +29,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.document.DefaultWebDocumentPartImpl.getViewId;
-import static dev.reuise.web.core.document.DefaultWebDocumentPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -94,6 +93,8 @@ import static dev.reuise.web.core.document.DefaultWebDocumentPartImpl.self;
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S, O>, O extends WebDocumentPartOptions> implements WebDocument , WebComponentPart {
     protected StyleBuilder commonStyles;
+
+    protected ColorMode colorMode = ColorMode.DEVICE;
 
     @Override
     public StyleBuilder getCommonStyles() {
@@ -834,7 +835,7 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     // Implementation
     @Override
     public S setTheme(Theme theme) {
-        parentComponentPart.setTheme(theme);
+        getParentComponentPart().setTheme(theme);
         if (theme == null)
             return self();
 
@@ -1129,7 +1130,17 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     // Implementation
     public boolean onPreInitialize(O options) {
         options.getComponentFactory().setRootComponent(((RootComponent) (options.getComponent())));
-        body = createBody(options);
+        if (body != null)
+            return true;
+
+        WebDocumentBodyOptions bodyOptions = options.getBodyOptions();
+        if (bodyOptions == null)
+            return true;
+
+        bodyOptions.setParent(this);
+        ComponentCreator bodyCreator = options.getBodyCreator();
+        body = (bodyCreator != null) ? ((WebDocumentBody) (bodyCreator.create(bodyOptions))) : getComponentFactory().createDocumentBody(bodyOptions);
+        getParentComponentPart().add(body);
         return true;
     }
 
@@ -1258,6 +1269,23 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     public void openDialog(CoreDialog dialog) {
         add(dialog);
         dialog.open();
+    }
+
+    // Implementation
+    public S setColorMode(ColorMode colorMode) {
+        this.colorMode = (colorMode == null) ? ColorMode.DEVICE : colorMode;
+        String attributeValue = this.colorMode.getAttributeValue();
+        if (attributeValue == null)
+            body.removeAttribute("data-reuise-color-scheme");
+        else
+            body.setData("reuise-color-scheme", attributeValue);
+
+        return self();
+    }
+
+    // Implementation
+    public ColorMode getColorMode() {
+        return colorMode;
     }
 
     // Implementation

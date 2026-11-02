@@ -6,7 +6,7 @@ import dev.reuise.web.core.layout.WebContainerPartOptions;
 import dev.reuise.web.core.layout.WebFlexContainerOptions;
 import dev.reuise.web.core.layout.WebFlexContainerPartOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPartOptions;
-// Todo: Clean up uneeded interfaces
+// Todo: Clean up unneeded interfaces
 public interface WebAccordionItemOptions extends WebFlexContainerOptions , WebAccordionItemPartOptions , WebBaseComponentPartOptions , WebFlexContainerPartOptions , WebContainerPartOptions , CoreAccordionItemOptions , WebParentComponentPartOptions , WebComponentOptions {
     WebFlexContainerPartOptions getFlexContainerPart();
 

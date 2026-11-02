@@ -1,5 +1,6 @@
 package dev.reuise.web.core.divider;
 import dev.reuise.core.Alignment;
+import dev.reuise.core.ColorScheme;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -25,8 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.divider.DefaultWebDividerPartImpl.getBaseStyleClass;
-import static dev.reuise.web.core.divider.DefaultWebDividerPartImpl.self;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -646,10 +645,14 @@ public abstract class DefaultWebDividerPart<S extends DefaultWebDividerPart<S, O
         commonStyles.addRule(".reuise-divider--horizontal").setFlexDirection("row").setPadding("16px 0").setAlignItems("center");
         commonStyles.addRule(".reuise-divider--vertical").setFlexDirection("column").setPadding("0 16px").setJustifyContent("center");
         commonStyles.addRule(".reuise-divider_label").setColor("#0000009c");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-divider_label").setColor("#ffffff9c");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-divider_label", ColorScheme.DARK).setColor("#ffffff9c");
         commonStyles.addRule(".reuise-divider_label:empty").setDisplay("none");
         commonStyles.addRule(".reuise-divider--horizontal .reuise-divider_label").setPadding("0 16px");
         commonStyles.addRule(".reuise-divider--vertical .reuise-divider_label").setPadding("16px 0");
         commonStyles.addRule(".reuise-divider_startline, .reuise-divider_endline").setFlex("1 1 auto").setBackgroundColor("#0000001f");
+        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-divider_startline, body[data-reuise-color-scheme=\"dark\"] .reuise-divider_endline").setBackgroundColor("#ffffff1f");
+        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-divider_startline, body:not([data-reuise-color-scheme]) .reuise-divider_endline", ColorScheme.DARK).setBackgroundColor("#ffffff1f");
         commonStyles.addRule(".reuise-divider--horizontal .reuise-divider_startline, .reuise-divider_endline").setHeight("1px");
         commonStyles.addRule(".reuise-divider--vertical .reuise-divider_startline, .reuise-divider_endline").setWidth("1px");
         commonStyles.addRule(((("." + createLabelAlignmentStyleClassName(Alignment.START)) + ".reuise-divider_startline, .") + createLabelAlignmentStyleClassName(Alignment.END)) + ".reuise-divider_startline").setMaxWidth(8);

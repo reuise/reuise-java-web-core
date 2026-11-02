@@ -21,27 +21,15 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
-import dev.reuise.web.core.skeleton.WebLoadingSkeletonSupport;
 import dev.reuise.web.core.text.WebInlineText;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.getAttribute;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.getBaseStyleClass;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.getData;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.getLabel;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.getSkeletonOptions;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.getStyle;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.getType;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.isLoading;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.self;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.setAria;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.setAttribute;
-import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.setData;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -105,21 +93,33 @@ import static dev.reuise.web.core.button.DefaultWebButtonPartImpl.setData;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>, O extends WebButtonPartOptions> extends DefaultCoreButtonPart<S, O> implements WebButton , WebComponentPart {
+    private static final String LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton";
+
     private static final String BUTTON_LOADING_SKELETON_STYLE_CLASS = "reuise-loading-skeleton--button";
 
-    private final WebLoadingSkeletonSupport loadingSkeletonSupport;
+    private boolean loadingSkeletonStylesCaptured;
+
+    private Object loadingSkeletonWidth;
+
+    private Object loadingSkeletonHeight;
+
+    private Object loadingSkeletonMinWidth;
+
+    private Object loadingSkeletonBorderRadius;
 
     @Override
     public S setLoading(Boolean loading) {
         super.setLoading(loading);
-        loadingSkeletonSupport.update(isLoading());
+        updateLoadingSkeletonState();
         return self();
     }
 
     @Override
     public S setSkeletonOptions(CoreSkeletonOptions skeletonOptions) {
         super.setSkeletonOptions(skeletonOptions);
-        loadingSkeletonSupport.refreshIfLoading(isLoading());
+        if (isLoading())
+            applyLoadingSkeletonStyles();
+
         return self();
     }
 
@@ -206,6 +206,48 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
         return self();
     }
 
+    private void updateLoadingSkeletonState() {
+        boolean loading = isLoading();
+        addOrRemoveStyleClass(LOADING_SKELETON_STYLE_CLASS, loading);
+        addOrRemoveStyleClass(BUTTON_LOADING_SKELETON_STYLE_CLASS, loading);
+        if (loading) {
+            captureLoadingSkeletonStyles();
+            applyLoadingSkeletonStyles();
+            return;
+        }
+        restoreLoadingSkeletonStyles();
+    }
+
+    private void captureLoadingSkeletonStyles() {
+        if (loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        loadingSkeletonMinWidth = style.getMinWidth();
+        loadingSkeletonWidth = style.getWidth();
+        loadingSkeletonHeight = style.getHeight();
+        loadingSkeletonBorderRadius = style.getBorderRadius();
+        loadingSkeletonStylesCaptured = true;
+    }
+
+    private void restoreLoadingSkeletonStyles() {
+        if (!loadingSkeletonStylesCaptured)
+            return;
+
+        Style style = getStyle();
+        if (style == null)
+            return;
+
+        style.setWidth(loadingSkeletonWidth);
+        style.setHeight(loadingSkeletonHeight);
+        style.setMinWidth(loadingSkeletonMinWidth);
+        style.setBorderRadius(loadingSkeletonBorderRadius);
+        loadingSkeletonStylesCaptured = false;
+    }
+
     private void applyLoadingSkeletonStyles() {
         Style style = getStyle();
         if (style == null)
@@ -243,7 +285,6 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
 
     protected DefaultWebButtonPart(O options) {
         super(options);
-        loadingSkeletonSupport = new WebLoadingSkeletonSupport(this::getStyle, (styleClass, add) -> addOrRemoveStyleClass(styleClass, add), this::getSkeletonOptions, (style, skeletonOptions) -> applyLoadingSkeletonStyles(), BUTTON_LOADING_SKELETON_STYLE_CLASS);
     }
 
     protected void setupReferences() {
@@ -281,7 +322,7 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
     // Implementation
     @Override
     public S setTheme(Theme theme) {
-        parentComponentPart.setTheme(theme);
+        getParentComponentPart().setTheme(theme);
         if (theme == null)
             return self();
 
@@ -741,13 +782,18 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        WebLoadingSkeletonSupport.addCommonStyles(commonStyles);
-        commonStyles.addRule(".reuise-loading-skeleton--button").setCursor("default");
         commonStyles.addRule(".reuise-button").setDisplay("inline-flex").setAlignItems("center").setTransition("background-color 200ms ease-in-out, color 200ms ease-in-out").setFlexShrink(0).setOverflow("hidden").setCursor("pointer").setJustifyContent("center");
         commonStyles.addRule(".reuise-button:disabled,.reuise-button.reuise-disabled").setOpacity(0.3).setCursor("default").setPointerEvents("none");
         commonStyles.addRule(".reuise-button_label").setWhiteSpace("nowrap").setOverflow("hidden").setPointerEvents("none");
         commonStyles.addRule(".reuise-button .reuise-button_starticon").setMarginRight(8);
         commonStyles.addRule(".reuise-button .reuise-button_starticon svg:empty").setDisplay("none");
+        commonStyles.addRule(".reuise-loading-skeleton").setPosition("relative").setOverflow("hidden").setColor("transparent", true).setUserSelect("none").setPointerEvents("none");
+        commonStyles.addRule(".reuise-loading-skeleton>*").setVisibility("hidden");
+        commonStyles.addRule(".reuise-loading-skeleton::before").setContent("''").setPosition("absolute").setTop("0").setRight("0").setBottom("0").setLeft("0").setBackgroundColor("rgb(0 0 0 / 10%)").setBorderRadius("inherit").setAnimation("1.5s ease-in-out 0.5s infinite alternate reuise-loading-skeleton_pulse");
+        commonStyles.addRule(".reuise-loading-skeleton--button").setCursor("default");
+        StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-loading-skeleton_pulse");
+        keyframes.addRule("0%").setOpacity(1);
+        keyframes.addRule("100%").setOpacity(0.55);
         for (ButtonSize s : ButtonSize.values()) {
             commonStyles.addRule("." + createSizeStyleClassName(s)).setHeight(s.getHeight()).setBorderRadius(s.getRadius()).setPaddingTop(s.getPaddingY()).setPaddingRight(s.getPaddingX()).setPaddingBottom(s.getPaddingY()).setPaddingLeft(s.getPaddingX()).setFontSize(s.getFontSize());
             commonStyles.addRule(((((((("." + createSizeStyleClassName(s)) + " .reuise-button_starticon,.") + createSizeStyleClassName(s)) + " .reuise-button_endicon,.") + createSizeStyleClassName(s)) + " .reuise-button_starticon>*,") + createSizeStyleClassName(s)) + " .reuise-button_endicon>*").setWidth(s.getIconSize()).setHeight(s.getIconSize());
