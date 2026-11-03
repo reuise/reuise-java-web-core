@@ -3,6 +3,7 @@ import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
+import dev.reuise.core.HtmlEscaper;
 import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
@@ -90,7 +91,7 @@ import java.util.Set;
 public abstract class DefaultWebTabPart<S extends DefaultWebTabPart<S, O>, O extends WebTabPartOptions> extends DefaultCoreTabPart<S, O> implements WebTab , WebComponentPart {
     @Override
     public S setUrl(String url) {
-        setAttribute("href", url);
+        setAttribute("href", HtmlEscaper.url(url));
         return self();
     }
 

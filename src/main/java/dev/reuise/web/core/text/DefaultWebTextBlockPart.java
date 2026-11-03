@@ -28,6 +28,7 @@ import java.util.Set;
 // Option: Loading - CORE
 // Option: SkeletonOptions - CORE
 // Option: Text - CORE
+// Option: HtmlContent - CORE
 // Option: FontSize - CORE
 // Option: LineHeight - CORE
 // Option: FontWeight - CORE
