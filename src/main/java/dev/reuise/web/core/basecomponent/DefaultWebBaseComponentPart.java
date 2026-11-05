@@ -21,9 +21,11 @@ import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseComponentPart<S, O>, O extends WebBaseComponentPartOptions> extends DefaultCoreBaseComponentPart<S, O> implements WebComponentPart , WebBaseComponent {
     protected boolean isRehydrated;
@@ -149,11 +151,21 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
 
     @Override
     public Map<String, String> getData() {
-        return null;
+        Map<String, String> data = new LinkedHashMap<>();
+        Map<String, String> attributes = getAttributes();
+        if (attributes != null) {
+            attributes.forEach((name, value) -> {
+                if (name.startsWith("data-"))
+                    data.put(name.substring(5), value);
+
+            });
+        }
+        return data;
     }
 
     @Override
     public S setData(Map<String, String> data) {
+        data.forEach(this::setData);
         return self();
     }
 
@@ -864,7 +876,7 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
 
     // Implementation
     public S setData(String data, String value) {
-        setAttribute("data-" + data, value);
+        setAttribute("data-" + data, value == null ? "" : value);
         return self();
     }
 
