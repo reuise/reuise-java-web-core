@@ -1,5 +1,4 @@
 package dev.reuise.web.core.input;
-import dev.reuise.core.ColorScheme;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -18,10 +17,13 @@ import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
+import dev.reuise.web.core.style.StyleOptions;
 import dev.reuise.web.core.text.WebInlineText;
 import dev.reuise.web.core.text.WebLabel;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleProperty;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
@@ -55,6 +57,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -659,22 +663,33 @@ public abstract class DefaultWebTextFieldPart<S extends DefaultWebTextFieldPart<
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         commonStyles.addRule(".reuise-textfield").setWidth("100%").setDisplay("flex").setFlexDirection("column").setMinWidth(0);
-        commonStyles.addRule(".reuise-textfield_inputcontainer").setDisplay("flex").setPosition("relative").setHeight("inherit").setFlexDirection("row").setBoxSizing("border-box").setBorder("none").setBackground("rgb(0 0 0 / 6%)").setAlignItems("center").setCursor("text").setOverflow("hidden");
+        commonStyles.addRule(".reuise-textfield_inputcontainer").setDisplay("flex").setPosition("relative").setHeight("inherit").setFlexDirection("row").setBoxSizing("border-box").setBorder("none").setAlignItems("center").setCursor("text").setOverflow("hidden");
         commonStyles.addRule(".reuise-textfield_inputcontainer:focus-within").setOutlineWidth("1px").setOutlineStyle("solid").setOutlineOffset("-1px");
         commonStyles.addRule(".reuise-textfield_input").setFlex("1 1 auto").setBorder("none").setHeight("inherit").setOverflow("auto").setBackgroundColor("transparent");
+        commonStyles.addRule(":where(.reuise-textfield_inputcontainer)").setBackground("var(--reuise-minimal-field, rgb(0 0 0 / 6%))");
+        commonStyles.addRule(":where(.reuise-textfield_input)").setColor("inherit");
         commonStyles.addRule("textarea.reuise-textfield_input").setFontFamily("inherit");
-        commonStyles.addRule(".reuise-textfield--withstarticon .reuise-textfield_input").setPaddingLeft(40);
-        commonStyles.addRule(".reuise-textfield--withendicon .reuise-textfield_input").setPaddingRight(40);
+        StyleOptions resetPadding = new StyleOptions();
+        resetPadding.setProperty(new StyleProperty("--reuise-textfield-size-padding-x"), "initial", false);
+        resetPadding.setProperty(new StyleProperty("--reuise-textfield-size-padding-y"), "initial", false);
+        resetPadding.setProperty(new StyleProperty("--reuise-textfield-icon-padding-left"), "initial", false);
+        resetPadding.setProperty(new StyleProperty("--reuise-textfield-icon-padding-right"), "initial", false);
+        commonStyles.addRule(":where(.reuise-textfield_input)").setPaddingTop("var(--reuise-textfield-size-padding-y, revert)").setPaddingBottom("var(--reuise-textfield-size-padding-y, revert)").setPaddingLeft("var(--reuise-textfield-icon-padding-left, var(--reuise-textfield-size-padding-x, revert))").setPaddingRight("var(--reuise-textfield-icon-padding-right, var(--reuise-textfield-size-padding-x, revert))").append(resetPadding);
+        StyleOptions defaultIconPadding = new StyleOptions();
+        String defaultIconInset = ((("calc(" + SpacingScale.value(16)) + " + 16px + ") + SpacingScale.value(8)) + ")";
+        defaultIconPadding.setProperty(new StyleProperty("--reuise-textfield-icon-padding-left"), defaultIconInset, false);
+        commonStyles.addRule(".reuise-textfield--withstarticon .reuise-textfield_input").append(defaultIconPadding);
+        StyleOptions defaultEndIconPadding = new StyleOptions();
+        defaultEndIconPadding.setProperty(new StyleProperty("--reuise-textfield-icon-padding-right"), defaultIconInset, false);
+        commonStyles.addRule(".reuise-textfield--withendicon .reuise-textfield_input").append(defaultEndIconPadding);
         commonStyles.addRule(".reuise-textfield_input:focus-visible").setOutline("none");
-        commonStyles.addRule(".reuise-textfield_label").setPadding("0 0 4px 8px").setFontSize(14);
+        commonStyles.addRule(".reuise-textfield_label").setPadding((("0 0 " + SpacingScale.value(4)) + " ") + SpacingScale.value(8)).setFontSize(14);
         commonStyles.addRule(".reuise-textfield>reuise-textfield_inputcontainer>.reuise-icon").setPosition("absolute").setFlex("0 0 min-content").setOverflow("hidden").setPointerEvents("none");
         commonStyles.addRule(".reuise-textfield>reuise-textfield_inputcontainer>.reuise-icon svg:empty").setDisplay("none");
-        commonStyles.addRule(".reuise-textfield_starticon").setPosition("absolute").setPadding("0 8px 0 16px");
-        commonStyles.addRule(".reuise-textfield_endicon").setPosition("absolute").setRight(0).setPadding("0 16px 0 8px");
-        commonStyles.addRule(".reuise-textfield--error .reuise-textfield_label, .reuise-textfield--error .reuise-textfield_supportingtext").setColor("#B3261E");
-        commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-textfield--error .reuise-textfield_label, body[data-reuise-color-scheme=\"dark\"] .reuise-textfield--error .reuise-textfield_supportingtext").setColor("#F2B8B5");
-        commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-textfield--error .reuise-textfield_label, body:not([data-reuise-color-scheme]) .reuise-textfield--error .reuise-textfield_supportingtext", ColorScheme.DARK).setColor("#F2B8B5");
-        commonStyles.addRule(".reuise-textfield_supportingtext").setDisplay("flex").setPadding("4px 16px 0px 16px").setFontSize(12).setLineHeight(16).setFontWeight("400");
+        commonStyles.addRule(".reuise-textfield_starticon").setPosition("absolute").setPadding((("0 " + SpacingScale.value(8)) + " 0 ") + SpacingScale.value(16));
+        commonStyles.addRule(".reuise-textfield_endicon").setPosition("absolute").setRight(0).setPadding((("0 " + SpacingScale.value(16)) + " 0 ") + SpacingScale.value(8));
+        commonStyles.addRule(":where(.reuise-textfield--error .reuise-textfield_label, .reuise-textfield--error .reuise-textfield_supportingtext)").setColor("var(--reuise-minimal-error, #B3261E)");
+        commonStyles.addRule(".reuise-textfield_supportingtext").setDisplay("flex").setPadding((((SpacingScale.value(4) + " ") + SpacingScale.value(16)) + " 0 ") + SpacingScale.value(16)).setFontSize(12).setLineHeight(16).setFontWeight("400");
         /* commonStyles.addRule(".reuise-textfield:has()")
         .setWidth("100%")
         .setDisplay("flex")
@@ -682,8 +697,17 @@ public abstract class DefaultWebTextFieldPart<S extends DefaultWebTextFieldPart<
          */
         for (TextFieldSize s : TextFieldSize.values()) {
             commonStyles.addRule(("." + createSizeStyleClassName(s)) + " .reuise-textfield_inputcontainer").setBorderRadius(s.getRadius());
-            commonStyles.addRule(("." + createSizeStyleClassName(s)) + " .reuise-textfield_input").setLineHeight(s.getLineHeight()).setFontSize(s.getFontSize()).setPaddingTop(s.getPaddingY()).setPaddingRight(s.getPaddingX()).setPaddingBottom(s.getPaddingY()).setPaddingLeft(s.getPaddingX());
-            commonStyles.addRule(("." + createSizeStyleClassName(s)) + ":has(.reuise-textfield_starticon) .reuise-textfield_input").setPaddingLeft(((s.getPaddingX() + s.getIconSize()) + 8) + "px", true);
+            StyleOptions sizePadding = new StyleOptions();
+            sizePadding.setProperty(new StyleProperty("--reuise-textfield-size-padding-x"), SpacingScale.value(s.getPaddingX()), false);
+            sizePadding.setProperty(new StyleProperty("--reuise-textfield-size-padding-y"), SpacingScale.value(s.getPaddingY()), false);
+            commonStyles.addRule(("." + createSizeStyleClassName(s)) + " .reuise-textfield_input").setLineHeight(s.getLineHeight()).setFontSize(s.getFontSize()).append(sizePadding);
+            String iconInset = ((((("calc(" + SpacingScale.value(s.getPaddingX())) + " + ") + s.getIconSize()) + "px + ") + SpacingScale.value(8)) + ")";
+            StyleOptions startIconPadding = new StyleOptions();
+            startIconPadding.setProperty(new StyleProperty("--reuise-textfield-icon-padding-left"), iconInset, false);
+            commonStyles.addRule(("." + createSizeStyleClassName(s)) + ":has(.reuise-textfield_starticon) .reuise-textfield_input").append(startIconPadding);
+            StyleOptions endIconPadding = new StyleOptions();
+            endIconPadding.setProperty(new StyleProperty("--reuise-textfield-icon-padding-right"), iconInset, false);
+            commonStyles.addRule(("." + createSizeStyleClassName(s)) + ":has(.reuise-textfield_endicon) .reuise-textfield_input").append(endIconPadding);
             commonStyles.addRule(((("." + createSizeStyleClassName(s)) + " .reuise-textfield_starticon,.") + createSizeStyleClassName(s)) + " .reuise-textfield_endicon").setWidth(s.getIconSize()).setHeight(s.getIconSize());
         }
         // commonStyles.addRule(".r.reuise-textfield_inputcontainer:has(input:is(:-webkit-autofill,

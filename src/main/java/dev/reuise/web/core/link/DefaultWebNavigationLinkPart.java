@@ -27,6 +27,7 @@ import java.util.Set;
 // Option: Text - CORE
 // Option: Url - CORE
 // Option: Target - CORE
+// Option: ExternalIndicator - CORE
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -55,6 +56,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE

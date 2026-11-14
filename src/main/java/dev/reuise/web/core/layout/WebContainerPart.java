@@ -3,5 +3,9 @@ import dev.reuise.core.layout.CoreContainerPart;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 public interface WebContainerPart extends WebParentComponentPart , CoreContainerPart , WebContainerFeatures , WebComponentPart {
+    WebContainerPart startAnimation();
+
+    WebContainerPart cancelAnimation();
+
     WebParentComponentPart getParentComponentPart();
 }

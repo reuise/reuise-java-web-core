@@ -16,6 +16,7 @@ import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.link.WebLink;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -51,6 +52,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -581,6 +584,6 @@ public abstract class DefaultWebIconLabelPart<S extends DefaultWebIconLabelPart<
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-iconlabel,.reuise-iconlabel>a").setDisplay("flex").setFlexDirection("row").setJustifyContent("start").setAlignItems("center").setColumnGap(16);
+        commonStyles.addRule(".reuise-iconlabel,.reuise-iconlabel>a").setDisplay("flex").setFlexDirection("row").setJustifyContent("start").setAlignItems("center").setColumnGap(SpacingScale.value(16));
     }
 }

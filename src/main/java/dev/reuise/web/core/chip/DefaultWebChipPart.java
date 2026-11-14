@@ -16,9 +16,12 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
+import dev.reuise.web.core.style.StyleOptions;
 import dev.reuise.web.core.text.WebLabel;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleProperty;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +55,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -600,26 +605,39 @@ public abstract class DefaultWebChipPart<S extends DefaultWebChipPart<S, O>, O e
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-chip").setDisplay("inline-flex").setAlignItems("center").setTransition("background-color 200ms ease-in-out, color 200ms ease-in-out").setPaddingTop(6).setPaddingRight(8).setPaddingBottom(6).setPaddingLeft(8);
-        commonStyles.addRule(".reuise-chip:not(:has(.reuise-chip_starticon)):has(.reuise-chip_label)").setPaddingLeft(16);
+        commonStyles.addRule(".reuise-chip").setDisplay("inline-flex").setAlignItems("center").setTransition("background-color 200ms ease-in-out, color 200ms ease-in-out");
+        StyleOptions resetPadding = new StyleOptions();
+        resetPadding.setProperty(new StyleProperty("--reuise-chip-size-padding-x"), "initial", false);
+        resetPadding.setProperty(new StyleProperty("--reuise-chip-size-padding-y"), "initial", false);
+        resetPadding.setProperty(new StyleProperty("--reuise-chip-start-padding"), "initial", false);
+        resetPadding.setProperty(new StyleProperty("--reuise-chip-end-padding"), "initial", false);
+        commonStyles.addRule(":where(.reuise-chip)").setPaddingTop(("var(--reuise-chip-size-padding-y, " + SpacingScale.value(6)) + ")").setPaddingRight(("var(--reuise-chip-size-padding-x, var(--reuise-chip-end-padding, " + SpacingScale.value(8)) + "))").setPaddingBottom(("var(--reuise-chip-size-padding-y, " + SpacingScale.value(6)) + ")").setPaddingLeft(("var(--reuise-chip-size-padding-x, var(--reuise-chip-start-padding, " + SpacingScale.value(8)) + "))").append(resetPadding);
+        StyleOptions startPadding = new StyleOptions();
+        startPadding.setProperty(new StyleProperty("--reuise-chip-start-padding"), SpacingScale.value(16), false);
+        commonStyles.addRule(".reuise-chip:where(:not(:has(.reuise-chip_starticon)):has(.reuise-chip_label))").append(startPadding);
         commonStyles.addRule(".reuise-filterchip .reuise-chip_starticon").setTransition("all 50ms ease-in-out").setOverflow("hidden");
         // .setWidth(0)
         commonStyles.addRule(".reuise-filterchip:not(.reuise-chip--selected) .reuise-chip_starticon").setMargin(0);
-        commonStyles.addRule(".reuise-chip:not(:has(.reuise-chip_endicon)):has(.reuise-chip_label)").setPaddingRight(16);
+        StyleOptions endPadding = new StyleOptions();
+        endPadding.setProperty(new StyleProperty("--reuise-chip-end-padding"), SpacingScale.value(16), false);
+        commonStyles.addRule(".reuise-chip:where(:not(:has(.reuise-chip_endicon)):has(.reuise-chip_label))").append(endPadding);
         commonStyles.addRule(".reuise-chip_label").setWhiteSpace("nowrap");
         commonStyles.addRule(".reuise-chip:disabled,.reuise-chip.reuise-disabled").setOpacity(0.3).setCursor("default").setPointerEvents("none");
         commonStyles.addRule(".reuise-filterchip:not(.reuise-chip--hasremoveicon),.reuise-filterchip:not(.reuise-chip--hasremoveicon) label").setCursor("pointer");
         commonStyles.addRule(".reuise-chip--hasremoveicon .reuise-chip_endicon").setCursor("pointer").setBorderRadius("50%");
-        commonStyles.addRule(".reuise-filterchip .reuise-chip_endicon:hover").setBackgroundColor("rgb(0 0 0 / 5%)");
-        commonStyles.addRule(".reuise-chip--hasremoveicon .reuise-chip_endicon").setPadding(2);
-        commonStyles.addRule(".reuise-chip:has(.reuise-chip_label) .reuise-chip_starticon").setMarginRight(8);
-        commonStyles.addRule(".reuise-chip:has(.reuise-chip_label) .reuise-chip_endicon").setMarginLeft(2);
+        commonStyles.addRule(":where(.reuise-filterchip .reuise-chip_endicon:hover)").setBackgroundColor("var(--reuise-minimal-field, rgb(0 0 0 / 5%))");
+        commonStyles.addRule(".reuise-chip--hasremoveicon .reuise-chip_endicon").setPadding(SpacingScale.value(2));
+        commonStyles.addRule(".reuise-chip:has(.reuise-chip_label) .reuise-chip_starticon").setMarginRight(SpacingScale.value(8));
+        commonStyles.addRule(".reuise-chip:has(.reuise-chip_label) .reuise-chip_endicon").setMarginLeft(SpacingScale.value(2));
         commonStyles.addRule(".reuise-chip_endicon,.reuise-chip_starticon,.reuise-chip_endicon svg,.reuise-chip_starticon svg").setWidth(18).setHeight(18);
         for (ChipSize s : ChipSize.values()) {
-            commonStyles.addRule("." + createSizeStyleClassName(s)).setHeight(s.getHeight()).setBorderRadius(s.getRadius() + "px", true).setPaddingTop(s.getPaddingY() + "px", true).setPaddingRight(s.getPaddingX() + "px", true).setPaddingBottom(s.getPaddingY() + "px", true).setPaddingLeft(s.getPaddingX() + "px", true);
+            StyleOptions sizePadding = new StyleOptions();
+            sizePadding.setProperty(new StyleProperty("--reuise-chip-size-padding-x"), SpacingScale.value(s.getPaddingX()), false);
+            sizePadding.setProperty(new StyleProperty("--reuise-chip-size-padding-y"), SpacingScale.value(s.getPaddingY()), false);
+            commonStyles.addRule("." + createSizeStyleClassName(s)).setHeight(s.getHeight()).setBorderRadius(s.getRadius() + "px", true).append(sizePadding);
         }
-        commonStyles.addRule(".reuise-chipgroup").setDisplay("flex").setFlexWrap("wrap").setBorder("none").setPadding(0).setMargin(0).setDisplay("flex").setColumnGap(12).setRowGap(12);
-        commonStyles.addRule(".reuise-chipgroup>legend").setFontSize("14px").setPadding("0 0 8px 8px");
+        commonStyles.addRule(".reuise-chipgroup").setDisplay("flex").setFlexWrap("wrap").setBorder("none").setPadding(0).setMargin(0).setDisplay("flex").setColumnGap(SpacingScale.value(12)).setRowGap(SpacingScale.value(12));
+        commonStyles.addRule(".reuise-chipgroup>legend").setFontSize("14px").setPadding((("0 0 " + SpacingScale.value(8)) + " ") + SpacingScale.value(8));
         commonStyles.addRule(".reuise-chipgroup_addbutton").setCursor("pointer").setOrder(1);
         commonStyles.addRule(".reuise-chipgroup--hideunselected .reuise-chip:not(.reuise-chip--selected,.reuise-chipgroup_addbutton)").setDisplay("none");
     }

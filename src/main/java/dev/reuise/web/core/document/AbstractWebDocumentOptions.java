@@ -1,5 +1,6 @@
 package dev.reuise.web.core.document;
 import dev.reuise.core.CoreComponentOptions;
+import dev.reuise.core.TextDirection;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.WebComponentOptions;
 import dev.reuise.webstyles.StyleSheet;
@@ -212,6 +213,31 @@ public abstract class AbstractWebDocumentOptions<S extends AbstractWebDocumentOp
     private void setDefaultLanguage(String language) {
         setDefaultOption("language", language);
         setLayoutChildrenLanguage(language);
+    }
+
+    @Override
+    public TextDirection getTextDirection() {
+        return ((TextDirection) (getOptionValue("textDirection")));
+    }
+
+    @Override
+    public ComponentOption<TextDirection> getTextDirectionOption() {
+        return ((ComponentOption<TextDirection>) (getOption("textDirection")));
+    }
+
+    @Override
+    public S setTextDirection(TextDirection textDirection) {
+        setOption("textDirection", textDirection);
+        setLayoutChildrenTextDirection(textDirection);
+        return self();
+    }
+
+    protected void setLayoutChildrenTextDirection(TextDirection textDirection) {
+    }
+
+    private void setDefaultTextDirection(TextDirection textDirection) {
+        setDefaultOption("textDirection", textDirection);
+        setLayoutChildrenTextDirection(textDirection);
     }
 
     @Override

@@ -1,4 +1,5 @@
 package dev.reuise.web.core.tabs;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -18,6 +19,7 @@ import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.layout.WebContainerPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -25,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+// Option: Animation - WEB
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -61,6 +64,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -69,6 +74,8 @@ import java.util.Set;
 // Option: Debug - CORE
 // Option: DebugId - CORE
 // base comp: container
+// add composition for container: startAnimation
+// add composition for container: cancelAnimation
 // add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
@@ -136,8 +143,29 @@ public abstract class DefaultWebTabBarPart<S extends DefaultWebTabBarPart<S, O>,
     }
 
     @Override
+    public ComponentAnimation getAnimation() {
+        return containerPart.getAnimation();
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.containerPart.setAnimation(animation);
+        return self();
+    }
+
+    @Override
     public S setBackdropFilter(BackdropFilter backdropFilter, Object value) {
         this.containerPart.setBackdropFilter(backdropFilter, value);
+        return self();
+    }
+
+    public S startAnimation() {
+        containerPart.startAnimation();
+        return self();
+    }
+
+    public S cancelAnimation() {
+        containerPart.cancelAnimation();
         return self();
     }
 
@@ -597,9 +625,9 @@ public abstract class DefaultWebTabBarPart<S extends DefaultWebTabBarPart<S, O>,
         commonStyles.addRule(".reuise-tabbar").setDisplay("flex");
         commonStyles.addRule(".reuise-tabbar_container").setPosition("relative").setDisplay("flex");
         commonStyles.addRule(".reuise-tabbar_activeindicator").setPosition("absolute").setHeight("2px").setBottom("0px").setTransition("left 50ms ease-in-out");
-        commonStyles.addRule(".reuise-tab").setPosition("relative").setDisplay("inline-flex").setAlignItems("center").setPadding("10px 16px").setCursor("pointer");
+        commonStyles.addRule(".reuise-tab").setPosition("relative").setDisplay("inline-flex").setAlignItems("center").setPadding((SpacingScale.value(8) + " ") + SpacingScale.value(16)).setCursor("pointer");
         commonStyles.addRule(".reuise-tab--active");
         commonStyles.addRule(".reuise-tabbar .reuise-tab:has(.reuise-tab_link)").setPadding("0").setCursor("pointer");
-        commonStyles.addRule(".reuise-tabbar .reuise-tab>.reuise-tab_link").setPadding("10px 16px").setDisplay("flex").setAlignItems("center").setJustifyContent("center").setRowGap("var(--reuise-tab-gap, 2px)").setColumnGap("var(--reuise-tab-gap, 2px)").setColor("inherit").setTextDecoration("none");
+        commonStyles.addRule(".reuise-tabbar .reuise-tab>.reuise-tab_link").setPadding((SpacingScale.value(8) + " ") + SpacingScale.value(16)).setDisplay("flex").setAlignItems("center").setJustifyContent("center").setRowGap(("var(--reuise-tab-gap, " + SpacingScale.value(2)) + ")").setColumnGap(("var(--reuise-tab-gap, " + SpacingScale.value(2)) + ")").setColor("inherit").setTextDecoration("none");
     }
 }

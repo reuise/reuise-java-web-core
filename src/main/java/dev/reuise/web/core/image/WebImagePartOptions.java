@@ -1,9 +1,16 @@
 package dev.reuise.web.core.image;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.State;
 import dev.reuise.core.image.CoreImagePartOptions;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.WebComponentFactory;
 public interface WebImagePartOptions extends CoreImagePartOptions {
+    ComponentAnimation getAnimation();
+
+    ComponentOption<ComponentAnimation> getAnimationOption();
+
+    WebImagePartOptions setAnimation(ComponentAnimation animation);
+
     String getAltText();
 
     ComponentOption<String> getAltTextOption();

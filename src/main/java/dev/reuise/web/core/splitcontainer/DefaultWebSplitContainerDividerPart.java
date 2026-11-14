@@ -1,4 +1,5 @@
 package dev.reuise.web.core.splitcontainer;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -23,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+// Option: Animation - WEB
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -59,6 +61,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -67,6 +71,8 @@ import java.util.Set;
 // Option: Debug - CORE
 // Option: DebugId - CORE
 // base comp: container
+// add composition for container: startAnimation
+// add composition for container: cancelAnimation
 // add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
@@ -115,8 +121,29 @@ public abstract class DefaultWebSplitContainerDividerPart<S extends DefaultWebSp
     }
 
     @Override
+    public ComponentAnimation getAnimation() {
+        return containerPart.getAnimation();
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.containerPart.setAnimation(animation);
+        return self();
+    }
+
+    @Override
     public S setBackdropFilter(BackdropFilter backdropFilter, Object value) {
         this.containerPart.setBackdropFilter(backdropFilter, value);
+        return self();
+    }
+
+    public S startAnimation() {
+        containerPart.startAnimation();
+        return self();
+    }
+
+    public S cancelAnimation() {
+        containerPart.cancelAnimation();
         return self();
     }
 

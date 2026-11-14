@@ -1,4 +1,5 @@
 package dev.reuise.web.core.layout;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -10,12 +11,14 @@ import dev.reuise.core.State;
 import dev.reuise.core.layout.BackdropFilterSetting;
 import dev.reuise.core.layout.DefaultCoreContainerPart;
 import dev.reuise.core.option.OptionApplicator;
+import dev.reuise.core.parentcomponent.CoreParentComponent;
 import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.image.WebImageOptions;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.text.WebInlineTextOptions;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -51,6 +54,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -86,6 +91,13 @@ import java.util.Set;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebContainerPart<S extends DefaultWebContainerPart<S, O>, O extends WebContainerPartOptions> extends DefaultCoreContainerPart<S, O> implements WebComponentPart , WebContainer {
+    protected void addMarkdownInlineCode(CoreParentComponent parent, String text) {
+        WebInlineTextOptions options = getComponentFactory().createInlineTextOptions();
+        options.setTagName("code");
+        options.setText(text);
+        parent.add(getComponentFactory().createInlineText(options));
+    }
+
     @Override
     public BackdropFilterSetting getBackdropFilter() {
         return getBackdropFilter(null);
@@ -126,6 +138,8 @@ public abstract class DefaultWebContainerPart<S extends DefaultWebContainerPart<
     private WebParentComponentPart parentComponentPart;
 
     private WebBaseComponentPart baseComponentPart;
+
+    protected ComponentAnimation animation;
 
     protected DefaultWebContainerPart(O options) {
         super(options);
@@ -552,6 +566,12 @@ public abstract class DefaultWebContainerPart<S extends DefaultWebContainerPart<
 
     public void applyOptions(O options, OptionApplicator applicator, Collection<State> states) {
         super.applyOptions(options, applicator, states);
+        WebContainerPart component = ((WebContainerPart) (options.getComponent()));
+        if (component == null)
+            System.out.println("component is null");
+
+        // Apply options for default state
+        applicator.add(options.getAnimationOption(), component::setAnimation);
     }
 
     public void onInitializeComponentType(RootComponent rootComponent) {
@@ -560,6 +580,17 @@ public abstract class DefaultWebContainerPart<S extends DefaultWebContainerPart<
     }
 
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+    }
+
+    @Override
+    public ComponentAnimation getAnimation() {
+        return animation;
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.animation = animation;
+        return self();
     }
 
     @Override
@@ -804,6 +835,16 @@ public abstract class DefaultWebContainerPart<S extends DefaultWebContainerPart<
     public S setBackdropFilterAllStates(BackdropFilterSetting backdropFilter) {
         setBackdropFilter(ScreenSizeValues.of(backdropFilter, backdropFilter));
         setBackdropFilter(backdropFilter);
+        return self();
+    }
+
+    // Implementation
+    public S startAnimation() {
+        return self();
+    }
+
+    // Implementation
+    public S cancelAnimation() {
         return self();
     }
 }

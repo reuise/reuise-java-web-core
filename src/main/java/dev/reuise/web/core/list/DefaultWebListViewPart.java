@@ -14,6 +14,7 @@ import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -49,6 +50,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -525,15 +528,15 @@ public abstract class DefaultWebListViewPart<S extends DefaultWebListViewPart<S,
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         commonStyles.addRule(".reuise-listview").setListStyle("none").setMargin("0").setPadding("0");
         commonStyles.addRule(".reuise-listitem:disabled,.reuise-listitem.reuise-disabled").setOpacity(0.3).setCursor("default").setPointerEvents("none");
-        commonStyles.addRule(".reuise-listview>.reuise-listitem").setDisplay("flex").setPadding("8px 16px").setAlignItems("center");
+        commonStyles.addRule(".reuise-listview>.reuise-listitem").setDisplay("flex").setPadding((SpacingScale.value(8) + " ") + SpacingScale.value(16)).setAlignItems("center");
         commonStyles.addRule(".reuise-listitem .reuise-listitem_textcontainer").setDisplay("flex").setFlexDirection("column");
-        commonStyles.addRule(".reuise-listitem .reuise-listitem_starticon, .reuise-listitem .reuise-listitem_checkbox").setMarginRight(16);
+        commonStyles.addRule(".reuise-listitem .reuise-listitem_starticon, .reuise-listitem .reuise-listitem_checkbox").setMarginRight(SpacingScale.value(16));
         commonStyles.addRule(".reuise-listitem .reuise-listitem_endicon").setMarginLeft("auto");
         commonStyles.addRule(".reuise-listitem .reuise-listitem_label").setFontSize(16);
         commonStyles.addRule(".reuise-listitem .reuise-listitem_secondarylabel").setFontSize(14);
         commonStyles.addRule(".reuise-listitem--togglecheckboxonclick").setCursor("pointer");
         commonStyles.addRule(".reuise-basiclistitem_link").setWidth("100%");
         commonStyles.addRule(".reuise-listview>.reuise-listitem:has(.reuise-basiclistitem_link)").setPadding("0").setCursor("pointer");
-        commonStyles.addRule(".reuise-listview>.reuise-listitem>.reuise-basiclistitem_link").setDisplay("flex").setPadding("8px 16px").setTextDecoration("none").setAlignItems("center");
+        commonStyles.addRule(".reuise-listview>.reuise-listitem>.reuise-basiclistitem_link").setDisplay("flex").setPadding((SpacingScale.value(8) + " ") + SpacingScale.value(16)).setTextDecoration("none").setAlignItems("center");
     }
 }

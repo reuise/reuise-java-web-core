@@ -4,6 +4,7 @@ import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.Interaction;
+import dev.reuise.core.LocaleContext;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSize;
 import dev.reuise.core.ScreenSizeValues;
@@ -15,6 +16,7 @@ import dev.reuise.core.option.ComponentOptionOperationWithState;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
+import dev.reuise.web.core.document.MinimalColorStyles;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -35,6 +37,24 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
     protected String uniqueStyleClass;
 
     protected String uniqueId;
+
+    public S setLocaleContext(LocaleContext localeContext) {
+        super.setLocaleContext(localeContext);
+        if (localeContext == null) {
+            removeAttribute("data-reuise-locale");
+            removeAttribute("lang");
+            removeAttribute("dir");
+        } else {
+            setAttribute("data-reuise-locale", localeContext.toJson());
+            setAttribute("lang", localeContext.getLanguageTag());
+            if (localeContext.getTextDirection() == null)
+                removeAttribute("dir");
+            else
+                setAttribute("dir", localeContext.getTextDirection().getAttributeValue());
+
+        }
+        return self();
+    }
 
     @Override
     public WebBaseComponent getComponent() {
@@ -355,6 +375,7 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        MinimalColorStyles.initialize(commonStyles);
         commonStyles.addRule(".reuise--hidden").setDisplay("none", true);
         for (ScreenSize s : ScreenSize.values())
             commonStyles.addRule(".reuise--hidden_" + s.getStateKey(), s).setDisplay("none", true);

@@ -5,12 +5,14 @@ import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.Interaction;
+import dev.reuise.core.LocaleContext;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
 import dev.reuise.core.button.ButtonType;
 import dev.reuise.core.dialog.CoreDialog;
 import dev.reuise.core.option.ComponentCreator;
+import dev.reuise.core.option.DefaultComponentOption;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.core.parentcomponent.CoreParentComponent;
 import dev.reuise.core.theme.ComponentTheme;
@@ -19,6 +21,7 @@ import dev.reuise.core.theme.ThemeColorSet;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.button.ButtonRadiusStyles;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
@@ -26,9 +29,12 @@ import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 // Option: Children - CORE
 // Option: Id - WEB
 // Option: TagName - WEB
@@ -57,6 +63,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -95,6 +103,25 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     protected StyleBuilder commonStyles;
 
     protected ColorMode colorMode = ColorMode.DEVICE;
+
+    private Map<String, Object> readHydrationData() {
+        String json = getAttribute("data-reuise-hydration");
+        Map<String, Object> data = new LinkedHashMap<>();
+        if (json == null)
+            return data;
+
+        Object parsed = HydrationJson.decode(json);
+        if (!(parsed instanceof Map<?, ?>))
+            throw new IllegalArgumentException("Hydration data must be a JSON object");
+
+        for (Map.Entry<?, ?> entry : ((Map<?, ?>) (parsed)).entrySet()) {
+            if (!(entry.getKey() instanceof String))
+                throw new IllegalArgumentException("Hydration data keys must be strings");
+
+            data.put(((String) (entry.getKey())), entry.getValue());
+        }
+        return data;
+    }
 
     @Override
     public StyleBuilder getCommonStyles() {
@@ -817,6 +844,32 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     }
 
     @Override
+    public LocaleContext getLocaleContext() {
+        return baseComponentPart.getLocaleContext();
+    }
+
+    // Implementation
+    @Override
+    public S setLocaleContext(LocaleContext localeContext) {
+        getBaseComponentPart().setLocaleContext(localeContext);
+        if (localeContext == null)
+            setAttribute("lang", getLocaleContext().getLanguageTag());
+
+        return self();
+    }
+
+    @Override
+    public Function<String, String> getLinkUrlResolver() {
+        return baseComponentPart.getLinkUrlResolver();
+    }
+
+    @Override
+    public S setLinkUrlResolver(Function<String, String> linkUrlResolver) {
+        this.baseComponentPart.setLinkUrlResolver(linkUrlResolver);
+        return self();
+    }
+
+    @Override
     public CoreParentComponent getWrapper() {
         return baseComponentPart.getWrapper();
     }
@@ -836,16 +889,13 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     @Override
     public S setTheme(Theme theme) {
         getParentComponentPart().setTheme(theme);
+        ComponentTheme buttonTheme = (theme == null) ? null : theme.getButtonTheme();
+        ButtonRadiusStyles.setDocumentThemeRadius(commonStyles.addRule(".reuise-button"), buttonTheme);
         if (theme == null)
             return self();
 
         // Button
-        ComponentTheme buttonTheme = theme.getButtonTheme();
         if (buttonTheme != null) {
-            int cornerRadius = buttonTheme.getCornerRadius();
-            if (cornerRadius != 0)
-                commonStyles.addRule(".reuise-button").setBorderRadius(cornerRadius + "px");
-
             ThemeColorSet primaryColor = buttonTheme.getPrimaryColor();
             ThemeColorSet secondaryColor = buttonTheme.getSecondaryColor();
             ThemeColorSet textColor = buttonTheme.getTextColor();
@@ -867,8 +917,8 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
         ComponentTheme globalTheme = theme.getGlobalTheme();
         if (globalTheme != null) {
             ThemeColorSet accentColor = globalTheme.getAccentColor();
-            ThemeColorSet primaryColor = buttonTheme.getPrimaryColor();
-            ThemeColorSet textColor = buttonTheme.getTextColor();
+            ThemeColorSet primaryColor = (buttonTheme == null) ? null : buttonTheme.getPrimaryColor();
+            ThemeColorSet textColor = (buttonTheme == null) ? null : buttonTheme.getTextColor();
             if (textColor != null)
                 commonStyles.addRule(".body").setColor(textColor.getNormal().toHex());
 
@@ -1130,6 +1180,16 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     // Implementation
     public boolean onPreInitialize(O options) {
         options.getComponentFactory().setRootComponent(((RootComponent) (options.getComponent())));
+        LocaleContext locale = getLocaleContext();
+        if ((options.getLanguageOption() == null) || (options.getLanguageOption() instanceof DefaultComponentOption))
+            options.setDefaultOption("language", locale.getLanguageTag());
+
+        if ((options.getTextDirectionOption() == null) || (options.getTextDirectionOption() instanceof DefaultComponentOption))
+            options.setDefaultOption("textDirection", locale.getTextDirection());
+
+        WebDocument document = ((WebDocument) (options.getComponent()));
+        document.setLanguage(options.getLanguage());
+        document.setTextDirection(options.getTextDirection());
         if (body != null)
             return true;
 
@@ -1238,6 +1298,7 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
         applicator.add(options.getKeywordsOption(), component::setKeywords);
         applicator.add(options.getThemeColorOption(), component::setThemeColor);
         applicator.add(options.getLanguageOption(), component::setLanguage);
+        applicator.add(options.getTextDirectionOption(), component::setTextDirection);
         applicator.add(options.getPathOption(), component::setPath);
         applicator.add(options.getUrlOption(), component::setUrl);
         applicator.add(options.getCharsetOption(), component::setCharset);
@@ -1286,6 +1347,38 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
     // Implementation
     public ColorMode getColorMode() {
         return colorMode;
+    }
+
+    // Implementation
+    public S setHydrationData(String key, Object value) {
+        Objects.requireNonNull(key, "Hydration data key");
+        Map<String, Object> data = readHydrationData();
+        data.put(key, value);
+        setAttribute("data-reuise-hydration", HydrationJson.encode(data));
+        return self();
+    }
+
+    // Implementation
+    public Object getHydrationData(String key) {
+        return readHydrationData().get(Objects.requireNonNull(key, "Hydration data key"));
+    }
+
+    // Implementation
+    public boolean hasHydrationData(String key) {
+        return readHydrationData().containsKey(Objects.requireNonNull(key, "Hydration data key"));
+    }
+
+    // Implementation
+    public S removeHydrationData(String key) {
+        Objects.requireNonNull(key, "Hydration data key");
+        Map<String, Object> data = readHydrationData();
+        data.remove(key);
+        if (data.isEmpty())
+            removeAttribute("data-reuise-hydration");
+        else
+            setAttribute("data-reuise-hydration", HydrationJson.encode(data));
+
+        return self();
     }
 
     // Implementation

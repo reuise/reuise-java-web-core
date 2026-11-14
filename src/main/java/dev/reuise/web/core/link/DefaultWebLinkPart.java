@@ -16,9 +16,12 @@ import dev.reuise.core.theme.ThemeColorSet;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.StyleOptions;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleProperty;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +55,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -87,6 +92,22 @@ import java.util.Set;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebLinkPart<S extends DefaultWebLinkPart<S, O>, O extends WebLinkPartOptions> extends DefaultCoreLinkPart<S, O> implements WebLink , WebComponentPart {
+    public S setExternalIndicator(String externalIndicator) {
+        if ((externalIndicator == null) || "auto".equals(externalIndicator)) {
+            removeAttribute("data-externalindicator");
+        } else if ("show".equals(externalIndicator) || "hide".equals(externalIndicator)) {
+            setData("externalindicator", externalIndicator);
+        } else {
+            throw new IllegalArgumentException("ExternalIndicator must be auto, show or hide");
+        }
+        return self();
+    }
+
+    public String getExternalIndicator() {
+        String value = getData("externalindicator");
+        return value == null ? "auto" : value;
+    }
+
     @Override
     public S setTarget(String target) {
         setAttribute("target", target);
@@ -150,7 +171,14 @@ public abstract class DefaultWebLinkPart<S extends DefaultWebLinkPart<S, O>, O e
 
     @Override
     public void setRootComponent(RootComponent rootComponent) {
+        super.setRootComponent(rootComponent);
         this.parentComponentPart.setRootComponent(rootComponent);
+        if (startIcon != null)
+            startIcon.setRootComponent(rootComponent);
+
+        if (endIcon != null)
+            endIcon.setRootComponent(rootComponent);
+
     }
 
     @Override
@@ -584,6 +612,28 @@ public abstract class DefaultWebLinkPart<S extends DefaultWebLinkPart<S, O>, O e
         parentComponentPart.onInitializeComponentType(rootComponent);
     }
 
+    @Override
+    public WebIcon getStartIcon() {
+        return ((WebIcon) (super.getStartIcon()));
+    }
+
+    @Override
+    public WebIcon getEndIcon() {
+        return ((WebIcon) (super.getEndIcon()));
+    }
+
+    // Implementation
+    // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        commonStyles.addRule(".reuise-link_starticon,.reuise-link_endicon").setDisplay("inline-flex").setAlignItems("center").setJustifyContent("center").setVerticalAlign("middle").setWidth("1em").setHeight("1em");
+        commonStyles.addRule(".reuise-link_starticon>*,.reuise-link_endicon>*").setMaxWidth("100%").setMaxHeight("100%");
+        commonStyles.addRule(".reuise-link_starticon").setMarginRight("0.5em");
+        commonStyles.addRule(".reuise-link_endicon").setMarginLeft("0.5em");
+        commonStyles.addRule(".reuise-link_starticon:dir(rtl)").setMarginRight(0).setMarginLeft("0.5em");
+        commonStyles.addRule(".reuise-link_endicon:dir(rtl)").setMarginLeft(0).setMarginRight("0.5em");
+        StyleOptions indicator = new StyleOptions();
+        indicator.setProperty(new StyleProperty("mask"), "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11 5 H5 V19 H19 V13 M13 5 H19 V11 M19 5 L10 14' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") center / contain no-repeat", false);
+        indicator.setProperty(new StyleProperty("margin-inline-start"), "0.5em", false);
+        commonStyles.addRule(".reuise-link[target=\"_blank\" i]:not([data-externalindicator=\"hide\"]):not([data-externalindicator=\"show\"]):not(:has(>.reuise-link_endicon))::after," + ".reuise-link[data-externalindicator=\"show\"]::after").setContent("\"\"").setDisplay("inline-block").setWidth("1em").setHeight("1em").setVerticalAlign("middle").setBackgroundColor("currentColor").append(indicator);
     }
 }

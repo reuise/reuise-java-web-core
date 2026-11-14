@@ -1,4 +1,5 @@
 package dev.reuise.web.core.layout;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -30,6 +31,7 @@ import java.util.Set;
 // Option: RowGap - CORE
 // Option: Gap - CORE
 // Option: Wrap - CORE
+// Option: Animation - WEB
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -66,6 +68,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -75,6 +79,8 @@ import java.util.Set;
 // Option: DebugId - CORE
 // base comp: flexContainer
 // base comp: container
+// add composition for container: startAnimation
+// add composition for container: cancelAnimation
 // add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
@@ -179,8 +185,29 @@ public abstract class DefaultWebSurfacePart<S extends DefaultWebSurfacePart<S, O
     }
 
     @Override
+    public ComponentAnimation getAnimation() {
+        return containerPart.getAnimation();
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.containerPart.setAnimation(animation);
+        return self();
+    }
+
+    @Override
     public S setBackdropFilter(BackdropFilter backdropFilter, Object value) {
         this.containerPart.setBackdropFilter(backdropFilter, value);
+        return self();
+    }
+
+    public S startAnimation() {
+        flexContainerPart.startAnimation();
+        return self();
+    }
+
+    public S cancelAnimation() {
+        flexContainerPart.cancelAnimation();
         return self();
     }
 
@@ -595,6 +622,6 @@ public abstract class DefaultWebSurfacePart<S extends DefaultWebSurfacePart<S, O
         commonStyles.addRule(".reuise-surface").setDisplay("flex").setBorderRadius(12);
         commonStyles.addRule(".reuise-surface--filled");
         commonStyles.addRule(".reuise-surface--elevated").setBoxShadow("0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30)");
-        commonStyles.addRule(".reuise-surface--outlined").setBorder("1px solid #CAC4D0");
+        commonStyles.addRule(":where(.reuise-surface--outlined)").setBorder("1px solid var(--reuise-minimal-outline, #CAC4D0)");
     }
 }

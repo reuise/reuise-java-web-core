@@ -2,6 +2,7 @@ package dev.reuise.web.core.link;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.link.AbstractCoreLinkOptions;
 import dev.reuise.core.option.ComponentOption;
+import dev.reuise.web.core.icon.WebIconOptions;
 public abstract class AbstractWebLinkOptions<S extends AbstractWebLinkOptions<S>> extends AbstractCoreLinkOptions<S> implements WebLinkOptions {
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {
@@ -46,5 +47,17 @@ public abstract class AbstractWebLinkOptions<S extends AbstractWebLinkOptions<S>
 
     private void setDefaultUseHistoryApi(Boolean useHistoryApi) {
         setDefaultOption("useHistoryApi", useHistoryApi, true);
+    }
+
+    protected WebIconOptions createDefaultStartIconOptions() {
+        WebIconOptions options = ((WebIconOptions) (super.createDefaultStartIconOptions()));
+        options.setStyleClass("reuise-link_starticon");
+        return options;
+    }
+
+    protected WebIconOptions createDefaultEndIconOptions() {
+        WebIconOptions options = ((WebIconOptions) (super.createDefaultEndIconOptions()));
+        options.setStyleClass("reuise-link_endicon");
+        return options;
     }
 }

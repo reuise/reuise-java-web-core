@@ -15,6 +15,7 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -50,6 +51,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -584,9 +587,9 @@ public abstract class DefaultWebTablePart<S extends DefaultWebTablePart<S, O>, O
         commonStyles.addRule(".reuise-table").setOverflow("auto");
         commonStyles.addRule(".reuise-table_table").setWidth("inherit").setBorderCollapse("collapse");
         commonStyles.addRule(".reuise-table_row").setHeight(52);
-        commonStyles.addRule(".reuise-table_cell").setPadding(16).setLineHeight(20);
+        commonStyles.addRule(".reuise-table_cell").setPadding(SpacingScale.value(16)).setLineHeight(20);
         commonStyles.addRule(".reuise-table_header--fixed>tr").setPosition("sticky").setTop(0).setZIndex(1);
         commonStyles.addRule(".reuise-table_header>tr>th").setHeight(56).setPadding(0);
-        commonStyles.addRule(".reuise-table_header>tr").setBackgroundColor("white");
+        commonStyles.addRule(":where(.reuise-table_header>tr)").setBackgroundColor("var(--reuise-minimal-surface, white)");
     }
 }

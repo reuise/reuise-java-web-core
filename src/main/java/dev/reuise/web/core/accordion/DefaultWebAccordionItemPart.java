@@ -1,4 +1,5 @@
 package dev.reuise.web.core.accordion;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -14,12 +15,16 @@ import dev.reuise.core.theme.Theme;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.button.WebButton;
+import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.layout.WebContainerPart;
+import dev.reuise.web.core.layout.WebFlexContainer;
 import dev.reuise.web.core.layout.WebFlexContainerPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +36,7 @@ import java.util.Set;
 // Option: RowGap - CORE
 // Option: Gap - CORE
 // Option: Wrap - CORE
+// Option: Animation - WEB
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -67,6 +73,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -76,6 +84,8 @@ import java.util.Set;
 // Option: DebugId - CORE
 // base comp: flexContainer
 // base comp: container
+// add composition for container: startAnimation
+// add composition for container: cancelAnimation
 // add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
@@ -105,6 +115,43 @@ import java.util.Set;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebAccordionItemPart<S extends DefaultWebAccordionItemPart<S, O>, O extends WebAccordionItemPartOptions> extends DefaultCoreAccordionItemPart<S, O> implements WebAccordionItem , WebComponentPart {
+    @Override
+    public S setToggleAtEnd(Boolean toggleAtEnd) {
+        super.setToggleAtEnd(Boolean.TRUE.equals(toggleAtEnd));
+        setData("toggleatend", Boolean.toString(isToggleAtEnd()));
+        if ((getHeader() == null) || (getToggle() == null))
+            return self();
+
+        if (isToggleAtEnd()) {
+            for (CoreComponent child : new ArrayList<>(getHeader().getChildren())) {
+                if (child != getToggle())
+                    getHeader().insertBefore(child, getToggle());
+
+            }
+        } else if (!getHeader().getChildren().isEmpty()) {
+            getHeader().insertBefore(getToggle(), getHeader().getChildren().get(0));
+        }
+        getToggle().getStyle().setMarginLeft(isToggleAtEnd() ? "auto" : "0");
+        return self();
+    }
+
+    @Override
+    public S setExpanded(Boolean expanded) {
+        super.setExpanded(expanded);
+        setData("expanded", Boolean.toString(isExpanded()));
+        if (getContent() != null) {
+            if (isExpanded())
+                getContent().removeAttribute("hidden");
+            else
+                getContent().setAttribute("hidden", "");
+
+        }
+        if (getToggle() != null)
+            getToggle().setAttribute("aria-expanded", Boolean.toString(isExpanded()));
+
+        return self();
+    }
+
     private WebFlexContainerPart flexContainerPart;
 
     private WebContainerPart containerPart;
@@ -133,7 +180,17 @@ public abstract class DefaultWebAccordionItemPart<S extends DefaultWebAccordionI
 
     @Override
     public void setRootComponent(RootComponent rootComponent) {
+        super.setRootComponent(rootComponent);
         this.flexContainerPart.setRootComponent(rootComponent);
+        if (header != null)
+            header.setRootComponent(rootComponent);
+
+        if (toggle != null)
+            toggle.setRootComponent(rootComponent);
+
+        if (content != null)
+            content.setRootComponent(rootComponent);
+
     }
 
     @Override
@@ -143,13 +200,44 @@ public abstract class DefaultWebAccordionItemPart<S extends DefaultWebAccordionI
 
     @Override
     public S setTheme(Theme theme) {
+        super.setTheme(theme);
+        if (header != null)
+            header.setTheme(theme);
+
+        if (toggle != null)
+            toggle.setTheme(theme);
+
+        if (content != null)
+            content.setTheme(theme);
+
         this.flexContainerPart.setTheme(theme);
+        return self();
+    }
+
+    @Override
+    public ComponentAnimation getAnimation() {
+        return containerPart.getAnimation();
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.containerPart.setAnimation(animation);
         return self();
     }
 
     @Override
     public S setBackdropFilter(BackdropFilter backdropFilter, Object value) {
         this.containerPart.setBackdropFilter(backdropFilter, value);
+        return self();
+    }
+
+    public S startAnimation() {
+        flexContainerPart.startAnimation();
+        return self();
+    }
+
+    public S cancelAnimation() {
+        flexContainerPart.cancelAnimation();
         return self();
     }
 
@@ -541,8 +629,20 @@ public abstract class DefaultWebAccordionItemPart<S extends DefaultWebAccordionI
         return true;
     }
 
+    // Implementation
+    // Implementation
+    // Implementation
     public void onInitialize(O options) {
         super.onInitialize(options);
+        String contentId = getContent().getId();
+        if ((contentId == null) || contentId.isEmpty()) {
+            contentId = getContent().getUniqueId();
+            getContent().setId(contentId);
+        }
+        getToggle().setAttribute("type", "button");
+        getToggle().setAttribute("aria-controls", contentId);
+        setExpanded(options.isExpanded());
+        setToggleAtEnd(options.isToggleAtEnd());
     }
 
     public void onCreate(O options) {
@@ -556,6 +656,21 @@ public abstract class DefaultWebAccordionItemPart<S extends DefaultWebAccordionI
     public void onInitializeComponentType(RootComponent rootComponent) {
         super.onInitializeComponentType(rootComponent);
         flexContainerPart.onInitializeComponentType(rootComponent);
+    }
+
+    @Override
+    public WebFlexContainer getHeader() {
+        return ((WebFlexContainer) (super.getHeader()));
+    }
+
+    @Override
+    public WebButton getToggle() {
+        return ((WebButton) (super.getToggle()));
+    }
+
+    @Override
+    public WebContainer getContent() {
+        return ((WebContainer) (super.getContent()));
     }
 
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {

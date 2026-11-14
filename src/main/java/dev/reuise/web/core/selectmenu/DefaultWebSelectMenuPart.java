@@ -21,6 +21,7 @@ import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.input.WebTextField;
 import dev.reuise.web.core.menu.WebMenu;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -58,6 +59,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -575,7 +578,7 @@ public abstract class DefaultWebSelectMenuPart<S extends DefaultWebSelectMenuPar
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-selectmenu .reuise-textfield_inputcontainer").setPaddingRight(12).setCursor("pointer");
+        commonStyles.addRule(".reuise-selectmenu .reuise-textfield_inputcontainer").setPaddingRight(SpacingScale.value(12)).setCursor("pointer");
         commonStyles.addRule(".reuise-selectmenu .reuise-textfield_inputcontainer input").setCursor("pointer");
         commonStyles.addRule(".reuise-selectmenu .reuise-textfield_endicon").setDisplay("flex").setJustifyContent("center").setAlignItems("center");
         commonStyles.addRule(".reuise-selectmenu .reuise-textfield_endicon svg").setHeight(5);

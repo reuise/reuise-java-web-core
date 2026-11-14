@@ -17,6 +17,7 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.list.WebListView;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -54,6 +55,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -557,13 +560,13 @@ public abstract class DefaultWebMenuPart<S extends DefaultWebMenuPart<S, O>, O e
         commonStyles.addRule(".reuise-menu:not(.reuise-menu--opened)").setOpacity(0).setPointerEvents("none");
         commonStyles.addRule(".reuise-menu--opened").setOpacity(1).setPointerEvents("all");
         commonStyles.addRule(".reuise-menu ul").setMargin(0).setPadding(0).setListStyle("none");
-        commonStyles.addRule(".reuise-menu .reuise-menuitem").setPadding("12px 28px").setCursor("pointer").setTransition("background-color 100ms ease-in-out");
+        commonStyles.addRule(".reuise-menu .reuise-menuitem").setPadding((SpacingScale.value(12) + " ") + SpacingScale.value(24)).setCursor("pointer").setTransition("background-color 100ms ease-in-out");
         commonStyles.addRule(".reuise-menuitem>a").setTextDecoration("none");
         commonStyles.addRule(".reuise-menu .reuise-menuitem:has(.reuise-basiclistitem_link)").setPadding("0").setCursor("pointer");
         commonStyles.addRule(".reuise-menuitem .reuise-basiclistitem_link").setColor("black", true);
         commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-menuitem .reuise-basiclistitem_link").setColor("#e6e1e5", true);
         commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-menuitem .reuise-basiclistitem_link", ColorScheme.DARK).setColor("#e6e1e5", true);
-        commonStyles.addRule(".reuise-menu .reuise-menuitem>.reuise-basiclistitem_link").setPadding("12px 28px").setDisplay("block").setTextDecoration("none").setBoxSizing("border-box");
+        commonStyles.addRule(".reuise-menu .reuise-menuitem>.reuise-basiclistitem_link").setPadding((SpacingScale.value(12) + " ") + SpacingScale.value(24)).setDisplay("block").setTextDecoration("none").setBoxSizing("border-box");
         commonStyles.addRule(".reuise-menu .reuise-menuitem:hover").setBackgroundColor("rgb(0 0 0 / 10%)");
         commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-menu .reuise-menuitem:hover").setBackgroundColor("rgb(255 255 255 / 10%)");
         commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-menu .reuise-menuitem:hover", ColorScheme.DARK).setBackgroundColor("rgb(255 255 255 / 10%)");

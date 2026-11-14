@@ -22,6 +22,7 @@ import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.image.WebImage;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -57,6 +58,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -601,15 +604,15 @@ public abstract class DefaultWebTopAppBarPart<S extends DefaultWebTopAppBarPart<
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-top-app-bar").setBoxSizing("border-box").setPadding("0 16px");
-        commonStyles.addRule(".reuise-top-app-bar:has(.reuise-top-app-bar_navigationbutton)").setPadding("0 16px 0 8px");
+        commonStyles.addRule(".reuise-top-app-bar").setBoxSizing("border-box").setPadding("0 " + SpacingScale.value(16));
+        commonStyles.addRule(".reuise-top-app-bar:has(.reuise-top-app-bar_navigationbutton)").setPadding((("0 " + SpacingScale.value(16)) + " 0 ") + SpacingScale.value(8));
         commonStyles.addRule(".reuise-top-app-bar--fixed").setPosition("fixed").setTop("0").setRight("0").setLeft("0").setZIndex(9999);
-        commonStyles.addRule(".reuise-top-app-bar_container").setDisplay("flex").setFlexWrap("nowrap").setColumnGap(8).setWidth("100%").setJustifyContent("space-between").setAlignItems("stretch");
-        commonStyles.addRule(".reuise-top-app-bar_titlecontainer,.reuise-top-app-bar_actionscontainer").setDisplay("flex").setFlexWrap("nowrap").setColumnGap(8).setFlexDirection("row").setAlignItems("center");
+        commonStyles.addRule(".reuise-top-app-bar_container").setDisplay("flex").setFlexWrap("nowrap").setColumnGap(SpacingScale.value(8)).setWidth("100%").setJustifyContent("space-between").setAlignItems("stretch");
+        commonStyles.addRule(".reuise-top-app-bar_titlecontainer,.reuise-top-app-bar_actionscontainer").setDisplay("flex").setFlexWrap("nowrap").setColumnGap(SpacingScale.value(8)).setFlexDirection("row").setAlignItems("center");
         commonStyles.addRule(".reuise-top-app-bar_titlecontainer:empty,.reuise-top-app-bar_actionscontainer:empty").setDisplay("none");
-        commonStyles.addRule(".reuise-top-app-bar_actionscontainer").setFlex("1 1 auto").setJustifyContent("start").setMarginLeft(8);
+        commonStyles.addRule(".reuise-top-app-bar_actionscontainer").setFlex("1 1 auto").setJustifyContent("start").setMarginLeft(SpacingScale.value(8));
         commonStyles.addRule(".reuise-top-app-bar_actionscontainer").setFlex("0 1 auto").setJustifyContent("end");
-        commonStyles.addRule(".reuise-top-app-bar_navigationbutton").setWidth(24).setHeight(24).setAlignSelf("center").setBorder("none").setBorderRadius("50%").setBackgroundColor("transparent").setPadding(9).setBoxSizing("content-box", true).setCursor("pointer");
+        commonStyles.addRule(".reuise-top-app-bar_navigationbutton").setWidth(24).setHeight(24).setAlignSelf("center").setBorder("none").setBorderRadius("50%").setBackgroundColor("transparent").setPadding(SpacingScale.value(12)).setBoxSizing("content-box", true).setCursor("pointer");
         commonStyles.addRule(".reuise-top-app-bar_navigationbutton:hover").setBackgroundColor("#3c404314");
         commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-top-app-bar_navigationbutton:hover").setBackgroundColor("#e2e2e614");
         commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-top-app-bar_navigationbutton:hover", ColorScheme.DARK).setBackgroundColor("#e2e2e614");

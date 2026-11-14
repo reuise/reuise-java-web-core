@@ -1,4 +1,5 @@
 package dev.reuise.web.core.image;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -49,6 +50,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -126,6 +129,8 @@ public abstract class DefaultWebImagePart<S extends DefaultWebImagePart<S, O>, O
     }
 
     private WebBaseComponentPart baseComponentPart;
+
+    protected ComponentAnimation animation;
 
     protected DefaultWebImagePart(O options) {
         super(options);
@@ -558,6 +563,7 @@ public abstract class DefaultWebImagePart<S extends DefaultWebImagePart<S, O>, O
             System.out.println("component is null");
 
         // Apply options for default state
+        applicator.add(options.getAnimationOption(), component::setAnimation);
         applicator.add(options.getAltTextOption(), component::setAltText);
     }
 
@@ -572,5 +578,26 @@ public abstract class DefaultWebImagePart<S extends DefaultWebImagePart<S, O>, O
     }
 
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+    }
+
+    @Override
+    public ComponentAnimation getAnimation() {
+        return animation;
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.animation = animation;
+        return self();
+    }
+
+    // Implementation
+    public S startAnimation() {
+        return self();
+    }
+
+    // Implementation
+    public S cancelAnimation() {
+        return self();
     }
 }

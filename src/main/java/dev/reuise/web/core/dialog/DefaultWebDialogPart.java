@@ -21,6 +21,7 @@ import dev.reuise.web.core.button.WebButton;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.layout.WebFlexContainer;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.web.core.text.WebHeading;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
@@ -60,6 +61,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -683,10 +686,11 @@ public abstract class DefaultWebDialogPart<S extends DefaultWebDialogPart<S, O>,
         commonStyles.addRule(".reuise-dialog").setPosition("fixed").setTop("0").setLeft("0").setRight("0").setBottom("0").setJustifyContent("center").setAlignItems("center").setZIndex(999999);
         commonStyles.addRule(".reuise-dialog:not(.reuise-dialog--opened)").setDisplay("none");
         commonStyles.addRule(".reuise-dialog--opened").setDisplay("flex");
-        commonStyles.addRule(".reuise-dialog_container").setPosition("absolute").setBackgroundColor("white").setBorderRadius("28px").setZIndex(1);
-        commonStyles.addRule(".reuise-dialog_header").setPadding("24px 24px 16px");
-        commonStyles.addRule(".reuise-dialog_body").setBoxSizing("border-box").setPadding("0 24px 24px");
-        commonStyles.addRule(".reuise-dialog_footer").setDisplay("flex").setJustifyContent("end").setPadding("0 24px 24px");
+        commonStyles.addRule(".reuise-dialog_container").setPosition("absolute").setBorderRadius("28px").setZIndex(1);
+        commonStyles.addRule(":where(.reuise-dialog_container)").setBackgroundColor("var(--reuise-minimal-surface, white)").setColor("var(--reuise-minimal-text, inherit)");
+        commonStyles.addRule(".reuise-dialog_header").setPadding((((SpacingScale.value(24) + " ") + SpacingScale.value(24)) + " ") + SpacingScale.value(16));
+        commonStyles.addRule(".reuise-dialog_body").setBoxSizing("border-box").setPadding((("0 " + SpacingScale.value(24)) + " ") + SpacingScale.value(24));
+        commonStyles.addRule(".reuise-dialog_footer").setDisplay("flex").setJustifyContent("end").setPadding((("0 " + SpacingScale.value(24)) + " ") + SpacingScale.value(24));
         commonStyles.addRule(".reuise-dialog_scrim").setPosition("absolute").setTop("0").setLeft("0").setRight("0").setBottom("0").setBackgroundColor("rgb(0 0 0 / 50%)").setCursor("pointer");
         commonStyles.addRule(".reuise-dialog--shaking").setAnimation("reuise-dialog_shakeanimation 0.3s ease");
         StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-dialog_shakeanimation");

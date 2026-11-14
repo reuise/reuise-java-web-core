@@ -1,4 +1,5 @@
 package dev.reuise.web.core.document;
+import dev.reuise.core.TextDirection;
 import dev.reuise.webstyles.StyleSheet;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,10 @@ public interface WebDocumentFeatures {
     String getLanguage();
 
     WebDocumentFeatures setLanguage(String language);
+
+    TextDirection getTextDirection();
+
+    WebDocumentFeatures setTextDirection(TextDirection textDirection);
 
     String getPath();
 

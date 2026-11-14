@@ -1,5 +1,6 @@
 package dev.reuise.web.core.card;
 import dev.reuise.core.ColorScheme;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -24,6 +25,7 @@ import dev.reuise.web.core.layout.WebFlexContainerPart;
 import dev.reuise.web.core.layout.WebSurfacePart;
 import dev.reuise.web.core.link.WebLink;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.web.core.text.WebTextBlock;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
@@ -42,6 +44,7 @@ import java.util.Set;
 // Option: RowGap - CORE
 // Option: Gap - CORE
 // Option: Wrap - CORE
+// Option: Animation - WEB
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -78,6 +81,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -88,6 +93,8 @@ import java.util.Set;
 // base comp: surface
 // base comp: flexContainer
 // base comp: container
+// add composition for container: startAnimation
+// add composition for container: cancelAnimation
 // add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
@@ -284,8 +291,29 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
     }
 
     @Override
+    public ComponentAnimation getAnimation() {
+        return containerPart.getAnimation();
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.containerPart.setAnimation(animation);
+        return self();
+    }
+
+    @Override
     public S setBackdropFilter(BackdropFilter backdropFilter, Object value) {
         this.containerPart.setBackdropFilter(backdropFilter, value);
+        return self();
+    }
+
+    public S startAnimation() {
+        surfacePart.startAnimation();
+        return self();
+    }
+
+    public S cancelAnimation() {
+        surfacePart.cancelAnimation();
         return self();
     }
 
@@ -756,7 +784,7 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
         commonStyles.addRule(".reuise-card").setDisplay("flex").setBorderRadius(12);
         commonStyles.addRule(".reuise-card--vertical").setFlexDirection("column");
         commonStyles.addRule(".reuise-card--horizontal").setFlexDirection("row");
-        commonStyles.addRule(".reuise-card .reuise-card_textcontent").setDisplay("flex").setFlexDirection("column").setRowGap("32px").setPadding("16px");
+        commonStyles.addRule(".reuise-card .reuise-card_textcontent").setDisplay("flex").setFlexDirection("column").setRowGap(SpacingScale.value(32)).setPadding(SpacingScale.value(16));
         commonStyles.addRule(".reuise-card .reuise-card_headline").setDisplay("flex").setFlexDirection("column");
         commonStyles.addRule(".reuise-card .reuise-card_heading").setFontSize("16px").setFontWeight("400").setColor("#1D1B20").setLineHeight("24px");
         commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-card .reuise-card_heading").setColor("#E6E1E5");

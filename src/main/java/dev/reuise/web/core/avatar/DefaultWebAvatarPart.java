@@ -53,6 +53,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -615,7 +617,8 @@ public abstract class DefaultWebAvatarPart<S extends DefaultWebAvatarPart<S, O>,
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-avatar").setDisplay("block").setCursor("pointer").setBackgroundColor("rgb(0 0 0 / 15%)");
+        commonStyles.addRule(".reuise-avatar").setDisplay("block").setCursor("pointer");
+        commonStyles.addRule(":where(.reuise-avatar)").setBackgroundColor("var(--reuise-minimal-overlay, rgb(0 0 0 / 15%))");
         for (AvatarSize s : AvatarSize.values()) {
             commonStyles.addRule("." + createSizeStyleClassName(s)).setWidth(s.getSize()).setHeight(s.getSize());
             commonStyles.addRule((("." + createSizeStyleClassName(s)) + ".") + createShapeStyleClassName(AvatarShape.CIRCLE)).setBorderRadius(s.getSize() / 2);

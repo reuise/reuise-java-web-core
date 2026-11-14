@@ -1,4 +1,5 @@
 package dev.reuise.web.core.image;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.image.AbstractCoreImageOptions;
 import dev.reuise.core.option.ComponentOption;
@@ -27,6 +28,26 @@ public abstract class AbstractWebImageOptions<S extends AbstractWebImageOptions<
 
     public void onInitialize() {
         super.onInitialize();
+    }
+
+    @Override
+    public ComponentAnimation getAnimation() {
+        return ((ComponentAnimation) (getOptionValue("animation")));
+    }
+
+    @Override
+    public ComponentOption<ComponentAnimation> getAnimationOption() {
+        return ((ComponentOption<ComponentAnimation>) (getOption("animation")));
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        setOption("animation", animation);
+        return self();
+    }
+
+    private void setDefaultAnimation(ComponentAnimation animation) {
+        setDefaultOption("animation", animation);
     }
 
     @Override

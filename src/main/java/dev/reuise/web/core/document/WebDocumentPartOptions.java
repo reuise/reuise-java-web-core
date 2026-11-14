@@ -1,5 +1,6 @@
 package dev.reuise.web.core.document;
 import dev.reuise.core.State;
+import dev.reuise.core.TextDirection;
 import dev.reuise.core.option.ComponentCreator;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.WebComponentFactory;
@@ -50,6 +51,12 @@ public interface WebDocumentPartOptions {
     ComponentOption<String> getLanguageOption();
 
     WebDocumentPartOptions setLanguage(String language);
+
+    TextDirection getTextDirection();
+
+    ComponentOption<TextDirection> getTextDirectionOption();
+
+    WebDocumentPartOptions setTextDirection(TextDirection textDirection);
 
     String getPath();
 

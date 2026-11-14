@@ -15,6 +15,7 @@ import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.web.core.text.WebLabel;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
@@ -51,6 +52,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -583,7 +586,7 @@ public abstract class DefaultWebCheckboxPart<S extends DefaultWebCheckboxPart<S,
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         commonStyles.addRule("." + getBaseStyleClass()).setDisplay("flex").setAlignItems("center");
-        commonStyles.addRule(("." + getBaseStyleClass()) + " .reuise-checkbox_label").setMarginLeft(8);
+        commonStyles.addRule(("." + getBaseStyleClass()) + " .reuise-checkbox_label").setMarginLeft(SpacingScale.value(8));
         for (CheckboxSize s : CheckboxSize.values()) {
             commonStyles.addRule(("." + createSizeStyleClassName(s)) + " .reuise-checkbox_label").setFontSize(s.getFontSize()).setLineHeight(s.getSize());
         }

@@ -22,9 +22,12 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
+import dev.reuise.web.core.style.StyleOptions;
 import dev.reuise.web.core.text.WebInlineText;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleProperty;
 import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.Collection;
@@ -59,6 +62,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -324,16 +329,13 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
     @Override
     public S setTheme(Theme theme) {
         getParentComponentPart().setTheme(theme);
+        ComponentTheme buttonTheme = (theme == null) ? null : theme.getButtonTheme();
+        ButtonRadiusStyles.setLocalThemeRadius(getStyle(), buttonTheme);
         if (theme == null)
             return self();
 
-        ComponentTheme buttonTheme = theme.getButtonTheme();
         if (buttonTheme != null) {
-            int cornerRadius = buttonTheme.getCornerRadius();
-            if (cornerRadius != 0) {
-                getStyle().setBorderRadius(cornerRadius + "px");
-            }
-            ThemeColorSet colorSet = switch (getType()) {
+            ThemeColorSet colorSet = switch (getType() == null ? ButtonType.SECONDARY : getType()) {
                 case PRIMARY ->
                     buttonTheme.getPrimaryColor();
                 case SECONDARY ->
@@ -783,10 +785,16 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        ButtonRadiusStyles.initializeCommonStyles(commonStyles, getBaseStyleClass());
         commonStyles.addRule(".reuise-button").setDisplay("inline-flex").setAlignItems("center").setTransition("background-color 200ms ease-in-out, color 200ms ease-in-out").setFlexShrink(0).setOverflow("hidden").setCursor("pointer").setJustifyContent("center");
         commonStyles.addRule(".reuise-button:disabled,.reuise-button.reuise-disabled").setOpacity(0.3).setCursor("default").setPointerEvents("none");
         commonStyles.addRule(".reuise-button_label").setWhiteSpace("nowrap").setOverflow("hidden").setPointerEvents("none");
-        commonStyles.addRule(".reuise-button .reuise-button_starticon").setMarginRight(8);
+        StyleOptions startGap = new StyleOptions();
+        startGap.setProperty(new StyleProperty("margin-inline-end"), ("var(--reuise-button-icon-gap, " + SpacingScale.value(8)) + ")", false);
+        commonStyles.addRule(".reuise-button .reuise-button_starticon").append(startGap);
+        StyleOptions endGap = new StyleOptions();
+        endGap.setProperty(new StyleProperty("margin-inline-start"), ("var(--reuise-button-icon-gap, " + SpacingScale.value(8)) + ")", false);
+        commonStyles.addRule(".reuise-button .reuise-button_endicon").append(endGap);
         commonStyles.addRule(".reuise-button .reuise-button_starticon svg:empty").setDisplay("none");
         commonStyles.addRule(".reuise-loading-skeleton").setPosition("relative").setOverflow("hidden").setColor("transparent", true).setUserSelect("none").setPointerEvents("none");
         commonStyles.addRule(".reuise-loading-skeleton>*").setVisibility("hidden");
@@ -796,8 +804,11 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
         keyframes.addRule("0%").setOpacity(1);
         keyframes.addRule("100%").setOpacity(0.55);
         for (ButtonSize s : ButtonSize.values()) {
-            commonStyles.addRule("." + createSizeStyleClassName(s)).setHeight(s.getHeight()).setBorderRadius(s.getRadius()).setPaddingTop(s.getPaddingY()).setPaddingRight(s.getPaddingX()).setPaddingBottom(s.getPaddingY()).setPaddingLeft(s.getPaddingX()).setFontSize(s.getFontSize());
-            commonStyles.addRule(((((((("." + createSizeStyleClassName(s)) + " .reuise-button_starticon,.") + createSizeStyleClassName(s)) + " .reuise-button_endicon,.") + createSizeStyleClassName(s)) + " .reuise-button_starticon>*,") + createSizeStyleClassName(s)) + " .reuise-button_endicon>*").setWidth(s.getIconSize()).setHeight(s.getIconSize());
+            Style sizeStyle = commonStyles.addRule("." + createSizeStyleClassName(s));
+            ButtonRadiusStyles.setSizeRadius(sizeStyle, s.getRadius());
+            sizeStyle.setHeight(s.getHeight()).setFontSize(s.getFontSize());
+            commonStyles.addRule((":where(." + createSizeStyleClassName(s)) + ")").setPaddingTop(SpacingScale.value(s.getPaddingY())).setPaddingRight(SpacingScale.value(s.getPaddingX())).setPaddingBottom(SpacingScale.value(s.getPaddingY())).setPaddingLeft(SpacingScale.value(s.getPaddingX()));
+            commonStyles.addRule(((((((("." + createSizeStyleClassName(s)) + " .reuise-button_starticon,.") + createSizeStyleClassName(s)) + " .reuise-button_endicon,.") + createSizeStyleClassName(s)) + " .reuise-button_starticon>*,.") + createSizeStyleClassName(s)) + " .reuise-button_endicon>*").setWidth(s.getIconSize()).setHeight(s.getIconSize());
         }
     }
 }

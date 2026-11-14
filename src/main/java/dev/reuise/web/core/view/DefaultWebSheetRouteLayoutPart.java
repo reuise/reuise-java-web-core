@@ -1,10 +1,12 @@
 package dev.reuise.web.core.view;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.Html;
 import dev.reuise.core.Interaction;
+import dev.reuise.core.LocaleContext;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
@@ -39,12 +41,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 // Option: Direction - CORE
 // Option: ReverseDirection - CORE
 // Option: Resizable - CORE
 // Option: SplitPosition - CORE
 // Option: MinSplitPosition - CORE
 // Option: MaxSplitPosition - CORE
+// Option: Animation - WEB
 // Option: Padding - CORE
 // Option: PaddingTop - CORE
 // Option: PaddingRight - CORE
@@ -81,6 +85,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -94,6 +100,8 @@ import java.util.Set;
 // add composition for sheetLayout: setMaxSheetSize
 // base comp: splitContainer
 // base comp: container
+// add composition for container: startAnimation
+// add composition for container: cancelAnimation
 // add composition for container: addMarkdown
 // base comp: parentComponent
 // base comp: baseComponent
@@ -426,6 +434,17 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     }
 
     @Override
+    public ComponentAnimation getAnimation() {
+        return containerPart.getAnimation();
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.containerPart.setAnimation(animation);
+        return self();
+    }
+
+    @Override
     public Object getPadding() {
         return containerPart.getPadding();
     }
@@ -708,6 +727,16 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     @Override
     public S setBackdropFilter(BackdropFilter backdropFilter, Object value) {
         this.containerPart.setBackdropFilter(backdropFilter, value);
+        return self();
+    }
+
+    public S startAnimation() {
+        sheetLayoutPart.startAnimation();
+        return self();
+    }
+
+    public S cancelAnimation() {
+        sheetLayoutPart.cancelAnimation();
         return self();
     }
 
@@ -1500,6 +1529,28 @@ public abstract class DefaultWebSheetRouteLayoutPart<S extends DefaultWebSheetRo
     @Override
     public S setParent(CoreComponent parent) {
         this.baseComponentPart.setParent(parent);
+        return self();
+    }
+
+    @Override
+    public LocaleContext getLocaleContext() {
+        return baseComponentPart.getLocaleContext();
+    }
+
+    @Override
+    public S setLocaleContext(LocaleContext localeContext) {
+        this.baseComponentPart.setLocaleContext(localeContext);
+        return self();
+    }
+
+    @Override
+    public Function<String, String> getLinkUrlResolver() {
+        return baseComponentPart.getLinkUrlResolver();
+    }
+
+    @Override
+    public S setLinkUrlResolver(Function<String, String> linkUrlResolver) {
+        this.baseComponentPart.setLinkUrlResolver(linkUrlResolver);
         return self();
     }
 

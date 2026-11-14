@@ -18,6 +18,7 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.web.core.text.WebInlineText;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
@@ -54,6 +55,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -642,14 +645,14 @@ public abstract class DefaultWebDividerPart<S extends DefaultWebDividerPart<S, O
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         commonStyles.addRule(".reuise-divider").setDisplay("flex");
-        commonStyles.addRule(".reuise-divider--horizontal").setFlexDirection("row").setPadding("16px 0").setAlignItems("center");
-        commonStyles.addRule(".reuise-divider--vertical").setFlexDirection("column").setPadding("0 16px").setJustifyContent("center");
+        commonStyles.addRule(".reuise-divider--horizontal").setFlexDirection("row").setPadding(SpacingScale.value(16) + " 0").setAlignItems("center");
+        commonStyles.addRule(".reuise-divider--vertical").setFlexDirection("column").setPadding("0 " + SpacingScale.value(16)).setJustifyContent("center");
         commonStyles.addRule(".reuise-divider_label").setColor("#0000009c");
         commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-divider_label").setColor("#ffffff9c");
         commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-divider_label", ColorScheme.DARK).setColor("#ffffff9c");
         commonStyles.addRule(".reuise-divider_label:empty").setDisplay("none");
-        commonStyles.addRule(".reuise-divider--horizontal .reuise-divider_label").setPadding("0 16px");
-        commonStyles.addRule(".reuise-divider--vertical .reuise-divider_label").setPadding("16px 0");
+        commonStyles.addRule(".reuise-divider--horizontal .reuise-divider_label").setPadding("0 " + SpacingScale.value(16));
+        commonStyles.addRule(".reuise-divider--vertical .reuise-divider_label").setPadding(SpacingScale.value(16) + " 0");
         commonStyles.addRule(".reuise-divider_startline, .reuise-divider_endline").setFlex("1 1 auto").setBackgroundColor("#0000001f");
         commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-divider_startline, body[data-reuise-color-scheme=\"dark\"] .reuise-divider_endline").setBackgroundColor("#ffffff1f");
         commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-divider_startline, body:not([data-reuise-color-scheme]) .reuise-divider_endline", ColorScheme.DARK).setBackgroundColor("#ffffff1f");

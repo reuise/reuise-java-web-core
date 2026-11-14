@@ -1,4 +1,5 @@
 package dev.reuise.web.core.text;
+import dev.reuise.core.ComponentAnimation;
 import dev.reuise.core.ComponentPart;
 import dev.reuise.core.ComponentType;
 import dev.reuise.core.CoreComponent;
@@ -62,6 +63,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -214,6 +217,8 @@ public abstract class DefaultWebHeadingPart<S extends DefaultWebHeadingPart<S, O
     private WebParentComponentPart parentComponentPart;
 
     private WebBaseComponentPart baseComponentPart;
+
+    protected ComponentAnimation animation;
 
     protected DefaultWebHeadingPart(O options) {
         super(options);
@@ -651,6 +656,12 @@ public abstract class DefaultWebHeadingPart<S extends DefaultWebHeadingPart<S, O
 
     public void applyOptions(O options, OptionApplicator applicator, Collection<State> states) {
         super.applyOptions(options, applicator, states);
+        WebHeadingPart component = ((WebHeadingPart) (options.getComponent()));
+        if (component == null)
+            System.out.println("component is null");
+
+        // Apply options for default state
+        applicator.add(options.getAnimationOption(), component::setAnimation);
     }
 
     public void onInitializeComponentType(RootComponent rootComponent) {
@@ -669,5 +680,26 @@ public abstract class DefaultWebHeadingPart<S extends DefaultWebHeadingPart<S, O
         StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-loading-skeleton_pulse");
         keyframes.addRule("0%").setOpacity(1);
         keyframes.addRule("100%").setOpacity(0.55);
+    }
+
+    @Override
+    public ComponentAnimation getAnimation() {
+        return animation;
+    }
+
+    @Override
+    public S setAnimation(ComponentAnimation animation) {
+        this.animation = animation;
+        return self();
+    }
+
+    // Implementation
+    public S startAnimation() {
+        return self();
+    }
+
+    // Implementation
+    public S cancelAnimation() {
+        return self();
     }
 }

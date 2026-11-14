@@ -12,6 +12,14 @@ public interface WebDocumentPart extends WebParentComponentPart , WebDocumentFea
 
     ColorMode getColorMode();
 
+    WebDocumentPart setHydrationData(String key, Object value);
+
+    Object getHydrationData(String key);
+
+    boolean hasHydrationData(String key);
+
+    WebDocumentPart removeHydrationData(String key);
+
     boolean isViewId(String viewId);
 
     WebDocumentBody getBody();

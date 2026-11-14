@@ -16,6 +16,7 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.chip.WebChipGroup;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -55,6 +56,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -583,10 +586,11 @@ public abstract class DefaultWebChipFieldPart<S extends DefaultWebChipFieldPart<
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         commonStyles.addRule(".reuise-chipfield .reuise-textfield_chipgroup").setOrder(0).setDisplay("contents");
-        commonStyles.addRule(".reuise-chipfield .reuise-chip").setBorder("1px solid #00000066").setBoxSizing("border-box").setHeight(32).setBorderRadius(6);
+        commonStyles.addRule(".reuise-chipfield .reuise-chip").setBoxSizing("border-box").setHeight(32).setBorderRadius(6);
+        commonStyles.addRule(":where(.reuise-chipfield .reuise-chip)").setBorder("1px solid var(--reuise-minimal-outline, #00000066)");
         commonStyles.addRule(".reuise-chipfield .reuise-textfield_input").setOrder(1).setMinWidth(100).setFlex("1 1 100px");
         commonStyles.addRule(".reuise-chipfield:has(.reuise-chipgroup .reuise-chip) .reuise-input").setPadding(0, true);
-        commonStyles.addRule(".reuise-chipfield .reuise-textfield_inputcontainer").setRowGap(6).setColumnGap(6).setPadding(6).setFlexWrap("wrap").setAlignContent("start");
+        commonStyles.addRule(".reuise-chipfield .reuise-textfield_inputcontainer").setRowGap(SpacingScale.value(6)).setColumnGap(SpacingScale.value(6)).setPadding(SpacingScale.value(6)).setFlexWrap("wrap").setAlignContent("start");
         commonStyles.addRule(".reuise-chipfield .reuise-textfield_chipgroup legend").setDisplay("none");
         for (TextFieldSize s : TextFieldSize.values()) {
             commonStyles.addRule((".reuise-chipfield.reuise-textfield--" + s.getShortName()) + " .reuise-chip").setLineHeight(s.getLineHeight()).setFontSize(s.getFontSize());

@@ -54,6 +54,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -92,6 +94,9 @@ public abstract class DefaultWebTabPart<S extends DefaultWebTabPart<S, O>, O ext
     @Override
     public S setUrl(String url) {
         setAttribute("href", HtmlEscaper.url(url));
+        if (link != null)
+            ((WebLink) (link)).setUrl(url);
+
         return self();
     }
 

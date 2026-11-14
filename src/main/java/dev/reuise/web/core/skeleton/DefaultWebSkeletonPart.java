@@ -48,6 +48,8 @@ import java.util.Set;
 // Option: MaxHeight - CORE
 // Option: RequiredLayoutComponent - CORE
 // Option: Parent - CORE
+// Option: LocaleContext - CORE
+// Option: LinkUrlResolver - CORE
 // Option: Wrapper - CORE
 // Option: Theme - CORE
 // Option: Visible - CORE
@@ -553,7 +555,8 @@ public abstract class DefaultWebSkeletonPart<S extends DefaultWebSkeletonPart<S,
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
-        commonStyles.addRule(".reuise-skeleton").setBackgroundColor("rgb(0 0 0 / 10%)").setAnimation("1.5s ease-in-out 0.5s infinite normal none running reuise-skeleton_animation");
+        commonStyles.addRule(".reuise-skeleton").setAnimation("1.5s ease-in-out 0.5s infinite normal none running reuise-skeleton_animation");
+        commonStyles.addRule(":where(.reuise-skeleton)").setBackgroundColor("var(--reuise-minimal-field, rgb(0 0 0 / 10%))");
         commonStyles.addRule(".reuise-skeleton:empty:before").setContent("'\\a0'");
         commonStyles.addRule(".reuise-skeleton--circular").setBorderRadius("50%");
         commonStyles.addRule(".reuise-skeleton--rectangular").setBorderRadius("6px");
