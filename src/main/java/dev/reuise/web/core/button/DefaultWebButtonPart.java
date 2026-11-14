@@ -205,10 +205,21 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
     @Override
     public S setType(ButtonType type) {
         super.setType(type);
-        if (type == null)
-            return self();
+        for (ButtonType candidate : ButtonType.values()) {
+            String styleClass = (getBaseStyleClass() + "--") + candidate.name().toLowerCase();
+            if (type == candidate) {
+                if (!hasStyleClass(styleClass))
+                    addStyleClass(styleClass);
 
-        addStyleClass((getBaseStyleClass() + "--") + type.name().toLowerCase());
+            } else {
+                while (hasStyleClass(styleClass))
+                    removeStyleClass(styleClass);
+
+            }
+        }
+        if (getTheme() != null)
+            setTheme(getTheme());
+
         return self();
     }
 
@@ -331,6 +342,9 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
         getParentComponentPart().setTheme(theme);
         ComponentTheme buttonTheme = (theme == null) ? null : theme.getButtonTheme();
         ButtonRadiusStyles.setLocalThemeRadius(getStyle(), buttonTheme);
+        for (Interaction interaction : Interaction.values())
+            ButtonGradientStyles.setLocal(getStyle(interaction), buttonTheme, getType(), interaction);
+
         if (theme == null)
             return self();
 
@@ -344,9 +358,10 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
                     buttonTheme.getSecondaryColor();
             };
             if (colorSet != null) {
-                getStyle().setBackgroundColor(colorSet.getNormal().toHex());
                 for (Interaction interaction : Interaction.values()) {
-                    getStyle(interaction).setBackgroundColor(colorSet.getColor(interaction).toHex());
+                    if (colorSet.getColor(interaction) != null)
+                        getStyle(interaction).setBackgroundColor(colorSet.getColor(interaction).toCss());
+
                 }
             }
         }
@@ -786,6 +801,7 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         ButtonRadiusStyles.initializeCommonStyles(commonStyles, getBaseStyleClass());
+        ButtonGradientStyles.initializeCommonStyles(commonStyles, getBaseStyleClass());
         commonStyles.addRule(".reuise-button").setDisplay("inline-flex").setAlignItems("center").setTransition("background-color 200ms ease-in-out, color 200ms ease-in-out").setFlexShrink(0).setOverflow("hidden").setCursor("pointer").setJustifyContent("center");
         commonStyles.addRule(".reuise-button:disabled,.reuise-button.reuise-disabled").setOpacity(0.3).setCursor("default").setPointerEvents("none");
         commonStyles.addRule(".reuise-button_label").setWhiteSpace("nowrap").setOverflow("hidden").setPointerEvents("none");

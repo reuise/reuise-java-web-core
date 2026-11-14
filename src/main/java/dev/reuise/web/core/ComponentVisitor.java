@@ -56,6 +56,16 @@ public final class ComponentVisitor {
             children.add(((dev.reuise.web.core.button.WebButtonPart) component).getLabelContainer());
             children.add(((dev.reuise.web.core.button.WebButtonPart) component).getEndIcon());
         }
+        if (component instanceof dev.reuise.web.core.carousel.WebCarouselPart) {
+            children.add(((dev.reuise.web.core.carousel.WebCarouselPart) component).getViewport());
+            children.add(((dev.reuise.web.core.carousel.WebCarouselPart) component).getSlider());
+            children.add(((dev.reuise.web.core.carousel.WebCarouselPart) component).getNavigation());
+            children.add(((dev.reuise.web.core.carousel.WebCarouselPart) component).getPreviousButton());
+            children.add(((dev.reuise.web.core.carousel.WebCarouselPart) component).getIndicators());
+            children.add(((dev.reuise.web.core.carousel.WebCarouselPart) component).getNextButton());
+            children.add(((dev.reuise.web.core.carousel.WebCarouselPart) component).getAutoplayButton());
+            children.add(((dev.reuise.web.core.carousel.WebCarouselPart) component).getAnnouncement());
+        }
         if (component instanceof dev.reuise.web.core.chat.WebChatBoxPart) {
             children.add(((dev.reuise.web.core.chat.WebChatBoxPart) component).getFloatingPanel());
             children.add(((dev.reuise.web.core.chat.WebChatBoxPart) component).getChatContent());

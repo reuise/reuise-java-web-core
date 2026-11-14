@@ -1,6 +1,7 @@
 package dev.reuise.web.core.dialog;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.dialog.AbstractCoreDialogOptions;
+import dev.reuise.web.core.button.WebButtonBarOptions;
 import dev.reuise.web.core.button.WebButtonOptions;
 import dev.reuise.web.core.layout.WebContainerOptions;
 import dev.reuise.web.core.layout.WebFlexContainerOptions;
@@ -48,8 +49,8 @@ public abstract class AbstractWebDialogOptions<S extends AbstractWebDialogOption
         return options;
     }
 
-    protected WebFlexContainerOptions createDefaultFooterOptions() {
-        WebFlexContainerOptions options = ((WebFlexContainerOptions) (super.createDefaultFooterOptions()));
+    protected WebButtonBarOptions createDefaultFooterOptions() {
+        WebButtonBarOptions options = ((WebButtonBarOptions) (super.createDefaultFooterOptions()));
         options.setStyleClass("reuise-dialog_footer");
         return options;
     }

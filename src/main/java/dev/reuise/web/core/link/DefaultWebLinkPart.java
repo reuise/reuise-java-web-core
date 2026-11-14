@@ -193,12 +193,14 @@ public abstract class DefaultWebLinkPart<S extends DefaultWebLinkPart<S, O>, O e
         if (theme == null)
             return self();
 
-        ComponentTheme globalTheme = theme.getButtonTheme();
+        ComponentTheme globalTheme = theme.getGlobalTheme();
         if (globalTheme != null) {
             ThemeColorSet accentColor = globalTheme.getAccentColor();
             if (accentColor != null) {
                 for (Interaction interaction : Interaction.values()) {
-                    getStyle(interaction).setColor(accentColor.getColor(interaction).toHex());
+                    if (accentColor.getColor(interaction) != null)
+                        getStyle(interaction).setColor(accentColor.getColor(interaction).toCss());
+
                 }
             }
         }

@@ -2,6 +2,7 @@ package dev.reuise.web.core.dialog;
 import dev.reuise.core.dialog.CoreDialogPart;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.button.WebButton;
+import dev.reuise.web.core.button.WebButtonBar;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.layout.WebFlexContainer;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
@@ -15,7 +16,7 @@ public interface WebDialogPart extends WebParentComponentPart , CoreDialogPart ,
 
     WebFlexContainer getBody();
 
-    WebFlexContainer getFooter();
+    WebButtonBar getFooter();
 
     WebContainer getScrim();
 

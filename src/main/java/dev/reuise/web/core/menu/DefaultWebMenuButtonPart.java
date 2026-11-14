@@ -688,8 +688,8 @@ public abstract class DefaultWebMenuButtonPart<S extends DefaultWebMenuButtonPar
         StyleOptions chevron = new StyleOptions();
         chevron.setProperty(new StyleProperty("border-right"), "1.5px solid currentColor", false);
         chevron.setProperty(new StyleProperty("border-bottom"), "1.5px solid currentColor", false);
-        chevron.setProperty(new StyleProperty("margin-inline-start"), "0.65em", false);
-        commonStyles.addRule(".reuise-menubutton:not([data-showchevron=\"false\"])>.reuise-menubutton_trigger::after").setContent("\"\"").setDisplay("inline-block").setWidth("0.45em").setHeight("0.45em").setTransform("rotate(45deg)").append(chevron);
-        commonStyles.addRule(".reuise-menubutton:not([data-showchevron=\"false\"])>.reuise-menubutton_trigger[aria-expanded=\"true\"]::after").setTransform("rotate(225deg)");
+        chevron.setProperty(new StyleProperty("margin-inline-start"), "12px", false);
+        commonStyles.addRule(".reuise-menubutton:not([data-showchevron=\"false\"])>.reuise-menubutton_trigger::after").setContent("\"\"").setDisplay("inline-block").setWidth("6px").setHeight("6px").setTransform("translateY(-3px) rotate(45deg)").setTransition("transform 160ms ease").append(chevron);
+        commonStyles.addRule(".reuise-menubutton:not([data-showchevron=\"false\"])>.reuise-menubutton_trigger[aria-expanded=\"true\"]::after").setTransform("translateY(0) rotate(225deg)");
     }
 }

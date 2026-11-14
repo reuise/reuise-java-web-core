@@ -13,18 +13,23 @@ import dev.reuise.core.dialog.DialogSize;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.core.theme.ComponentTheme;
 import dev.reuise.core.theme.Theme;
+import dev.reuise.core.theme.ThemeColorRole;
 import dev.reuise.core.theme.ThemeColorSet;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.button.WebButton;
+import dev.reuise.web.core.button.WebButtonBar;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.layout.WebFlexContainer;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.web.core.style.SpacingScale;
+import dev.reuise.web.core.style.StyleOptions;
+import dev.reuise.web.core.style.ThemeBackgroundStyles;
 import dev.reuise.web.core.text.WebHeading;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
+import dev.reuise.webstyles.StyleProperty;
 import dev.reuise.webstyles.StyleSheet;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.ArrayList;
@@ -219,14 +224,17 @@ public abstract class DefaultWebDialogPart<S extends DefaultWebDialogPart<S, O>,
     @Override
     public S setTheme(Theme theme) {
         getParentComponentPart().setTheme(theme);
+        ComponentTheme dialogTheme = (theme == null) ? null : theme.getDialogTheme();
+        for (Interaction interaction : Interaction.values()) {
+            ThemeBackgroundStyles.setInputs(getContainer().getStyle(interaction), new StyleProperty("--reuise-dialog-theme-gradient"), new StyleProperty("--reuise-dialog-theme-blend"), dialogTheme, ThemeColorRole.BACKGROUND, interaction);
+        }
         if (theme == null)
             return self();
 
-        ComponentTheme dialogTheme = theme.getDialogTheme();
         if (dialogTheme != null) {
             ThemeColorSet backgroundColor = dialogTheme.getBackgroundColor();
-            if (backgroundColor != null) {
-                getContainer().getStyle().setBackground(backgroundColor.getNormal().toHex());
+            if ((backgroundColor != null) && (backgroundColor.getNormal() != null)) {
+                getContainer().getStyle().setBackgroundColor(backgroundColor.getNormal().toCss());
             }
             int cornerRadius = dialogTheme.getCornerRadius();
             if (cornerRadius != 0) {
@@ -661,8 +669,8 @@ public abstract class DefaultWebDialogPart<S extends DefaultWebDialogPart<S, O>,
     }
 
     @Override
-    public WebFlexContainer getFooter() {
-        return ((WebFlexContainer) (super.getFooter()));
+    public WebButtonBar getFooter() {
+        return ((WebButtonBar) (super.getFooter()));
     }
 
     @Override
@@ -687,10 +695,13 @@ public abstract class DefaultWebDialogPart<S extends DefaultWebDialogPart<S, O>,
         commonStyles.addRule(".reuise-dialog:not(.reuise-dialog--opened)").setDisplay("none");
         commonStyles.addRule(".reuise-dialog--opened").setDisplay("flex");
         commonStyles.addRule(".reuise-dialog_container").setPosition("absolute").setBorderRadius("28px").setZIndex(1);
-        commonStyles.addRule(":where(.reuise-dialog_container)").setBackgroundColor("var(--reuise-minimal-surface, white)").setColor("var(--reuise-minimal-text, inherit)");
+        commonStyles.addRule(":where(.reuise-dialog_container)").setBackgroundColor("var(--reuise-minimal-surface, white)").setBackgroundImage("var(--reuise-dialog-theme-gradient, none)").setColor("var(--reuise-minimal-text, inherit)");
+        StyleOptions blendMode = new StyleOptions();
+        blendMode.setProperty(new StyleProperty("background-blend-mode"), "var(--reuise-dialog-theme-blend, normal)", false);
+        commonStyles.addRule(":where(.reuise-dialog_container)").append(blendMode);
         commonStyles.addRule(".reuise-dialog_header").setPadding((((SpacingScale.value(24) + " ") + SpacingScale.value(24)) + " ") + SpacingScale.value(16));
         commonStyles.addRule(".reuise-dialog_body").setBoxSizing("border-box").setPadding((("0 " + SpacingScale.value(24)) + " ") + SpacingScale.value(24));
-        commonStyles.addRule(".reuise-dialog_footer").setDisplay("flex").setJustifyContent("end").setPadding((("0 " + SpacingScale.value(24)) + " ") + SpacingScale.value(24));
+        commonStyles.addRule(".reuise-dialog_footer").setPadding((("0 " + SpacingScale.value(24)) + " ") + SpacingScale.value(24));
         commonStyles.addRule(".reuise-dialog_scrim").setPosition("absolute").setTop("0").setLeft("0").setRight("0").setBottom("0").setBackgroundColor("rgb(0 0 0 / 50%)").setCursor("pointer");
         commonStyles.addRule(".reuise-dialog--shaking").setAnimation("reuise-dialog_shakeanimation 0.3s ease");
         StyleSheet keyframes = commonStyles.addAtRule("keyframes reuise-dialog_shakeanimation");

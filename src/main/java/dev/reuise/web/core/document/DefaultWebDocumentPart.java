@@ -21,6 +21,7 @@ import dev.reuise.core.theme.ThemeColorSet;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.button.ButtonGradientStyles;
 import dev.reuise.web.core.button.ButtonRadiusStyles;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
 import dev.reuise.webstyles.Style;
@@ -891,24 +892,26 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
         getParentComponentPart().setTheme(theme);
         ComponentTheme buttonTheme = (theme == null) ? null : theme.getButtonTheme();
         ButtonRadiusStyles.setDocumentThemeRadius(commonStyles.addRule(".reuise-button"), buttonTheme);
+        for (ButtonType type : ButtonType.values()) {
+            String selector = ".reuise-button--" + type.name().toLowerCase();
+            for (Interaction interaction : Interaction.values())
+                ButtonGradientStyles.setDocument(commonStyles.addRule(selector, interaction), buttonTheme, type, interaction);
+
+        }
         if (theme == null)
             return self();
 
         // Button
         if (buttonTheme != null) {
-            ThemeColorSet primaryColor = buttonTheme.getPrimaryColor();
-            ThemeColorSet secondaryColor = buttonTheme.getSecondaryColor();
             ThemeColorSet textColor = buttonTheme.getTextColor();
             for (ButtonType type : ButtonType.values()) {
+                ThemeColorSet color = (type == ButtonType.PRIMARY) ? buttonTheme.getPrimaryColor() : buttonTheme.getSecondaryColor();
                 for (Interaction interaction : Interaction.values()) {
-                    if (primaryColor != null)
-                        commonStyles.addRule(".reuise-button", interaction).setBackgroundColor(primaryColor.getColor(interaction).toHex());
+                    if ((color != null) && (color.getColor(interaction) != null))
+                        commonStyles.addRule(".reuise-button--" + type.name().toLowerCase(), interaction).setBackgroundColor(color.getColor(interaction).toCss());
 
-                    if (secondaryColor != null)
-                        commonStyles.addRule(".reuise-button", interaction).setBackgroundColor(secondaryColor.getColor(interaction).toHex());
-
-                    if (textColor != null)
-                        commonStyles.addRule(".reuise-button", interaction).setColor(textColor.getColor(interaction).toHex());
+                    if ((textColor != null) && (textColor.getColor(interaction) != null))
+                        commonStyles.addRule(".reuise-button", interaction).setColor(textColor.getColor(interaction).toCss());
 
                 }
             }
@@ -919,16 +922,16 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
             ThemeColorSet accentColor = globalTheme.getAccentColor();
             ThemeColorSet primaryColor = (buttonTheme == null) ? null : buttonTheme.getPrimaryColor();
             ThemeColorSet textColor = (buttonTheme == null) ? null : buttonTheme.getTextColor();
-            if (textColor != null)
-                commonStyles.addRule(".body").setColor(textColor.getNormal().toHex());
+            if ((textColor != null) && (textColor.getNormal() != null))
+                commonStyles.addRule(".body").setColor(textColor.getNormal().toCss());
 
             if (accentColor != null) {
                 for (Interaction interaction : Interaction.values()) {
-                    if (accentColor != null)
-                        commonStyles.addRule("a,.reuise-link", interaction).setColor(accentColor.getColor(interaction).toHex());
+                    if (accentColor.getColor(interaction) != null)
+                        commonStyles.addRule("a,.reuise-link", interaction).setColor(accentColor.getColor(interaction).toCss());
 
-                    if (primaryColor != null)
-                        commonStyles.addRule(".reuise-listitem:has(.reuise-navigationlink--active)", interaction).setBackgroundColor(primaryColor.getColor(interaction).toHex());
+                    if ((primaryColor != null) && (primaryColor.getColor(interaction) != null))
+                        commonStyles.addRule(".reuise-listitem:has(.reuise-navigationlink--active)", interaction).setBackgroundColor(primaryColor.getColor(interaction).toCss());
 
                 }
             }
