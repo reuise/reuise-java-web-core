@@ -4,6 +4,12 @@ import dev.reuise.core.card.CoreCardPartOptions;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.WebComponentFactory;
 public interface WebCardPartOptions extends CoreCardPartOptions {
+    Double getHoverScale();
+
+    ComponentOption<Double> getHoverScaleOption();
+
+    WebCardPartOptions setHoverScale(Double hoverScale);
+
     String getImageAltText();
 
     ComponentOption<String> getImageAltTextOption();

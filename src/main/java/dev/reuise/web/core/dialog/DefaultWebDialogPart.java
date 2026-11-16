@@ -109,6 +109,11 @@ public abstract class DefaultWebDialogPart<S extends DefaultWebDialogPart<S, O>,
     }
 
     @Override
+    public boolean isOpen() {
+        return hasStyleClass("reuise-dialog--opened");
+    }
+
+    @Override
     public void close() {
         removeStyleClass("reuise-dialog--opened");
         if (Boolean.TRUE.equals(removeOnClose))

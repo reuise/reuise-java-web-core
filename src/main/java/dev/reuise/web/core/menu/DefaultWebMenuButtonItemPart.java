@@ -23,6 +23,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+// Option: HoverScale - WEB
+// Option: Border - WEB
+// Option: BorderColor - WEB
+// Option: BorderWidth - WEB
+// Option: BorderRadius - WEB
+// Option: Background - WEB
+// Option: BackgroundColor - WEB
 // Option: UseHistoryApi - WEB
 // Option: Loading - CORE
 // Option: SkeletonOptions - CORE
@@ -117,6 +124,83 @@ public abstract class DefaultWebMenuButtonItemPart<S extends DefaultWebMenuButto
     }
 
     @Override
+    public Double getHoverScale() {
+        return buttonPart.getHoverScale();
+    }
+
+    @Override
+    public S setHoverScale(Double hoverScale) {
+        this.buttonPart.setHoverScale(hoverScale);
+        return self();
+    }
+
+    @Override
+    public String getBorder() {
+        return buttonPart.getBorder();
+    }
+
+    @Override
+    public S setBorder(String border) {
+        this.buttonPart.setBorder(border);
+        return self();
+    }
+
+    @Override
+    public String getBorderColor() {
+        return buttonPart.getBorderColor();
+    }
+
+    @Override
+    public S setBorderColor(String borderColor) {
+        this.buttonPart.setBorderColor(borderColor);
+        return self();
+    }
+
+    @Override
+    public String getBorderWidth() {
+        return buttonPart.getBorderWidth();
+    }
+
+    @Override
+    public S setBorderWidth(String borderWidth) {
+        this.buttonPart.setBorderWidth(borderWidth);
+        return self();
+    }
+
+    @Override
+    public String getBorderRadius() {
+        return buttonPart.getBorderRadius();
+    }
+
+    @Override
+    public S setBorderRadius(String borderRadius) {
+        this.buttonPart.setBorderRadius(borderRadius);
+        return self();
+    }
+
+    @Override
+    public String getBackground() {
+        return buttonPart.getBackground();
+    }
+
+    @Override
+    public S setBackground(String background) {
+        this.buttonPart.setBackground(background);
+        return self();
+    }
+
+    @Override
+    public String getBackgroundColor() {
+        return buttonPart.getBackgroundColor();
+    }
+
+    @Override
+    public S setBackgroundColor(String backgroundColor) {
+        this.buttonPart.setBackgroundColor(backgroundColor);
+        return self();
+    }
+
+    @Override
     public boolean isUseHistoryApi() {
         return buttonPart.isUseHistoryApi();
     }
@@ -124,6 +208,18 @@ public abstract class DefaultWebMenuButtonItemPart<S extends DefaultWebMenuButto
     @Override
     public S setUseHistoryApi(Boolean useHistoryApi) {
         this.buttonPart.setUseHistoryApi(useHistoryApi);
+        return self();
+    }
+
+    @Override
+    public S setBorder(boolean enabled) {
+        this.buttonPart.setBorder(enabled);
+        return self();
+    }
+
+    @Override
+    public S setBackground(boolean enabled) {
+        this.buttonPart.setBackground(enabled);
         return self();
     }
 

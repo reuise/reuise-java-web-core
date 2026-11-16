@@ -1,6 +1,30 @@
 /**
  * Buttons and action layout.
  *
+ * <p>Button appearance shortcuts are available on web buttons and their options:
+ * {@code setBorder(false)} hides the border; {@code setBorder(true)} enables a
+ * solid border using BorderWidth/BorderColor (default 1px/currentColor).
+ * setBorder(String) accepts a CSS border shorthand. setBorderColor(String),
+ * setBorderWidth(String) and setBorderRadius(String) configure colour, CSS
+ * thickness and roundness. {@code setBackground(false)} suppresses colour and
+ * images/gradients in every interaction state; setBackground(true) removes that
+ * suppression while retaining the configured BackgroundColor.
+ * setBackgroundColor(String) and setBackground(String) accept CSS colour and
+ * shorthand values. Null clears that shortcut; blank values are rejected.
+ * These settings are serialized and restored during explicit SSR hydration.
+ *
+ * <p>Web buttons use the shared style API for borders and backgrounds:
+ * {@code button.getStyle().setBorder("none")} disables the border;
+ * {@code setBorder("1px solid currentColor")} enables it. setBorderColor(String),
+ * setBorderWidth(Object), setBorderStyle(String) and setBorderRadius(Object)
+ * independently control colour, thickness, line style and roundness.
+ * {@code button.getStyle().setBackgroundColor("transparent")} removes the
+ * background colour; setBackgroundImage("none") also clears an image or gradient.
+ * Use getStyle(Interaction.HOVER) or getStyle(Interaction.FOCUS) for interaction
+ * styling. Removing a border or background does not remove the focus indicator.
+ * Explicit background colours take precedence over local/document theme colours,
+ * including after theme updates and SSR hydration.
+ *
  * <p>ButtonBar is a FlexContainer specialization: a horizontal, vertically centered
  * row that wraps by default, using the shared 16-pixel spacing token. Add an existing
  * button with addButton(button), add a labelled button with addButton("Save"), or use

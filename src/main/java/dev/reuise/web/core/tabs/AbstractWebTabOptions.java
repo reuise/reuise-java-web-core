@@ -2,10 +2,12 @@ package dev.reuise.web.core.tabs;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.tabs.AbstractCoreTabOptions;
 import dev.reuise.web.core.badge.WebBadgeOptions;
+import dev.reuise.web.core.hydration.ClientConfigurationOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
 import dev.reuise.web.core.link.WebLinkOptions;
 import dev.reuise.web.core.text.WebInlineTextOptions;
-public abstract class AbstractWebTabOptions<S extends AbstractWebTabOptions<S>> extends AbstractCoreTabOptions<S> implements WebTabOptions {
+import java.util.Map;
+public abstract class AbstractWebTabOptions<S extends AbstractWebTabOptions<S>> extends AbstractCoreTabOptions<S> implements ClientConfigurationOptions , WebTabOptions {
     @Override
     public S setUrl(String url, Boolean useHistoryApi) {
         setUrl(url);
@@ -56,5 +58,13 @@ public abstract class AbstractWebTabOptions<S extends AbstractWebTabOptions<S>> 
         options.setBaseStyleClass("reuise-tab_label");
         options.setStyleClass("reuise-tab_label");
         return options;
+    }
+
+    public String getClientConfigurationType() {
+        return "Tab";
+    }
+
+    public void restoreClientConfiguration(Map<String, Object> values) {
+        for (String key : values.keySet()) { switch (key) {case "tooltip": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setTooltip(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "contentEditable": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setContentEditable(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "enabled": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setEnabled(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "label": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setLabel(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "url": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setUrl(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "badgeVisible": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setBadgeVisible(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "badgeLabel": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setBadgeLabel(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;default: throw new IllegalArgumentException("Unknown client configuration option: " + key); } };
     }
 }

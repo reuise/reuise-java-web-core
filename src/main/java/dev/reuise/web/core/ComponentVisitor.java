@@ -145,6 +145,10 @@ public final class ComponentVisitor {
             children.add(((dev.reuise.web.core.menu.WebMenuButtonPart) component).getTrigger());
             children.add(((dev.reuise.web.core.menu.WebMenuButtonPart) component).getPopup());
         }
+        if (component instanceof dev.reuise.web.core.overflow.WebOverflowBarPart) {
+            children.add(((dev.reuise.web.core.overflow.WebOverflowBarPart) component).getItems());
+            children.add(((dev.reuise.web.core.overflow.WebOverflowBarPart) component).getOverflowMenu());
+        }
         if (component instanceof dev.reuise.web.core.progressindicator.WebProgressIndicatorPart) {
             children.add(((dev.reuise.web.core.progressindicator.WebProgressIndicatorPart) component).getTrack());
         }

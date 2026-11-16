@@ -16,12 +16,12 @@ import dev.reuise.core.skeleton.CoreSkeletonOptions;
 import dev.reuise.core.skeleton.SkeletonShape;
 import dev.reuise.core.theme.ComponentTheme;
 import dev.reuise.core.theme.Theme;
-import dev.reuise.core.theme.ThemeColorSet;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.icon.WebIcon;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.HoverScaleStyles;
 import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.web.core.style.StyleOptions;
 import dev.reuise.web.core.text.WebInlineText;
@@ -127,6 +127,43 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
             applyLoadingSkeletonStyles();
 
         return self();
+    }
+
+    @Override
+    public S setBorder(boolean enabled) {
+        String width = getBorderWidth();
+        String color = getBorderColor();
+        return setBorder(enabled ? ((width == null ? "1px" : width) + " solid ") + (color == null ? "currentColor" : color) : "none");
+    }
+
+    @Override
+    public S setBackground(boolean enabled) {
+        if (!enabled)
+            return setBackground("none");
+
+        if ("none".equalsIgnoreCase(background)) {
+            background = null;
+            appearanceData("background", null);
+        }
+        return self();
+    }
+
+    private String appearanceValue(String value, String name) {
+        if (value == null)
+            return null;
+
+        if (value.trim().isEmpty())
+            throw new IllegalArgumentException(name + " must not be blank");
+
+        return value.trim();
+    }
+
+    private void appearanceData(String name, String value) {
+        if (value == null)
+            removeAttribute("data-" + name);
+        else
+            setData(name, value);
+
     }
 
     @Override
@@ -300,6 +337,20 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
 
     private WebBaseComponentPart baseComponentPart;
 
+    protected Double hoverScale;
+
+    protected String border;
+
+    protected String borderColor;
+
+    protected String borderWidth;
+
+    protected String borderRadius;
+
+    protected String background;
+
+    protected String backgroundColor;
+
     protected DefaultWebButtonPart(O options) {
         super(options);
     }
@@ -342,29 +393,13 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
         getParentComponentPart().setTheme(theme);
         ComponentTheme buttonTheme = (theme == null) ? null : theme.getButtonTheme();
         ButtonRadiusStyles.setLocalThemeRadius(getStyle(), buttonTheme);
-        for (Interaction interaction : Interaction.values())
+        for (Interaction interaction : Interaction.values()) {
             ButtonGradientStyles.setLocal(getStyle(interaction), buttonTheme, getType(), interaction);
-
+            ButtonBackgroundStyles.setLocal(getStyle(interaction), buttonTheme, getType(), interaction);
+        }
         if (theme == null)
             return self();
 
-        if (buttonTheme != null) {
-            ThemeColorSet colorSet = switch (getType() == null ? ButtonType.SECONDARY : getType()) {
-                case PRIMARY ->
-                    buttonTheme.getPrimaryColor();
-                case SECONDARY ->
-                    buttonTheme.getSecondaryColor();
-                default ->
-                    buttonTheme.getSecondaryColor();
-            };
-            if (colorSet != null) {
-                for (Interaction interaction : Interaction.values()) {
-                    if (colorSet.getColor(interaction) != null)
-                        getStyle(interaction).setBackgroundColor(colorSet.getColor(interaction).toCss());
-
-                }
-            }
-        }
         super.setTheme(theme);
         return self();
     }
@@ -757,6 +792,25 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
     // Implementation
     public void onInitialize(O options) {
         super.onInitialize(options);
+        setHoverScale(options.getHoverScale());
+        if (options.getBorder() != null)
+            setBorder(options.getBorder());
+
+        if (options.getBorderColor() != null)
+            setBorderColor(options.getBorderColor());
+
+        if (options.getBorderWidth() != null)
+            setBorderWidth(options.getBorderWidth());
+
+        if (options.getBorderRadius() != null)
+            setBorderRadius(options.getBorderRadius());
+
+        if (options.getBackground() != null)
+            setBackground(options.getBackground());
+
+        if (options.getBackgroundColor() != null)
+            setBackgroundColor(options.getBackgroundColor());
+
         String label = options.getLabel();
         if ((label != null) && (!label.isEmpty()))
             setAria("label", label);
@@ -774,6 +828,13 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
             System.out.println("component is null");
 
         // Apply options for default state
+        applicator.add(options.getHoverScaleOption(), component::setHoverScale);
+        applicator.add(options.getBorderOption(), component::setBorder);
+        applicator.add(options.getBorderColorOption(), component::setBorderColor);
+        applicator.add(options.getBorderWidthOption(), component::setBorderWidth);
+        applicator.add(options.getBorderRadiusOption(), component::setBorderRadius);
+        applicator.add(options.getBackgroundOption(), component::setBackground);
+        applicator.add(options.getBackgroundColorOption(), component::setBackgroundColor);
         applicator.add(options.getUseHistoryApiOption(), component::setUseHistoryApi);
     }
 
@@ -802,7 +863,11 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
         ButtonRadiusStyles.initializeCommonStyles(commonStyles, getBaseStyleClass());
         ButtonGradientStyles.initializeCommonStyles(commonStyles, getBaseStyleClass());
-        commonStyles.addRule(".reuise-button").setDisplay("inline-flex").setAlignItems("center").setTransition("background-color 200ms ease-in-out, color 200ms ease-in-out").setFlexShrink(0).setOverflow("hidden").setCursor("pointer").setJustifyContent("center");
+        ButtonBackgroundStyles.initializeCommonStyles(commonStyles, getBaseStyleClass());
+        HoverScaleStyles.initializeCommonStyles(commonStyles);
+        commonStyles.addRule(".reuise-button[data-border=\"none\" i]").setBorderStyle("none", true);
+        commonStyles.addRule(".reuise-button[data-background=\"none\" i]").setBackground("none", true);
+        commonStyles.addRule(".reuise-button").setDisplay("inline-flex").setAlignItems("center").setTransition("background-color 200ms ease-in-out, color 200ms ease-in-out, scale 160ms ease-out").setFlexShrink(0).setOverflow("hidden").setCursor("pointer").setJustifyContent("center");
         commonStyles.addRule(".reuise-button:disabled,.reuise-button.reuise-disabled").setOpacity(0.3).setCursor("default").setPointerEvents("none");
         commonStyles.addRule(".reuise-button_label").setWhiteSpace("nowrap").setOverflow("hidden").setPointerEvents("none");
         StyleOptions startGap = new StyleOptions();
@@ -826,5 +891,113 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
             commonStyles.addRule((":where(." + createSizeStyleClassName(s)) + ")").setPaddingTop(SpacingScale.value(s.getPaddingY())).setPaddingRight(SpacingScale.value(s.getPaddingX())).setPaddingBottom(SpacingScale.value(s.getPaddingY())).setPaddingLeft(SpacingScale.value(s.getPaddingX()));
             commonStyles.addRule(((((((("." + createSizeStyleClassName(s)) + " .reuise-button_starticon,.") + createSizeStyleClassName(s)) + " .reuise-button_endicon,.") + createSizeStyleClassName(s)) + " .reuise-button_starticon>*,.") + createSizeStyleClassName(s)) + " .reuise-button_endicon>*").setWidth(s.getIconSize()).setHeight(s.getIconSize());
         }
+    }
+
+    @Override
+    public Double getHoverScale() {
+        return hoverScale;
+    }
+
+    // Implementation
+    @Override
+    public S setHoverScale(Double hoverScale) {
+        HoverScaleStyles.apply(getComponent(), hoverScale);
+        this.hoverScale = hoverScale;
+        return self();
+    }
+
+    @Override
+    public String getBorder() {
+        return border;
+    }
+
+    // Implementation
+    @Override
+    public S setBorder(String border) {
+        border = appearanceValue(border, "Border");
+        this.border = border;
+        getStyle().setBorder(border);
+        appearanceData("border", border);
+        return self();
+    }
+
+    @Override
+    public String getBorderColor() {
+        return borderColor;
+    }
+
+    // Implementation
+    @Override
+    public S setBorderColor(String borderColor) {
+        borderColor = appearanceValue(borderColor, "BorderColor");
+        this.borderColor = borderColor;
+        getStyle().setBorderColor(borderColor);
+        appearanceData("bordercolor", borderColor);
+        return self();
+    }
+
+    @Override
+    public String getBorderWidth() {
+        return borderWidth;
+    }
+
+    // Implementation
+    @Override
+    public S setBorderWidth(String borderWidth) {
+        borderWidth = appearanceValue(borderWidth, "BorderWidth");
+        this.borderWidth = borderWidth;
+        getStyle().setBorderWidth(borderWidth);
+        appearanceData("borderwidth", borderWidth);
+        return self();
+    }
+
+    @Override
+    public String getBorderRadius() {
+        return borderRadius;
+    }
+
+    // Implementation
+    @Override
+    public S setBorderRadius(String borderRadius) {
+        borderRadius = appearanceValue(borderRadius, "BorderRadius");
+        this.borderRadius = borderRadius;
+        getStyle().setBorderRadius(borderRadius);
+        appearanceData("borderradius", borderRadius);
+        return self();
+    }
+
+    @Override
+    public String getBackground() {
+        return background;
+    }
+
+    // Implementation
+    @Override
+    public S setBackground(String background) {
+        background = appearanceValue(background, "Background");
+        this.background = background;
+        if (!"none".equalsIgnoreCase(background)) {
+            getStyle().setBackground(background);
+            if (backgroundColor != null)
+                getStyle().setBackgroundColor(backgroundColor);
+
+        }
+        appearanceData("background", background);
+        return self();
+    }
+
+    @Override
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    // Implementation
+    @Override
+    public S setBackgroundColor(String backgroundColor) {
+        backgroundColor = appearanceValue(backgroundColor, "BackgroundColor");
+        this.backgroundColor = backgroundColor;
+        getStyle().setBackgroundColor(backgroundColor);
+        appearanceData("backgroundcolor", backgroundColor);
+        return self();
     }
 }

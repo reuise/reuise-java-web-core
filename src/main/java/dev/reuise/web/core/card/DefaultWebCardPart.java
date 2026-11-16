@@ -25,6 +25,7 @@ import dev.reuise.web.core.layout.WebFlexContainerPart;
 import dev.reuise.web.core.layout.WebSurfacePart;
 import dev.reuise.web.core.link.WebLink;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.HoverScaleStyles;
 import dev.reuise.web.core.style.SpacingScale;
 import dev.reuise.web.core.text.WebTextBlock;
 import dev.reuise.webstyles.Style;
@@ -192,6 +193,8 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
     private WebParentComponentPart parentComponentPart;
 
     private WebBaseComponentPart baseComponentPart;
+
+    protected Double hoverScale;
 
     protected DefaultWebCardPart(O options) {
         super(options);
@@ -705,8 +708,12 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
         return true;
     }
 
+    // Implementation
+    // Implementation
+    // Implementation
     public void onInitialize(O options) {
         super.onInitialize(options);
+        setHoverScale(options.getHoverScale());
     }
 
     public void onCreate(O options) {
@@ -720,6 +727,7 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
             System.out.println("component is null");
 
         // Apply options for default state
+        applicator.add(options.getHoverScaleOption(), component::setHoverScale);
         applicator.add(options.getImageAltTextOption(), component::setImageAltText);
     }
 
@@ -781,6 +789,7 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
     // Implementation
     // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        HoverScaleStyles.initializeCommonStyles(commonStyles);
         commonStyles.addRule(".reuise-card").setDisplay("flex").setBorderRadius(12);
         commonStyles.addRule(".reuise-card--vertical").setFlexDirection("column");
         commonStyles.addRule(".reuise-card--horizontal").setFlexDirection("row");
@@ -805,6 +814,19 @@ public abstract class DefaultWebCardPart<S extends DefaultWebCardPart<S, O>, O e
         commonStyles.addRule(".reuise-card--outlined").setBorder("1px solid #CAC4D0");
         commonStyles.addRule("body[data-reuise-color-scheme=\"dark\"] .reuise-card--outlined").setBorder("1px solid #49454F");
         commonStyles.addRule("body:not([data-reuise-color-scheme]) .reuise-card--outlined", ColorScheme.DARK).setBorder("1px solid #49454F");
+    }
+
+    @Override
+    public Double getHoverScale() {
+        return hoverScale;
+    }
+
+    // Implementation
+    @Override
+    public S setHoverScale(Double hoverScale) {
+        HoverScaleStyles.apply(getComponent(), hoverScale);
+        this.hoverScale = hoverScale;
+        return self();
     }
 
     @Override

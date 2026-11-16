@@ -617,6 +617,9 @@ public abstract class DefaultWebScrollableContainerScrollAreaPart<S extends Defa
                 addStyleClass("reuise-scrollablecontainer_scrollarea--scroll-" + scrollDir.name().toLowerCase());
 
             ScrollableContainerFadeOptions fadeOpt = options.getFadeOptions();
+            if (fadeOpt == null)
+                return;
+
             fadeMask = fadeOpt.isMask();
             if (scrollDir == ScrollDirection.HORIZONTAL) {
                 initHorizontalEdge();

@@ -17,6 +17,7 @@ import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.layout.WebContainerPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
+import dev.reuise.web.core.style.HoverScaleStyles;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
@@ -114,6 +115,8 @@ public abstract class DefaultWebCarouselCardPart<S extends DefaultWebCarouselCar
     private WebParentComponentPart parentComponentPart;
 
     private WebBaseComponentPart baseComponentPart;
+
+    protected Double hoverScale;
 
     protected DefaultWebCarouselCardPart(O options) {
         super(options);
@@ -571,6 +574,7 @@ public abstract class DefaultWebCarouselCardPart<S extends DefaultWebCarouselCar
         setAttribute("role", "group");
         setAttribute("aria-roledescription", "slide");
         setAutoSize(options.isAutoSize());
+        setHoverScale(options.getHoverScale());
     }
 
     public void onCreate(O options) {
@@ -579,6 +583,12 @@ public abstract class DefaultWebCarouselCardPart<S extends DefaultWebCarouselCar
 
     public void applyOptions(O options, OptionApplicator applicator, Collection<State> states) {
         super.applyOptions(options, applicator, states);
+        WebCarouselCardPart component = ((WebCarouselCardPart) (options.getComponent()));
+        if (component == null)
+            System.out.println("component is null");
+
+        // Apply options for default state
+        applicator.add(options.getHoverScaleOption(), component::setHoverScale);
     }
 
     public void onInitializeComponentType(RootComponent rootComponent) {
@@ -586,6 +596,22 @@ public abstract class DefaultWebCarouselCardPart<S extends DefaultWebCarouselCar
         containerPart.onInitializeComponentType(rootComponent);
     }
 
+    // Implementation
+    // Implementation
     public void onInitializeCommonStyle(StyleBuilder commonStyles) {
+        HoverScaleStyles.initializeCommonStyles(commonStyles);
+    }
+
+    @Override
+    public Double getHoverScale() {
+        return hoverScale;
+    }
+
+    // Implementation
+    @Override
+    public S setHoverScale(Double hoverScale) {
+        HoverScaleStyles.apply(getComponent(), hoverScale);
+        this.hoverScale = hoverScale;
+        return self();
     }
 }

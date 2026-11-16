@@ -5,7 +5,7 @@ import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.button.WebIconButton;
 
 /**
- * An individually referenced, original 24-by-24 line icon.
+ * An individually referenced 24-by-24 SVG icon.
  *
  * <p>Use {@code SearchIcon.INSTANCE.create(factory)} for a decorative icon.
  * For an icon-only button, put that decorative SVG inside the button and set
@@ -25,6 +25,11 @@ public interface BuiltinIcon {
     int DEFAULT_SIZE = 24;
 
     String path();
+
+    /** Filled icons use even-odd subpaths; line icons retain round 2px strokes. */
+    default boolean isFilled() {
+        return false;
+    }
 
     default WebSvg create(WebComponentFactory factory) {
         return create(factory, DEFAULT_SIZE);
@@ -93,9 +98,13 @@ public interface BuiltinIcon {
             svg.setAttribute("role", "img");
             svg.setAria("label", label);
         }
-        WebSvgPath path = svg.addStrokePath(path(), "currentColor", 2);
-        path.setAttribute("stroke-linecap", "round");
-        path.setAttribute("stroke-linejoin", "round");
+        if (isFilled()) {
+            svg.addFillPath(path(), "currentColor").setAttribute("fill-rule", "evenodd");
+        } else {
+            WebSvgPath path = svg.addStrokePath(path(), "currentColor", 2);
+            path.setAttribute("stroke-linecap", "round");
+            path.setAttribute("stroke-linejoin", "round");
+        }
         return svg;
     }
 

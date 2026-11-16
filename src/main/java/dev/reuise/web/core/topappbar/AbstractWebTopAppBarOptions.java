@@ -4,9 +4,11 @@ import dev.reuise.core.button.CoreIconButtonOptions;
 import dev.reuise.core.topappbar.AbstractCoreTopAppBarOptions;
 import dev.reuise.web.core.button.WebIconButtonOptions;
 import dev.reuise.web.core.graphics.svg.WebSvgOptions;
+import dev.reuise.web.core.hydration.ClientConfigurationOptions;
 import dev.reuise.web.core.icon.WebIconOptions;
 import dev.reuise.web.core.layout.WebContainerOptions;
-public abstract class AbstractWebTopAppBarOptions<S extends AbstractWebTopAppBarOptions<S>> extends AbstractCoreTopAppBarOptions<S> implements WebTopAppBarOptions {
+import java.util.Map;
+public abstract class AbstractWebTopAppBarOptions<S extends AbstractWebTopAppBarOptions<S>> extends AbstractCoreTopAppBarOptions<S> implements ClientConfigurationOptions , WebTopAppBarOptions {
     protected AbstractWebTopAppBarOptions() {
     }
 
@@ -62,5 +64,13 @@ public abstract class AbstractWebTopAppBarOptions<S extends AbstractWebTopAppBar
         WebContainerOptions options = ((WebContainerOptions) (super.createDefaultActionsContainerOptions()));
         options.setStyleClass("reuise-top-app-bar_actionscontainer");
         return options;
+    }
+
+    public String getClientConfigurationType() {
+        return "TopAppBar";
+    }
+
+    public void restoreClientConfiguration(Map<String, Object> values) {
+        for (String key : values.keySet()) { switch (key) {case "tooltip": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setTooltip(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "contentEditable": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setContentEditable(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "enabled": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setEnabled(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;default: throw new IllegalArgumentException("Unknown client configuration option: " + key); } };
     }
 }

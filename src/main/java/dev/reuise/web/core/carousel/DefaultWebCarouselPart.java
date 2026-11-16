@@ -8,6 +8,7 @@ import dev.reuise.core.Interaction;
 import dev.reuise.core.RootComponent;
 import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
+import dev.reuise.core.button.ButtonType;
 import dev.reuise.core.carousel.DefaultCoreCarouselPart;
 import dev.reuise.core.layout.BackdropFilter;
 import dev.reuise.core.option.OptionApplicator;
@@ -16,6 +17,12 @@ import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
 import dev.reuise.web.core.button.WebButton;
+import dev.reuise.web.core.graphics.svg.BuiltinIcon;
+import dev.reuise.web.core.graphics.svg.ChevronLeftIcon;
+import dev.reuise.web.core.graphics.svg.ChevronRightIcon;
+import dev.reuise.web.core.graphics.svg.PauseIcon;
+import dev.reuise.web.core.graphics.svg.PlayIcon;
+import dev.reuise.web.core.graphics.svg.WebSvg;
 import dev.reuise.web.core.layout.WebContainer;
 import dev.reuise.web.core.layout.WebContainerPart;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
@@ -107,6 +114,75 @@ import java.util.Set;
 // add composition for baseComponent: log
 // add composition for baseComponent: removeFromParent
 public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S, O>, O extends WebCarouselPartOptions> extends DefaultCoreCarouselPart<S, O> implements WebCarousel , WebComponentPart {
+    private void initializeNavigationIcon(WebButton button, BuiltinIcon icon) {
+        button.setType(ButtonType.SUBTLE);
+        if (button.getBorder() == null)
+            button.setBorder(false);
+
+        if (button.getBackground() == null)
+            button.setBackground(false);
+
+        if (button.isRehydrated())
+            return;
+
+        WebSvg svg = icon.create(getComponentFactory(), 20);
+        svg.addStyleClass("reuise-carousel_navigationicon");
+        button.add(svg);
+    }
+
+    private void initializeAutoplayButton() {
+        WebButton button = getAutoplayButton();
+        button.setType(ButtonType.SUBTLE);
+        if (button.getBorder() == null)
+            button.setBorder(false);
+
+        if (button.getBackground() == null)
+            button.setBackground(false);
+
+        if (button.isRehydrated() && "true".equals(button.getData("carousel-autoplay-icons")))
+            return;
+
+        WebSvg play = PlayIcon.INSTANCE.create(getComponentFactory(), 20);
+        play.addStyleClass("reuise-carousel_playicon");
+        button.add(play);
+        WebSvg pause = PauseIcon.INSTANCE.create(getComponentFactory(), 20);
+        pause.addStyleClass("reuise-carousel_pauseicon");
+        button.add(pause);
+        button.setData("carousel-autoplay-icons", "true");
+    }
+
+    private void updateAutoplayButton() {
+        WebButton button = getAutoplayButton();
+        if (((button == null) || (getPlayLabel() == null)) || (getPauseLabel() == null))
+            return;
+
+        boolean playing = Boolean.TRUE.equals(isAutoplay()) && (!Boolean.TRUE.equals(isPaused()));
+        String label = (playing) ? getPauseLabel() : getPlayLabel();
+        button.setData("carousel-playing", Boolean.toString(playing));
+        button.setLabel(label);
+        button.setAria("label", label);
+    }
+
+    @Override
+    public S setDefaultActiveIndex(Integer defaultActiveIndex) {
+        super.setDefaultActiveIndex(defaultActiveIndex);
+        setData("defaultactiveindex", defaultActiveIndex.toString());
+        return self();
+    }
+
+    @Override
+    public S setActiveDotColor(String activeDotColor) {
+        if ((activeDotColor == null) || activeDotColor.trim().isEmpty())
+            throw new IllegalArgumentException("ActiveDotColor must not be blank");
+
+        super.setActiveDotColor(activeDotColor);
+        setData("activedotcolor", activeDotColor);
+        StyleOptions inputs = new StyleOptions();
+        inputs.setProperty(new StyleProperty("--reuise-carousel-active-dot-color"), activeDotColor, false);
+        getStyle().append(inputs);
+        return self();
+    }
+
     @Override
     public S setActiveIndex(Integer activeIndex) {
         requireMinimum(activeIndex, 0, "ActiveIndex");
@@ -164,6 +240,7 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
     public S setAutoplay(Boolean autoplay) {
         super.setAutoplay(Boolean.TRUE.equals(autoplay));
         setData("autoplay", Boolean.toString(isAutoplay()));
+        updateAutoplayButton();
         return self();
     }
 
@@ -179,6 +256,7 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
     public S setPaused(Boolean paused) {
         super.setPaused(Boolean.TRUE.equals(paused));
         setData("paused", Boolean.toString(isPaused()));
+        updateAutoplayButton();
         return self();
     }
 
@@ -229,9 +307,10 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
         requireLabel(previousLabel);
         super.setPreviousLabel(previousLabel);
         setData("previouslabel", previousLabel);
-        if (getPreviousButton() != null)
+        if (getPreviousButton() != null) {
             getPreviousButton().setLabel(previousLabel);
-
+            getPreviousButton().setAria("label", previousLabel);
+        }
         return self();
     }
 
@@ -240,9 +319,10 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
         requireLabel(nextLabel);
         super.setNextLabel(nextLabel);
         setData("nextlabel", nextLabel);
-        if (getNextButton() != null)
+        if (getNextButton() != null) {
             getNextButton().setLabel(nextLabel);
-
+            getNextButton().setAria("label", nextLabel);
+        }
         return self();
     }
 
@@ -251,6 +331,7 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
         requireLabel(playLabel);
         super.setPlayLabel(playLabel);
         setData("playlabel", playLabel);
+        updateAutoplayButton();
         return self();
     }
 
@@ -259,6 +340,7 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
         requireLabel(pauseLabel);
         super.setPauseLabel(pauseLabel);
         setData("pauselabel", pauseLabel);
+        updateAutoplayButton();
         return self();
     }
 
@@ -807,10 +889,15 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
         setLabel(options.getLabel());
         setPreviousLabel(options.getPreviousLabel());
         setNextLabel(options.getNextLabel());
+        initializeNavigationIcon(getPreviousButton(), ChevronLeftIcon.INSTANCE);
+        initializeNavigationIcon(getNextButton(), ChevronRightIcon.INSTANCE);
+        initializeAutoplayButton();
         setPlayLabel(options.getPlayLabel());
         setPauseLabel(options.getPauseLabel());
         setPageLabel(options.getPageLabel());
-        setActiveIndex(options.getActiveIndex());
+        setActiveIndex(getActiveIndex());
+        setDefaultActiveIndex(options.getDefaultActiveIndex());
+        setActiveDotColor(options.getActiveDotColor());
         setGroupSize(options.getGroupSize());
         setAlign(options.getAlign());
         setWhitespace(options.isWhitespace());
@@ -889,10 +976,16 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
         commonStyles.addRule(":where(.reuise-carousel_slider>.reuise-carouselcard[data-autosize=\"true\"])").setFlex("0 0 auto").setWidth("max-content");
         commonStyles.addRule(".reuise-carousel_navigation,.reuise-carousel_indicators").setDisplay("flex").setAlignItems("center").setJustifyContent("center").setRowGap("8px").setColumnGap("8px");
         commonStyles.addRule(".reuise-carousel_navigation").setPaddingTop("12px");
+        commonStyles.addRule((".reuise-carousel_previousbutton>.reuise-button_label," + ".reuise-carousel_nextbutton>.reuise-button_label,") + ".reuise-carousel_autoplaybutton>.reuise-button_label").setDisplay("none");
+        commonStyles.addRule(".reuise-carousel_autoplaybutton[data-carousel-playing=\"true\"] .reuise-carousel_playicon," + ".reuise-carousel_autoplaybutton[data-carousel-playing=\"false\"] .reuise-carousel_pauseicon").setDisplay("none");
+        commonStyles.addRule(".reuise-carousel_navigationicon").setWidth("20px").setHeight("20px");
+        commonStyles.addRule(".reuise-carousel_previousbutton,.reuise-carousel_nextbutton,.reuise-carousel_autoplaybutton").setBoxShadow("none");
+        commonStyles.addRule(".reuise-carousel_previousbutton:focus-visible,.reuise-carousel_nextbutton:focus-visible," + ".reuise-carousel_autoplaybutton:focus-visible").setOutline("2px solid currentColor").setOutlineOffset("2px");
+        commonStyles.addRule(".reuise-carousel:dir(rtl) .reuise-carousel_navigationicon").setTransform("scaleX(-1)");
         commonStyles.addRule(".reuise-carousel:not([data-carousel-ready])>.reuise-carousel_navigation").setDisplay("none");
         commonStyles.addRule(((".reuise-carousel[data-shownavigation=\"false\"] .reuise-carousel_previousbutton," + ".reuise-carousel[data-shownavigation=\"false\"] .reuise-carousel_nextbutton,") + ".reuise-carousel[data-showindicators=\"false\"] .reuise-carousel_indicators,") + ".reuise-carousel:not([data-autoplay=\"true\"]) .reuise-carousel_autoplaybutton").setDisplay("none");
-        commonStyles.addRule(".reuise-carousel_indicator").setWidth("10px").setHeight("10px").setPadding("0").setBorder("1px solid currentColor").setBorderRadius("50%").setBackgroundColor("transparent").setCursor("pointer");
-        commonStyles.addRule(".reuise-carousel_indicator[aria-current=\"true\"]").setBackgroundColor("currentColor");
+        commonStyles.addRule(".reuise-carousel_indicator").setWidth("10px").setHeight("10px").setPadding("0").setBorder("0").setBorderRadius("50%").setBackgroundColor("#bdbdbd").setCursor("pointer");
+        commonStyles.addRule(".reuise-carousel_indicator[aria-current=\"true\"]").setBackgroundColor("var(--reuise-carousel-active-dot-color, #616161)");
         commonStyles.addRule(".reuise-carousel_announcement").setPosition("absolute").setWidth("1px").setHeight("1px").setOverflow("hidden").setClipPath("inset(50%)").setWhiteSpace("nowrap");
     }
 }

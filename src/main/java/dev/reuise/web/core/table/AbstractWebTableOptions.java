@@ -1,8 +1,10 @@
 package dev.reuise.web.core.table;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.table.AbstractCoreTableOptions;
+import dev.reuise.web.core.hydration.ClientConfigurationOptions;
 import dev.reuise.web.core.layout.WebContainerOptions;
-public abstract class AbstractWebTableOptions<S extends AbstractWebTableOptions<S>> extends AbstractCoreTableOptions<S> implements WebTableOptions {
+import java.util.Map;
+public abstract class AbstractWebTableOptions<S extends AbstractWebTableOptions<S>> extends AbstractCoreTableOptions<S> implements ClientConfigurationOptions , WebTableOptions {
     protected AbstractWebTableOptions() {
     }
 
@@ -50,5 +52,13 @@ public abstract class AbstractWebTableOptions<S extends AbstractWebTableOptions<
         WebTableFooterOptions options = ((WebTableFooterOptions) (super.createDefaultFooterOptions()));
         options.setStyleClass("reuise-table_footer");
         return options;
+    }
+
+    public String getClientConfigurationType() {
+        return "Table";
+    }
+
+    public void restoreClientConfiguration(Map<String, Object> values) {
+        for (String key : values.keySet()) { switch (key) {case "tooltip": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setTooltip(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "contentEditable": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setContentEditable(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "enabled": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setEnabled(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "hasHeader": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setHasHeader(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "fixedHeader": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setFixedHeader(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "fixedFooter": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setFixedFooter(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "hasFooter": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setHasFooter(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;default: throw new IllegalArgumentException("Unknown client configuration option: " + key); } };
     }
 }

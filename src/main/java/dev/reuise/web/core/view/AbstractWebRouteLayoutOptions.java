@@ -2,10 +2,12 @@ package dev.reuise.web.core.view;
 import dev.reuise.core.CoreComponentOptions;
 import dev.reuise.core.option.ComponentOption;
 import dev.reuise.web.core.WebComponentOptions;
+import dev.reuise.web.core.hydration.ClientConfigurationOptions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLayoutOptions<S>> implements WebRouteLayoutOptions , WebComponentOptions {
+import java.util.Map;
+public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLayoutOptions<S>> implements ClientConfigurationOptions , WebRouteLayoutOptions , WebComponentOptions {
     public S addRoute(String path, RouteViewCreator creator) {
         return addRoute(path, creator, RouteViewCreator.Mode.REUSE_CREATE_ON_FIRST_REVEAL);
     }
@@ -287,4 +289,12 @@ public abstract class AbstractWebRouteLayoutOptions<S extends AbstractWebRouteLa
     }
 
     protected abstract S self();
+
+    public String getClientConfigurationType() {
+        return "RouteLayout";
+    }
+
+    public void restoreClientConfiguration(Map<String, Object> values) {
+        for (String key : values.keySet()) { switch (key) {case "tooltip": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setTooltip(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "contentEditable": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setContentEditable(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "enabled": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setEnabled(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "url": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setUrl(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;default: throw new IllegalArgumentException("Unknown client configuration option: " + key); } };
+    }
 }

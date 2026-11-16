@@ -21,6 +21,7 @@ import dev.reuise.core.theme.ThemeColorSet;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.basecomponent.WebBaseComponentPart;
+import dev.reuise.web.core.button.ButtonBackgroundStyles;
 import dev.reuise.web.core.button.ButtonGradientStyles;
 import dev.reuise.web.core.button.ButtonRadiusStyles;
 import dev.reuise.web.core.parentcomponent.WebParentComponentPart;
@@ -894,9 +895,10 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
         ButtonRadiusStyles.setDocumentThemeRadius(commonStyles.addRule(".reuise-button"), buttonTheme);
         for (ButtonType type : ButtonType.values()) {
             String selector = ".reuise-button--" + type.name().toLowerCase();
-            for (Interaction interaction : Interaction.values())
+            for (Interaction interaction : Interaction.values()) {
                 ButtonGradientStyles.setDocument(commonStyles.addRule(selector, interaction), buttonTheme, type, interaction);
-
+                ButtonBackgroundStyles.setDocument(commonStyles.addRule(selector, interaction), buttonTheme, type, interaction);
+            }
         }
         if (theme == null)
             return self();
@@ -904,16 +906,10 @@ public abstract class DefaultWebDocumentPart<S extends DefaultWebDocumentPart<S,
         // Button
         if (buttonTheme != null) {
             ThemeColorSet textColor = buttonTheme.getTextColor();
-            for (ButtonType type : ButtonType.values()) {
-                ThemeColorSet color = (type == ButtonType.PRIMARY) ? buttonTheme.getPrimaryColor() : buttonTheme.getSecondaryColor();
-                for (Interaction interaction : Interaction.values()) {
-                    if ((color != null) && (color.getColor(interaction) != null))
-                        commonStyles.addRule(".reuise-button--" + type.name().toLowerCase(), interaction).setBackgroundColor(color.getColor(interaction).toCss());
+            for (Interaction interaction : Interaction.values()) {
+                if ((textColor != null) && (textColor.getColor(interaction) != null))
+                    commonStyles.addRule(".reuise-button", interaction).setColor(textColor.getColor(interaction).toCss());
 
-                    if ((textColor != null) && (textColor.getColor(interaction) != null))
-                        commonStyles.addRule(".reuise-button", interaction).setColor(textColor.getColor(interaction).toCss());
-
-                }
             }
         }
         // Links

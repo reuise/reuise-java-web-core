@@ -6,6 +6,7 @@ import dev.reuise.core.ScreenSizeValues;
 import dev.reuise.core.State;
 import dev.reuise.core.basecomponent.AbstractCoreBaseComponentOptions;
 import dev.reuise.core.option.ComponentOption;
+import dev.reuise.web.core.hydration.ClientConfigurationOptions;
 import dev.reuise.web.core.style.StyleOptions;
 import dev.reuise.webstyles.Style;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-public abstract class AbstractWebBaseComponentOptions<S extends AbstractWebBaseComponentOptions<S>> extends AbstractCoreBaseComponentOptions<S> implements WebBaseComponentOptions {
+public abstract class AbstractWebBaseComponentOptions<S extends AbstractWebBaseComponentOptions<S>> extends AbstractCoreBaseComponentOptions<S> implements ClientConfigurationOptions , WebBaseComponentOptions {
     public void setRehydrate(boolean rehydrate) {
         setRehydration(rehydrate ? "." + getBaseStyleClass() : null, getParent());
     }
@@ -457,5 +458,13 @@ public abstract class AbstractWebBaseComponentOptions<S extends AbstractWebBaseC
     }
 
     public void setComponent(WebBaseComponent component) {
+    }
+
+    public String getClientConfigurationType() {
+        return "BaseComponent";
+    }
+
+    public void restoreClientConfiguration(Map<String, Object> values) {
+        for (String key : values.keySet()) { switch (key) {case "tooltip": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setTooltip(dev.reuise.web.core.hydration.ClientConfiguration.string(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "contentEditable": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setContentEditable(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;case "enabled": if (getOption(key) == null || getOption(key) instanceof dev.reuise.core.option.DefaultComponentOption) { setEnabled(dev.reuise.web.core.hydration.ClientConfiguration.bool(values.get(key))); getOptions().put(key, dev.reuise.core.option.RehydratedComponentOption.from(getOption(key))); } break;default: throw new IllegalArgumentException("Unknown client configuration option: " + key); } };
     }
 }
