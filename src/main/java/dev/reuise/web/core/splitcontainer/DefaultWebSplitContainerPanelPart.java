@@ -105,7 +105,7 @@ import java.util.Set;
 public abstract class DefaultWebSplitContainerPanelPart<S extends DefaultWebSplitContainerPanelPart<S, O>, O extends WebSplitContainerPanelPartOptions> extends DefaultCoreSplitContainerPanelPart<S, O> implements WebComponentPart , WebSplitContainerPanel {
     @Override
     public boolean isCollapsed() {
-        return false;
+        return isCollapsed(null);
     }
 
     @Override
@@ -122,11 +122,12 @@ public abstract class DefaultWebSplitContainerPanelPart<S extends DefaultWebSpli
 
     @Override
     public boolean isCollapsed(State state) {
-        return false;
+        return hasStyleClass("reuise-splitcontainer_panel--collapsed" + (state == null ? "" : "_" + state.getStateKey()));
     }
 
     @Override
     public S setSize(Object size, State state) {
+        super.setSize(size, state);
         if (size == null)
             return self();
 
@@ -145,6 +146,7 @@ public abstract class DefaultWebSplitContainerPanelPart<S extends DefaultWebSpli
 
     @Override
     public S setMinSize(Object minSize, State state) {
+        super.setMinSize(minSize, state);
         if (minSize == null) {
             return self();
         }
@@ -163,6 +165,7 @@ public abstract class DefaultWebSplitContainerPanelPart<S extends DefaultWebSpli
 
     @Override
     public S setMaxSize(Object maxSize, State state) {
+        super.setMaxSize(maxSize, state);
         if (maxSize == null) {
             return self();
         }

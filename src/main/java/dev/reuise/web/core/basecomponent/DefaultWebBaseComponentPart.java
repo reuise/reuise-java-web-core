@@ -13,17 +13,22 @@ import dev.reuise.core.basecomponent.DefaultCoreBaseComponentPart;
 import dev.reuise.core.option.AbstractComponentOptionOperation;
 import dev.reuise.core.option.ApplyOperationException;
 import dev.reuise.core.option.ComponentOptionOperationWithState;
+import dev.reuise.core.option.DefaultComponentOption;
 import dev.reuise.core.option.OptionApplicator;
 import dev.reuise.web.core.WebComponentFactory;
 import dev.reuise.web.core.WebComponentPart;
 import dev.reuise.web.core.document.MinimalColorStyles;
+import dev.reuise.web.core.style.StyleOptions;
 import dev.reuise.webstyles.Style;
 import dev.reuise.webstyles.StyleBuilder;
 import dev.reuise.webstyles.StyleSheetFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +42,14 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
     protected String uniqueStyleClass;
 
     protected String uniqueId;
+
+    private static int adoptingComponents;
+
+    private static boolean applyingExplicitOption;
+
+    private final Map<State, Style> adoptedStyles = new HashMap<>();
+
+    private final Set<State> configurationStates = new LinkedHashSet<>();
 
     public S setLocaleContext(LocaleContext localeContext) {
         super.setLocaleContext(localeContext);
@@ -81,16 +94,32 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
         }
          */
         if (!isPart) {
-            boolean initFailed = false;
-            for (ComponentPart p : getParts().get(ComponentPart.Type.BASE)) {
-                if (!initializePart(((ComponentType) (p)), partOptions.get(p))) {
-                    initFailed = true;
-                    break;
-                }
-            }
-            if (!initFailed)
-                initializePart(component, options);
+            boolean adopting = ((WebBaseComponentPartOptions) (options)).isRehydrated();
+            boolean previousExplicitOption = applyingExplicitOption;
+            if (adopting)
+                applyingExplicitOption = false;
 
+            if (adopting)
+                adoptingComponents++;
+
+            try {
+                boolean initFailed = false;
+                for (ComponentPart p : getParts().get(ComponentPart.Type.BASE)) {
+                    if (!initializePart(((ComponentType) (p)), partOptions.get(p))) {
+                        initFailed = true;
+                        break;
+                    }
+                }
+                if (!initFailed)
+                    initializePart(component, options);
+
+            } finally {
+                if (adopting)
+                    adoptingComponents--;
+
+                applyingExplicitOption = previousExplicitOption;
+                adoptedStyles.clear();
+            }
             clearOptions();
         }
     }
@@ -121,6 +150,9 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
             return false;
 
         setupReferences();
+        if (options.getStates() != null)
+            configurationStates.addAll(options.getStates());
+
         OptionApplicator optionApplicator = new OptionApplicator();
         logDebugIndent(isPart ? 1 : 0, (("Apply options " + (isPart ? "part" : "component")) + ": ") + component.getClass().getSimpleName());
         component.applyOptions(options, optionApplicator, options.getStates());
@@ -133,7 +165,19 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
 
         }
         try {
-            optionApplicator.run();
+            List<AbstractComponentOptionOperation<?>> operations = optionApplicator.getSortedOperations();
+            if (((WebBaseComponentPartOptions) (options)).isRehydrated())
+                operations.sort(Comparator.comparing(operation -> !(operation.getOption() instanceof DefaultComponentOption)));
+
+            for (AbstractComponentOptionOperation<?> operation : operations) {
+                boolean previousExplicitOption = applyingExplicitOption;
+                applyingExplicitOption = !(operation.getOption() instanceof DefaultComponentOption);
+                try {
+                    operation.apply();
+                } finally {
+                    applyingExplicitOption = previousExplicitOption;
+                }
+            }
         } catch (ApplyOperationException e) {
             log((("Error applying option in " + component.getClass().getSimpleName()) + ": ") + e.getMessage());
             log(e);
@@ -243,7 +287,7 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
 
     @Override
     public boolean isVisible(State state) {
-        if (hasStyleClass("reuise--hidden"))
+        if (hasStyleClass("reuise--hidden") || ((state != null) && hasStyleClass("reuise--hidden_" + state.getStateKey())))
             return false;
 
         Style style = getStyle(state);
@@ -264,6 +308,10 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
         if ((style == null) || (!style.hasProperties()))
             return self();
 
+        if (isAdoptingStyles()) {
+            getStyle(state).append(style);
+            return self();
+        }
         styles.getStyleSheet(state).appendRule("." + getUniqueStyleClass(), style);
         return self();
     }
@@ -275,7 +323,16 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
 
     @Override
     public Style getStyle(State state) {
+        // Restore the Java model without replaying SSR declarations into the live cascade.
+        if (isAdoptingStyles())
+            return adoptedStyles.computeIfAbsent(state, key -> new StyleOptions());
+
+        adoptedStyles.clear();
         return styles.getStyleSheet(state).addRule("." + getUniqueStyleClass());
+    }
+
+    private boolean isAdoptingStyles() {
+        return (isRehydrated() && (adoptingComponents != 0)) && (!applyingExplicitOption);
     }
 
     @Override
@@ -952,7 +1009,9 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
 
     // Implementation
     public Set<State> getStyleStates() {
-        return styles.getStates();
+        Set<State> states = new LinkedHashSet<>(configurationStates);
+        states.addAll(styles.getStates());
+        return states;
     }
 
     // Implementation
@@ -964,6 +1023,9 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
     public Style getStyle(State state, Interaction interaction) {
         if ((interaction == null) || (interaction == Interaction.NORMAL))
             return getStyle(state);
+
+        if (isAdoptingStyles())
+            return getStyle(state == null ? interaction : State.of(state, interaction));
 
         return styles.getStyleSheet(state).addRule(interaction.getSelector("." + getUniqueStyleClass()));
     }

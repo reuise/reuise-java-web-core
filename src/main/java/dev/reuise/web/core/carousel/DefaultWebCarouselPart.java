@@ -982,7 +982,7 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
         commonStyles.addRule(".reuise-carousel_previousbutton,.reuise-carousel_nextbutton,.reuise-carousel_autoplaybutton").setBoxShadow("none");
         commonStyles.addRule(".reuise-carousel_previousbutton:focus-visible,.reuise-carousel_nextbutton:focus-visible," + ".reuise-carousel_autoplaybutton:focus-visible").setOutline("2px solid currentColor").setOutlineOffset("2px");
         commonStyles.addRule(".reuise-carousel:dir(rtl) .reuise-carousel_navigationicon").setTransform("scaleX(-1)");
-        commonStyles.addRule(".reuise-carousel:not([data-carousel-ready])>.reuise-carousel_navigation").setDisplay("none");
+        commonStyles.addRule(".reuise-carousel:not([data-carousel-ready])>.reuise-carousel_navigation").setVisibility("hidden").setPointerEvents("none");
         commonStyles.addRule(((".reuise-carousel[data-shownavigation=\"false\"] .reuise-carousel_previousbutton," + ".reuise-carousel[data-shownavigation=\"false\"] .reuise-carousel_nextbutton,") + ".reuise-carousel[data-showindicators=\"false\"] .reuise-carousel_indicators,") + ".reuise-carousel:not([data-autoplay=\"true\"]) .reuise-carousel_autoplaybutton").setDisplay("none");
         commonStyles.addRule(".reuise-carousel_indicator").setWidth("10px").setHeight("10px").setPadding("0").setBorder("0").setBorderRadius("50%").setBackgroundColor("#bdbdbd").setCursor("pointer");
         commonStyles.addRule(".reuise-carousel_indicator[aria-current=\"true\"]").setBackgroundColor("var(--reuise-carousel-active-dot-color, #616161)");
