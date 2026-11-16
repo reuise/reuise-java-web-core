@@ -976,6 +976,7 @@ public abstract class DefaultWebCarouselPart<S extends DefaultWebCarouselPart<S,
         commonStyles.addRule(":where(.reuise-carousel_slider>.reuise-carouselcard[data-autosize=\"true\"])").setFlex("0 0 auto").setWidth("max-content");
         commonStyles.addRule(".reuise-carousel_navigation,.reuise-carousel_indicators").setDisplay("flex").setAlignItems("center").setJustifyContent("center").setRowGap("8px").setColumnGap("8px");
         commonStyles.addRule(".reuise-carousel_navigation").setPaddingTop("12px");
+        commonStyles.addRule(".reuise-carousel_indicators").setMinHeight("10px");
         commonStyles.addRule((".reuise-carousel_previousbutton>.reuise-button_label," + ".reuise-carousel_nextbutton>.reuise-button_label,") + ".reuise-carousel_autoplaybutton>.reuise-button_label").setDisplay("none");
         commonStyles.addRule(".reuise-carousel_autoplaybutton[data-carousel-playing=\"true\"] .reuise-carousel_playicon," + ".reuise-carousel_autoplaybutton[data-carousel-playing=\"false\"] .reuise-carousel_pauseicon").setDisplay("none");
         commonStyles.addRule(".reuise-carousel_navigationicon").setWidth("20px").setHeight("20px");

@@ -335,6 +335,10 @@ public abstract class DefaultWebBaseComponentPart<S extends DefaultWebBaseCompon
         return (isRehydrated() && (adoptingComponents != 0)) && (!applyingExplicitOption);
     }
 
+    public static boolean isAdoptingServerDom() {
+        return (adoptingComponents != 0) && (!applyingExplicitOption);
+    }
+
     @Override
     public boolean isVisible() {
         return isVisible(null);

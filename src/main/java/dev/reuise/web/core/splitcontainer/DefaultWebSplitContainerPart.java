@@ -137,8 +137,8 @@ public abstract class DefaultWebSplitContainerPart<S extends DefaultWebSplitCont
     @Override
     public S setDirection(SplitDirection direction, State state) {
         super.setDirection(direction, state);
-        setPanelSize(startPanel, direction, null);
-        setPanelSize(endPanel, direction, null);
+        setPanelSize(startPanel, direction, state);
+        setPanelSize(endPanel, direction, state);
         setDirectionInternal(direction, state);
         if (divider != null) {
             WebSplitContainerDivider webDivider = ((WebSplitContainerDivider) (divider));
@@ -186,8 +186,7 @@ public abstract class DefaultWebSplitContainerPart<S extends DefaultWebSplitCont
     }
 
     private void setPanelSize(CoreSplitContainerPanel panel, SplitDirection direction, State state) {
-        // WebSplitContainerPanel webPanel = (WebSplitContainerPanel) panel;
-        // Style style = webPanel.getStyle(state);
+        panel.setDirection(direction, state);
         Object size = panel.getSize(state);
         if (size != null) {
             panel.setSize(size, state);
