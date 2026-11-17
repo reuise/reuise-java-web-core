@@ -117,7 +117,7 @@ public abstract class DefaultWebMenuButtonPart<S extends DefaultWebMenuButtonPar
         if (getTrigger() != null) {
             if (label == null)
                 getTrigger().removeAttribute("aria-label");
-            else
+            else if ((!label.isEmpty()) && ((!isRehydrated()) || (getTrigger().getAttribute("aria-label") == null)))
                 getTrigger().setAttribute("aria-label", label);
 
         }
