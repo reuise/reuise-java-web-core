@@ -25,6 +25,11 @@
  * Explicit background colours take precedence over local/document theme colours,
  * including after theme updates and SSR hydration.
  *
+ * <p>Adoption retains an existing SSR aria-label, including a custom accessible
+ * name distinct from the visible label. Recreated parent layout defaults do not
+ * rename an adopted button. When no SSR aria-label exists, initialization derives
+ * the accessible name from the configured label as before.
+ *
  * <p>ButtonBar is a FlexContainer specialization: a horizontal, vertically centered
  * row that wraps by default, using the shared 16-pixel spacing token. Add an existing
  * button with addButton(button), add a labelled button with addButton("Save"), or use

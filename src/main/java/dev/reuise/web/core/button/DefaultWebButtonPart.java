@@ -812,7 +812,7 @@ public abstract class DefaultWebButtonPart<S extends DefaultWebButtonPart<S, O>,
             setBackgroundColor(options.getBackgroundColor());
 
         String label = options.getLabel();
-        if ((label != null) && (!label.isEmpty()))
+        if (((label != null) && (!label.isEmpty())) && ((!isRehydrated()) || (getAttribute("aria-label") == null)))
             setAria("label", label);
 
     }
